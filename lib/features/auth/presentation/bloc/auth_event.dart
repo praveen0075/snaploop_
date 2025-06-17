@@ -1,7 +1,6 @@
 
 import 'package:equatable/equatable.dart';
 import 'package:snap_loop/features/auth/domain/entities/user_entity.dart';
-import 'package:snap_loop/features/auth/presentation/pages/auth.dart';
 
 abstract class AuthEvent extends Equatable {
   @override

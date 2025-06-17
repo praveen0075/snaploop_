@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_event.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_state.dart';
+import 'package:snap_loop/features/profile/presentation/pages/edit_profile_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -26,11 +27,76 @@ class _ProfilePageState extends State<ProfilePage> {
         if (state is UserProfileUserDetailsLoadedState) {
           log(state.user.toString());
           return Scaffold(
-            body: Center(
-              child: Text(
-                "email: ${state.user!.userEmail},/n name : ${state.user!.userName ?? ""}, /n bio : ${state.user!.userBio}",
+            appBar: AppBar(title: Text("Profile")),
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundColor: Colors.grey,
+                    child: CircleAvatar(
+                      radius: 45,
+                      backgroundColor: Colors.black,
+                      child: Icon(Icons.person),
+                    ),
+                  ),
+                  Text(state.user!.userName.toString()),
+                  Text(state.user!.userBio.toString()),
+                  GestureDetector(
+                    onTap:
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (context) => EditProfilePage(user: state.user),
+                          ),
+                        ),
+                    child: Container(
+                      height: 50,
+                      width: 300,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(),
+                      ),
+                      child: Center(child: Text("Edit Profile")),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Column(children: [Text("Post"), Text("13")]),
+                      Column(children: [Text("Followers"), Text("1500")]),
+                      Column(children: [Text("Followings"), Text("1300")]),
+                    ],
+                  ),
+                  Divider(),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GridView.builder(
+                      itemCount: 30,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 6,
+                        mainAxisSpacing: 6,
+                      ),
+                      itemBuilder:
+                          (context, index) => Container(
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(color: Colors.grey),
+                          ),
+                    ),
+                  ),
+                ],
               ),
             ),
+            // body: Center(
+            //   child: Text(
+            //     "email: ${state.user!.userEmail},/n name : ${state.user!.userName ?? ""}, /n bio : ${state.user!.userBio}",
+            //   ),
+            // ),
           );
         } else {
           return Center(child: CircularProgressIndicator());

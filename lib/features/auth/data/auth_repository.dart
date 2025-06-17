@@ -21,7 +21,7 @@ class AuthRespositoryFirebase implements AuthRepo {
       UserCredential userCredential = await firebaseAuth
           .signInWithEmailAndPassword(email: email, password: password);
 
-      log("${userCredential.user?.uid}");
+      log("${userCredential.user?.uid}"); 
 
       // user creation
       UserEntity user = UserEntity(

@@ -16,18 +16,18 @@ class FirebaseUserProfileRepo implements UserprofileRepo {
       if (userProfileDoc.exists) {
         final userData = userProfileDoc.data();
         log("userdata : $userData");
-        
+
         if (userData != null) {
           user = UserProfileEntity(
             userid: id,
             userEmail: userData["userEmail"],
             userName: userData["userName"],
-            userBio: userData["userBio"],
-            profilePicUrl: userData["userprofilePicUrl"],
+            userBio: userData["userBio"] ?? '',
+            profilePicUrl: userData["userprofilePicUrl"] ?? '',
           );
           return user;
         }
-      }else{
+      } else {
         log("returning null");
         return null;
       }
