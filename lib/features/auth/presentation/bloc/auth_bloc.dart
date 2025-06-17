@@ -12,15 +12,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   UserEntity? currentUser;
 
   AuthBloc({required this.authrepository}) : super(AuthInitialState()) {
-    // void checkAuthentication() async {
-    //   final UserEntity? user = await authrepository.getCurrentUser();
-    //   if (user != null) {
-    //     currentUser = user;
-    //     emit(AuthUserLoggedIn(user));
-    //   } else {
-    //     emit(AuthUserLoggedOut());
-    //   }
-    // }
+
 
     on<CheckAuthEvent>((event, emit) async {
       emit(AuthLoadingState());
@@ -79,6 +71,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthFailureState(e.toString()));
       }
     });
+
+    // check current user event
+    on<CheckCurrentUer>((event, emit) async{
+      final user = await authrepository.getCurrentUser();
+      if(user != null){
+        
+      }
+    },);
 
     // Sign out event
     on<SignOutEvent>((event, emit) async {

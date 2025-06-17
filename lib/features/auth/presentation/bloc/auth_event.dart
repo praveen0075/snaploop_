@@ -1,6 +1,7 @@
 
 import 'package:equatable/equatable.dart';
 import 'package:snap_loop/features/auth/domain/entities/user_entity.dart';
+import 'package:snap_loop/features/auth/presentation/pages/auth.dart';
 
 abstract class AuthEvent extends Equatable {
   @override
@@ -28,5 +29,7 @@ class RegisterEvent extends AuthEvent {
   @override
   List<Object?> get props => [user,password];
 }
+
+class CheckCurrentUer extends AuthEvent{}
 
 class SignOutEvent extends AuthEvent{}

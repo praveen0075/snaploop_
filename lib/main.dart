@@ -8,7 +8,6 @@ import 'package:snap_loop/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:snap_loop/features/auth/presentation/pages/auth.dart';
 import 'package:snap_loop/features/navigation/bloc/nav_bloc.dart';
 import 'package:snap_loop/features/navigation/root_page.dart';
-import 'package:snap_loop/features/post/presentation/pages/home_page.dart';
 import 'package:snap_loop/config/firebase_options.dart';
 
 void main() async {
