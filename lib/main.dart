@@ -9,6 +9,8 @@ import 'package:snap_loop/features/auth/presentation/pages/auth.dart';
 import 'package:snap_loop/features/navigation/bloc/nav_bloc.dart';
 import 'package:snap_loop/features/navigation/root_page.dart';
 import 'package:snap_loop/config/firebase_options.dart';
+import 'package:snap_loop/features/profile/data/firebase_userprofile_repo.dart';
+import 'package:snap_loop/features/profile/presentation/bloc/profile_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +22,7 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
 
   final authRepository = AuthRespositoryFirebase();
+  final userRepository = FirebaseUserProfileRepo();
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +35,13 @@ class MyApp extends StatelessWidget {
             create: (context) => AuthBloc(authrepository: authRepository),
           ),
           BlocProvider<NavBloc>(create: (context) => NavBloc()),
+          BlocProvider<ProfileBloc>(
+            create:
+                (context) => ProfileBloc(
+                  authRepo: authRepository,
+                  userprofileRepo: userRepository,
+                ),
+          ),
         ],
         child: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),

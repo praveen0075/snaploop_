@@ -9,7 +9,7 @@ import 'package:snap_loop/features/auth/presentation/bloc/auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepo authrepository;
-  UserEntity? currentUser;
+  // UserEntity? _currentUser;
 
   AuthBloc({required this.authrepository}) : super(AuthInitialState()) {
 
@@ -19,7 +19,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       try {
         final UserEntity? user = await authrepository.getCurrentUser();
         if (user != null) {
-          currentUser = user;
+          // _currentUser = user;
           emit(AuthUserLoggedIn(user));
         } else {
           emit(AuthUserLoggedOut());

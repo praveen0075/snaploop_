@@ -2,15 +2,13 @@
 
 class UserEntity {
   final String userid;
-  final String userName;
+  final String? userName;
   final String userEmail;
-  final String userProfilePic;
 
   UserEntity({
     required this.userid,
     required this.userName,
     required this.userEmail,
-    required this.userProfilePic,
   });
 
   // This is the toJson function that convert userEntity to json format
@@ -19,7 +17,6 @@ class UserEntity {
       "userId": userid,
       "userName": userName,
       "userEmail": userEmail,
-      "userProfile": userProfilePic,
     };
   }
 
@@ -29,7 +26,6 @@ class UserEntity {
       userid: userJsonData["userId"],
       userName: userJsonData["userName"],
       userEmail: userJsonData["userEmail"],
-      userProfilePic: userJsonData["userProfile"],
     );
   }
 }

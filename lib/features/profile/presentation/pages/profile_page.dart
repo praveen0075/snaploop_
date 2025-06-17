@@ -1,6 +1,9 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:snap_loop/features/auth/data/auth_repository.dart';
-import 'package:snap_loop/features/auth/domain/entities/user_entity.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snap_loop/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:snap_loop/features/profile/presentation/bloc/profile_event.dart';
+import 'package:snap_loop/features/profile/presentation/bloc/profile_state.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -10,13 +13,30 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<ProfileBloc>().add(GetCurrentLoggedInUserEvent());
+  }
 
-  final AuthRespositoryFirebase authRepo = AuthRespositoryFirebase();
-
-  late Future<UserEntity?> currenUser =  authRepo.getCurrentUser();
-  
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text("Profile Page")));
+    return BlocConsumer<ProfileBloc, ProfileState>(
+      builder: (context, state) {
+        if (state is UserProfileUserDetailsLoadedState) {
+          log(state.user.toString());
+          return Scaffold(
+            body: Center(
+              child: Text(
+                "email: ${state.user!.userEmail},/n name : ${state.user!.userName ?? ""}, /n bio : ${state.user!.userBio}",
+              ),
+            ),
+          );
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
+      listener: (context, state) {},
+    );
   }
 }

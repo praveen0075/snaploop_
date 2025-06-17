@@ -34,7 +34,6 @@ class _RegisterPageState extends State<RegisterPage> {
         userid: DateTime.timestamp().millisecondsSinceEpoch.toString(),
         userName: userNameController.text,
         userEmail: emailController.text,
-        userProfilePic: "",
       );
       if (passController.text == conformPassController.text) {
         try {

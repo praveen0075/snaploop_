@@ -28,7 +28,6 @@ class AuthRespositoryFirebase implements AuthRepo {
         userid: userCredential.user!.uid,
         userName: "",
         userEmail: email,
-        userProfilePic: "",
       );
       return user;
     } catch (e) {
@@ -56,7 +55,6 @@ class AuthRespositoryFirebase implements AuthRepo {
         userid: userCredential.user!.uid,
         userName: userEntity.userName,
         userEmail: userEntity.userEmail,
-        userProfilePic: userEntity.userProfilePic,
       );
 
       // save user data to the firestore
@@ -84,7 +82,6 @@ class AuthRespositoryFirebase implements AuthRepo {
         userid: currentFireUser.uid,
         userName: "",
         userEmail: currentFireUser.email!,
-        userProfilePic: "",
       );
     }
   }

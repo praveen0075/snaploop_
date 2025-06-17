@@ -17,7 +17,7 @@ class AuthUserLoggedIn extends AuthState {
   @override
   List<Object?> get props => [user];
 }
-
+  
 class AuthUserLoggedOut extends AuthState {}
 
 class AuthFailureState extends AuthState {
