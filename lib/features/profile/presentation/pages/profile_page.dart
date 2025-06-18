@@ -20,11 +20,17 @@ class _ProfilePageState extends State<ProfilePage> {
     context.read<ProfileBloc>().add(GetCurrentLoggedInUserEvent());
   }
 
+  String? name;
+  String? bio;
+
   @override
   Widget build(BuildContext context) {
+    final BuildContext ctx;
     return BlocConsumer<ProfileBloc, ProfileState>(
       builder: (context, state) {
         if (state is UserProfileUserDetailsLoadedState) {
+          name = state.user?.userName;
+          bio = state.user?.userBio;
           log(state.user.toString());
           return Scaffold(
             appBar: AppBar(title: Text("Profile")),
@@ -40,15 +46,18 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: Icon(Icons.person),
                     ),
                   ),
-                  Text(state.user!.userName.toString()),
-                  Text(state.user!.userBio.toString()),
+                  Text(name ?? ""),
+                  Text(bio ?? ""),
                   GestureDetector(
                     onTap:
                         () => Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder:
-                                (context) => EditProfilePage(user: state.user),
+                                (_) => BlocProvider<ProfileBloc>.value(
+                                  value: BlocProvider.of<ProfileBloc>(context),
+                                  child: EditProfilePage(user: state.user),
+                                ),
                           ),
                         ),
                     child: Container(

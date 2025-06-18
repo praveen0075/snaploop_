@@ -49,7 +49,6 @@ class AuthRespositoryFirebase implements AuthRepo {
             email: userEntity.userEmail,
             password: password,
           );
-
       // user creation
       UserEntity user = UserEntity(
         userid: userCredential.user!.uid,

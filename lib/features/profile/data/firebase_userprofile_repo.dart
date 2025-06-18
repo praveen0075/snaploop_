@@ -45,6 +45,7 @@ class FirebaseUserProfileRepo implements UserprofileRepo {
           .collection("Users")
           .doc(userUpdatedProfile.userid)
           .update({
+            "userName" : userUpdatedProfile.userName,
             "userBio": userUpdatedProfile.userBio,
             "userprofilePicUrl": userUpdatedProfile.profilePicUrl,
           });

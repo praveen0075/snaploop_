@@ -40,17 +40,10 @@ class ProfileBloc extends Bloc<ProfileEvents, ProfileState> {
       emit(UserProfileUserDetailsLoadingState());
       try {
         final UserProfileEntity? userprofile = await userprofileRepo
-            .getuserProfile(event.userId);  
+            .getuserProfile(event.userId);
         if (userprofile != null) {
-          await userprofileRepo.updateUserProfile(
-            UserProfileEntity(
-              userid: event.userId,
-              userEmail: userprofile.userEmail,
-              userName: userprofile.userName,
-              userBio: event.userBio,
-              profilePicUrl: userprofile.profilePicUrl,
-            ),
-          );
+          await userprofileRepo.updateUserProfile(event.userProfileEntiry);
+          log("User event id : ${event.userId}");
           final UserProfileEntity? updatedUser = await userprofileRepo
               .getuserProfile(event.userId);
           return emit(UserProfileUserDetailsLoadedState(updatedUser));
