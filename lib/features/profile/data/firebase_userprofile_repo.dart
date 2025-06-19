@@ -39,15 +39,15 @@ class FirebaseUserProfileRepo implements UserprofileRepo {
   }
 
   @override
-  Future<void> updateUserProfile(UserProfileEntity userUpdatedProfile) async {
+  Future<void> updateUserProfile(String userId,String username, String userBio, String userProfilePicUrl) async {
     try {
       await firebstore
           .collection("Users")
-          .doc(userUpdatedProfile.userid)
+          .doc(userId)
           .update({
-            "userName" : userUpdatedProfile.userName,
-            "userBio": userUpdatedProfile.userBio,
-            "userprofilePicUrl": userUpdatedProfile.profilePicUrl,
+            "userName" : username,
+            "userBio": userBio,
+            "userprofilePicUrl": userProfilePicUrl,
           });
     } catch (e) {
       throw Exception(e);

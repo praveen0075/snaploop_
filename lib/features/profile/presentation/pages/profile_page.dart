@@ -25,12 +25,12 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final BuildContext ctx;
     return BlocConsumer<ProfileBloc, ProfileState>(
       builder: (context, state) {
         if (state is UserProfileUserDetailsLoadedState) {
           name = state.user?.userName;
           bio = state.user?.userBio;
+          log("user image url = ${state.user!.profilePicUrl}");
           log(state.user.toString());
           return Scaffold(
             appBar: AppBar(title: Text("Profile")),
@@ -40,11 +40,18 @@ class _ProfilePageState extends State<ProfilePage> {
                   CircleAvatar(
                     radius: 50,
                     backgroundColor: Colors.grey,
-                    child: CircleAvatar(
-                      radius: 45,
-                      backgroundColor: Colors.black,
-                      child: Icon(Icons.person),
-                    ),
+                    child:
+                        state.user!.profilePicUrl == ""
+                            ? CircleAvatar(
+                              radius: 45,
+                              backgroundColor: Colors.black,
+                              child: Icon(Icons.person),
+                            )
+                            : CircleAvatar(
+                              radius: 45,
+                              backgroundColor: Colors.blue,
+                              child: Icon(Icons.person),
+                            ),
                   ),
                   Text(name ?? ""),
                   Text(bio ?? ""),

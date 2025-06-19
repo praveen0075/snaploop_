@@ -1,8 +1,6 @@
-
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snap_loop/features/auth/domain/entities/user_entity.dart';
 import 'package:snap_loop/features/auth/domain/repositories/auth_repo.dart';
 import 'package:snap_loop/features/auth/presentation/bloc/auth_event.dart';
 import 'package:snap_loop/features/auth/presentation/bloc/auth_state.dart';
@@ -12,28 +10,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   // UserEntity? _currentUser;
 
   AuthBloc({required this.authrepository}) : super(AuthInitialState()) {
-
-
-    on<CheckAuthEvent>((event, emit) async {
-      emit(AuthLoadingState());
-      try {
-        final UserEntity? user = await authrepository.getCurrentUser();
-        if (user != null) {
-          // _currentUser = user;
-          emit(AuthUserLoggedIn(user));
-        } else {
-          emit(AuthUserLoggedOut());
-        }
-      } catch (e) {
-        emit(AuthFailureState(e.toString()));
-      }
-    });
+    // on<CheckAuthEvent>((event, emit) async {
+    //   emit(AuthLoadingState());
+    //   try {
+    //     final UserEntity? user = await authrepository.getCurrentUser();
+    //     if (user != null) {
+    //       // _currentUser = user;
+    //       emit(AuthUserLoggedIn(user));
+    //     } else {
+    //       emit(AuthUserLoggedOut());
+    //     }
+    //   } catch (e) {
+    //     emit(AuthFailureState(e.toString()));
+    //   }
+    // });
 
     // operations on Sign In event.
     on<SignInEvent>((event, emit) async {
       emit(AuthLoadingState());
       try {
-        
         log("bloc : entered email : ${event.userEmail}");
         log("bloc : entered pass : ${event.userPassword}");
         // sign in user
@@ -43,9 +38,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
         final user = await authrepository.getCurrentUser();
         if (user != null) {
-            log(user.userEmail);        
+          log("logged user's email is not null ${user.userEmail}");
           emit(AuthUserLoggedIn(user));
         } else {
+          log("logged user's email is null");
           emit(AuthFailureState("Something went wrong #"));
         }
       } catch (e) {
@@ -62,8 +58,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await authrepository.registerNewUser(event.user, event.password);
         final user = await authrepository.getCurrentUser();
         if (user != null) {
+          log("logged user's email is not null ${user.userEmail}");
           emit(AuthUserLoggedIn(user));
         } else {
+          log("logged user's email is null");
           emit(AuthFailureState("Something went wrong #"));
         }
       } catch (e) {
@@ -72,13 +70,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     });
 
-    // check current user event
-    on<CheckCurrentUer>((event, emit) async{
-      final user = await authrepository.getCurrentUser();
-      if(user != null){
-        
-      }
-    },);
+    // // check current user event
+    // on<CheckCurrentUer>((event, emit) async{
+    //   final user = await authrepository.getCurrentUser();
+    //   if(user != null){
+
+    //   }
+    // },);
 
     // Sign out event
     on<SignOutEvent>((event, emit) async {

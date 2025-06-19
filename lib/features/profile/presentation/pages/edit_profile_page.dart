@@ -21,33 +21,48 @@ class EditProfilePage extends StatelessWidget {
     bioController.text = user!.userBio ?? "";
     return Scaffold(
       appBar: AppBar(title: Text("Edit Profile")),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            CustomeTextformfield(
-              txtController: nameController,
-              hintText: "Name",
-              obscure: false,
-            ),
-            kh20,
-            CustomeTextformfield(
-              txtController: bioController,
-              hintText: "Bio",
-              obscure: false,
-            ),
-            kh20,
-            BlocConsumer<ProfileBloc, ProfileState>(
-              listener: (context, state) {
-                if (state is UserProfileUserDetailsLoadedState) {
-                  Navigator.pop(context);
-                }
-              },
-              builder: (context, state) {
-                if (state is UserProfileUserDetailsLoadingState) {
-                  return Center(child: CircularProgressIndicator());
-                }
-                return CustomButton(
+      body: BlocConsumer<ProfileBloc, ProfileState>(
+        listener: (context, state) {
+          if (state is UserProfileUserDetailsLoadedState) {
+            Navigator.pop(context);
+          }
+        },
+        builder: (context, state) {
+          if (state is UserProfileUserDetailsLoadingState) {
+            return Center(child: CircularProgressIndicator());
+          }
+          return Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: 50,
+                  backgroundColor: Colors.grey,
+                  child:
+                      user!.profilePicUrl == ""
+                          ? CircleAvatar(
+                            radius: 45,
+                            backgroundColor: Colors.blue,
+                          )
+                          : CircleAvatar(
+                            radius: 45,
+                            backgroundColor: Colors.black,
+                          ),
+                ),
+                kh20,
+                CustomeTextformfield(
+                  txtController: nameController,
+                  hintText: "Name",
+                  obscure: false,
+                ),
+                kh20,
+                CustomeTextformfield(
+                  txtController: bioController,
+                  hintText: "Bio",
+                  obscure: false,
+                ),
+                kh20,
+                CustomButton(
                   buttonText: "Save Changes",
                   buttonColor: Colors.deepPurple,
                   buttonTextColor: Colors.white,
@@ -57,20 +72,14 @@ class EditProfilePage extends StatelessWidget {
                           user!.userid,
                           bioController.text,
                           nameController.text,
-                          UserProfileEntity(
-                            userid: user!.userid,
-                            userEmail: user!.userEmail,
-                            userName: nameController.text.trim(),
-                            userBio: bioController.text.trim(),
-                            profilePicUrl: user!.profilePicUrl,
-                          ),
+                          "",
                         ),
                       ),
-                );
-              },
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:snap_loop/features/profile/domain/entities/userprofile.dart';
 
 abstract class ProfileEvents extends Equatable {
   @override
@@ -12,10 +11,10 @@ class UpdateUserProfile extends ProfileEvents {
   final String userId;
   final String userBio;
   final String userName;
-  final UserProfileEntity userProfileEntiry;
+  final String userProfilePicUrl;
 
-  UpdateUserProfile(this.userId, this.userBio,this.userName,this.userProfileEntiry);
+  UpdateUserProfile(this.userId, this.userBio,this.userName,this.userProfilePicUrl);
 
   @override
-  List<Object?> get props => [userId, userBio,userName,userProfileEntiry];
+  List<Object?> get props => [userId, userBio,userName,userProfilePicUrl];
 }

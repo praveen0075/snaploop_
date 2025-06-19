@@ -6,7 +6,7 @@ import 'package:snap_loop/features/navigation/bloc/nav_bloc.dart';
 import 'package:snap_loop/features/navigation/bloc/nav_event.dart';
 import 'package:snap_loop/features/navigation/bloc/nav_state.dart';
 import 'package:snap_loop/features/post/presentation/pages/add_post_page.dart';
-import 'package:snap_loop/features/post/presentation/pages/home_page.dart';
+import 'package:snap_loop/features/home/presentation/pages/home_page.dart';
 import 'package:snap_loop/features/profile/presentation/pages/profile_page.dart';
 import 'package:snap_loop/features/search/presentation/pages/search_page.dart';
 

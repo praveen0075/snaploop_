@@ -9,6 +9,8 @@ import 'package:snap_loop/features/auth/presentation/pages/auth.dart';
 import 'package:snap_loop/features/navigation/bloc/nav_bloc.dart';
 import 'package:snap_loop/features/navigation/root_page.dart';
 import 'package:snap_loop/config/firebase_options.dart';
+import 'package:snap_loop/features/post/data/firebase_post_repo.dart';
+import 'package:snap_loop/features/post/presentation/bloc/post_bloc.dart';
 import 'package:snap_loop/features/profile/data/firebase_userprofile_repo.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_bloc.dart';
 
@@ -23,6 +25,7 @@ class MyApp extends StatelessWidget {
 
   final authRepository = AuthRespositoryFirebase();
   final userRepository = FirebaseUserProfileRepo();
+  final postRepository = FirebasePostRepo();
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +43,13 @@ class MyApp extends StatelessWidget {
                 (context) => ProfileBloc(
                   authRepo: authRepository,
                   userprofileRepo: userRepository,
+                ),
+          ),
+          BlocProvider<PostBloc>(
+            create:
+                (context) => PostBloc(
+                  authRepo: authRepository,
+                  postRepo: postRepository,
                 ),
           ),
         ],
