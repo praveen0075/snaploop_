@@ -1,14 +1,15 @@
-import 'package:file_picker/file_picker.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/core/components/custom_snackbar.dart';
 import 'package:snap_loop/core/constants/ksizedboxes.dart';
-import 'package:snap_loop/features/auth/domain/entities/user_entity.dart';
 import 'package:snap_loop/features/auth/presentation/components/custom_button.dart';
 import 'package:snap_loop/features/post/domain/entities/post_entity.dart';
 import 'package:snap_loop/features/post/presentation/bloc/post_bloc.dart';
 import 'package:snap_loop/features/post/presentation/bloc/post_event.dart';
 import 'package:snap_loop/features/post/presentation/bloc/post_state.dart';
+import 'package:snap_loop/features/profile/domain/entities/userprofile.dart';
 
 class AddPostPage extends StatefulWidget {
   const AddPostPage({super.key});
@@ -18,8 +19,8 @@ class AddPostPage extends StatefulWidget {
 }
 
 class _AddPostPageState extends State<AddPostPage> {
-  PlatformFile? pickedFile;
-  UserEntity? currentUser;
+  File? pickedFile;
+  UserProfileEntity? currentUser;
   String? imageUrl;
 
   TextEditingController captionController = TextEditingController();
@@ -31,8 +32,8 @@ class _AddPostPageState extends State<AddPostPage> {
   }
 
   void uploadPost() {
-    imageUrl = "assets/images/naruto.jpg";
-    if (imageUrl == null || captionController.text.isEmpty) {
+    // pickedFile = "assets/images/naruto.jpg";
+    if (pickedFile == null || captionController.text.isEmpty) {
       customSnackBar(
         context,
         "Both image and caption are required",
@@ -40,17 +41,18 @@ class _AddPostPageState extends State<AddPostPage> {
         Colors.red,
       );
       return;
+    } else {
+      final post = PostEntity(
+        postId: DateTime.now().microsecondsSinceEpoch.toString(),
+        userId: currentUser!.userid,
+        userName: currentUser!.userName!,
+        userProfilePic: currentUser!.profilePicUrl!,
+        caption: captionController.text,
+        imageUrl: pickedFile!.path,
+        timeStamp: DateTime.now(),
+      );
+      context.read<PostBloc>().add(CreatePostEvent(post, pickedFile!));
     }
-
-    final post = PostEntity(
-      postId: DateTime.now().microsecondsSinceEpoch.toString(),
-      userId: currentUser!.userid,
-      userName: currentUser!.userName!,
-      caption: captionController.text,
-      imageUrl: imageUrl!,
-      timeStamp: DateTime.now(),
-    );
-    context.read<PostBloc>().add(CreatePostEvent(post));
   }
 
   @override

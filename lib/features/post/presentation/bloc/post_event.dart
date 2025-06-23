@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 import 'package:snap_loop/features/post/domain/entities/post_entity.dart';
 
@@ -10,10 +12,11 @@ class GetCurrentUserEvent extends PostEvent{}
 
 class CreatePostEvent extends PostEvent {
   final PostEntity postEntity;
-  CreatePostEvent(this.postEntity);
+  final File postFile;
+  CreatePostEvent(this.postEntity,this.postFile);
 
   @override
-  List<Object?> get props => [postEntity];
+  List<Object?> get props => [postEntity,postFile];
 }
 
 class DeletePostEvent extends PostEvent {

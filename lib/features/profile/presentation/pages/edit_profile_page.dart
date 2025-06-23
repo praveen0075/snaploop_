@@ -40,17 +40,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   void onSaveChanges() {
-    log(_selectedProfilePic!.path);
-    // context.read<ProfileBloc>().add(
-    //   UpdateUserProfile(
-    //     widget.user!.userid,
-    //     bioController.text,
-    //     nameController.text,
-    //     _selectedProfilePic != null
-    //         ? _selectedProfilePic!.path
-    //         : widget.user!.profilePicUrl!,
-    //   ),
-    // );
+    // log(_selectedProfilePic!.path);
+    context.read<ProfileBloc>().add(
+      UpdateUserProfile(
+        widget.user!.userid,
+        bioController.text,
+        nameController.text,
+        _selectedProfilePic != null
+            ? _selectedProfilePic!
+            : File(widget.user!.profilePicUrl!)
+      ),
+    );
   }
 
   @override
@@ -86,14 +86,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               backgroundImage:
                                   widget.user!.profilePicUrl == ""
                                       ? null
-                                      : null,
+                                      : NetworkImage(
+                                        widget.user!.profilePicUrl!,
+                                      ),
                               child: Center(child: Icon(Icons.person)),
                             )
                             : CircleAvatar(
                               radius: 45,
                               backgroundColor: Colors.black,
                               backgroundImage: FileImage(_selectedProfilePic!),
-                              child: Center(),
+                              child: Center(child: Icon(Icons.person),),
                             ),
                   ),
                 ),
@@ -114,15 +116,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   buttonText: "Save Changes",
                   buttonColor: Colors.deepPurple,
                   buttonTextColor: Colors.white,
-                  onTap: onSaveChanges
-                      // () => context.read<ProfileBloc>().add(
-                      //   UpdateUserProfile(
-                      //     widget.user!.userid,
-                      //     bioController.text,
-                      //     nameController.text,
-                      //     "",
-                      //   ),
-                      // ),
+                  onTap: onSaveChanges,
+                  // () => context.read<ProfileBloc>().add(
+                  //   UpdateUserProfile(
+                  //     widget.user!.userid,
+                  //     bioController.text,
+                  //     nameController.text,
+                  //     "",
+                  //   ),
+                  // ),
                 ),
               ],
             ),

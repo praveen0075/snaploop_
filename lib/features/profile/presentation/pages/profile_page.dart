@@ -49,8 +49,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             )
                             : CircleAvatar(
                               radius: 45,
-                              backgroundColor: Colors.blue,
-                              child: Icon(Icons.person),
+                              backgroundColor: Colors.grey,
+                              backgroundImage: NetworkImage(state.user!.profilePicUrl!),
+                              
                             ),
                   ),
                   Text(name ?? ""),

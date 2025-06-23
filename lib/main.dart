@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snap_loop/core/helpers/supabase_storagehelper.dart';
 import 'package:snap_loop/core/secrets/secrets.dart';
 import 'package:snap_loop/core/themes/light_theme.dart';
 import 'package:snap_loop/features/auth/data/auth_repository.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
   final authRepository = AuthRespositoryFirebase();
   final userRepository = FirebaseUserProfileRepo();
   final postRepository = FirebasePostRepo();
+  final supBaseStorage = SupabaseStoragehelper();
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +48,7 @@ class MyApp extends StatelessWidget {
                 (context) => ProfileBloc(
                   authRepo: authRepository,
                   userprofileRepo: userRepository,
+                  supabaseStoragehelper: supBaseStorage,
                 ),
           ),
           BlocProvider<PostBloc>(
@@ -53,6 +56,8 @@ class MyApp extends StatelessWidget {
                 (context) => PostBloc(
                   authRepo: authRepository,
                   postRepo: postRepository,
+                  userprofileRepo: userRepository,
+                  supabaseStoragehelper: supBaseStorage,
                 ),
           ),
         ],

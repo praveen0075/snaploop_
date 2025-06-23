@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snap_loop/core/helpers/supabase_storagehelper.dart';
 import 'package:snap_loop/features/auth/domain/entities/user_entity.dart';
 import 'package:snap_loop/features/auth/domain/repositories/auth_repo.dart';
 import 'package:snap_loop/features/profile/domain/entities/userprofile.dart';
@@ -10,9 +11,13 @@ import 'package:snap_loop/features/profile/presentation/bloc/profile_state.dart'
 class ProfileBloc extends Bloc<ProfileEvents, ProfileState> {
   final AuthRepo authRepo;
   final UserprofileRepo userprofileRepo;
+  final SupabaseStoragehelper supabaseStoragehelper;
   //  UserEntity? currentUser;
-  ProfileBloc({required this.authRepo, required this.userprofileRepo})
-    : super(IntialProfileState()) {
+  ProfileBloc({
+    required this.authRepo,
+    required this.userprofileRepo,
+    required this.supabaseStoragehelper,
+  }) : super(IntialProfileState()) {
     on<GetCurrentLoggedInUserEvent>((event, emit) async {
       emit(UserProfileUserDetailsLoadingState());
       try {
@@ -38,30 +43,31 @@ class ProfileBloc extends Bloc<ProfileEvents, ProfileState> {
     on<UpdateUserProfile>((event, emit) async {
       emit(UserProfileUserDetailsLoadingState());
       try {
+        
         final UserProfileEntity? userprofile = await userprofileRepo
             .getuserProfile(event.userId);
 
             
-        if (userprofile != null) {
-          await userprofileRepo.updateUserProfile(
+        final userProileUploadedImageUrl = await supabaseStoragehelper
+            .upLoadImageToSupaStore(event.userProfilePicUrl, "profilePics");
+
+          log("userprofile pic URL is -> $userProileUploadedImageUrl");
+          event.userProfilePicUrl.path == "" ? await userprofileRepo.updateUserProfile(
             event.userId,
             event.userName,
             event.userBio,
-            event.userProfilePicUrl,
+            userProileUploadedImageUrl ?? event.userProfilePicUrl.path,
+          ) :  await userprofileRepo.updateUserProfile(
+            event.userId,
+            event.userName,
+            event.userBio,
+            userProileUploadedImageUrl ?? '',
           );
           log("User event id : ${event.userId}");
           final UserProfileEntity? updatedUser = await userprofileRepo
               .getuserProfile(event.userId);
           return emit(UserProfileUserDetailsLoadedState(updatedUser));
-        } else {
-          log("Null updated user : profile bloc");
-          emit(
-            UserProfileUserDetailsFailedState(
-              "Something went wrong on fetching userprofile",
-            ),
-          );
-        }
-      } catch (e) {
+        } catch (e) {
         return emit(UserProfileUserDetailsFailedState(e.toString()));
       }
     });

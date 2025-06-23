@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 
 abstract class ProfileEvents extends Equatable {
@@ -11,7 +13,7 @@ class UpdateUserProfile extends ProfileEvents {
   final String userId;
   final String userBio;
   final String userName;
-  final String userProfilePicUrl;
+  final File userProfilePicUrl;
 
   UpdateUserProfile(this.userId, this.userBio,this.userName,this.userProfilePicUrl);
 
