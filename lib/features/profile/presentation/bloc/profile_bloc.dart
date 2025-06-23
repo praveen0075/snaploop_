@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/features/auth/domain/entities/user_entity.dart';
 import 'package:snap_loop/features/auth/domain/repositories/auth_repo.dart';
@@ -41,8 +40,15 @@ class ProfileBloc extends Bloc<ProfileEvents, ProfileState> {
       try {
         final UserProfileEntity? userprofile = await userprofileRepo
             .getuserProfile(event.userId);
+
+            
         if (userprofile != null) {
-          await userprofileRepo.updateUserProfile(event.userId, event.userName, event.userBio, event.userProfilePicUrl);
+          await userprofileRepo.updateUserProfile(
+            event.userId,
+            event.userName,
+            event.userBio,
+            event.userProfilePicUrl,
+          );
           log("User event id : ${event.userId}");
           final UserProfileEntity? updatedUser = await userprofileRepo
               .getuserProfile(event.userId);

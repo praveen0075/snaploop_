@@ -1,3 +1,6 @@
+import 'dart:developer';
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/core/constants/ksizedboxes.dart';
@@ -8,17 +11,52 @@ import 'package:snap_loop/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_event.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_state.dart';
 
-class EditProfilePage extends StatelessWidget {
-  EditProfilePage({super.key, required this.user});
+class EditProfilePage extends StatefulWidget {
+  const EditProfilePage({super.key, required this.user});
   final UserProfileEntity? user;
 
+  @override
+  State<EditProfilePage> createState() => _EditProfilePageState();
+}
+
+class _EditProfilePageState extends State<EditProfilePage> {
   final TextEditingController nameController = TextEditingController();
+
   final TextEditingController bioController = TextEditingController();
+
+  File? _selectedProfilePic;
+
+  Future<void> pickTheImage() async {
+    final pickResult = await FilePicker.platform.pickFiles(
+      type: FileType.media,
+      allowMultiple: false,
+    );
+
+    if (pickResult != null && pickResult.files.single.path != null) {
+      setState(() {
+        _selectedProfilePic = File(pickResult.files.single.path!);
+      });
+    }
+  }
+
+  void onSaveChanges() {
+    log(_selectedProfilePic!.path);
+    // context.read<ProfileBloc>().add(
+    //   UpdateUserProfile(
+    //     widget.user!.userid,
+    //     bioController.text,
+    //     nameController.text,
+    //     _selectedProfilePic != null
+    //         ? _selectedProfilePic!.path
+    //         : widget.user!.profilePicUrl!,
+    //   ),
+    // );
+  }
 
   @override
   Widget build(BuildContext context) {
-    nameController.text = user!.userName ?? "";
-    bioController.text = user!.userBio ?? "";
+    nameController.text = widget.user!.userName ?? "";
+    bioController.text = widget.user!.userBio ?? "";
     return Scaffold(
       appBar: AppBar(title: Text("Edit Profile")),
       body: BlocConsumer<ProfileBloc, ProfileState>(
@@ -35,19 +73,29 @@ class EditProfilePage extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             child: Column(
               children: [
-                CircleAvatar(
-                  radius: 50,
-                  backgroundColor: Colors.grey,
-                  child:
-                      user!.profilePicUrl == ""
-                          ? CircleAvatar(
-                            radius: 45,
-                            backgroundColor: Colors.blue,
-                          )
-                          : CircleAvatar(
-                            radius: 45,
-                            backgroundColor: Colors.black,
-                          ),
+                GestureDetector(
+                  onTap: pickTheImage,
+                  child: CircleAvatar(
+                    radius: 50,
+                    backgroundColor: Colors.grey,
+                    child:
+                        _selectedProfilePic == null
+                            ? CircleAvatar(
+                              radius: 45,
+                              backgroundColor: Colors.black,
+                              backgroundImage:
+                                  widget.user!.profilePicUrl == ""
+                                      ? null
+                                      : null,
+                              child: Center(child: Icon(Icons.person)),
+                            )
+                            : CircleAvatar(
+                              radius: 45,
+                              backgroundColor: Colors.black,
+                              backgroundImage: FileImage(_selectedProfilePic!),
+                              child: Center(),
+                            ),
+                  ),
                 ),
                 kh20,
                 CustomeTextformfield(
@@ -66,15 +114,15 @@ class EditProfilePage extends StatelessWidget {
                   buttonText: "Save Changes",
                   buttonColor: Colors.deepPurple,
                   buttonTextColor: Colors.white,
-                  onTap:
-                      () => context.read<ProfileBloc>().add(
-                        UpdateUserProfile(
-                          user!.userid,
-                          bioController.text,
-                          nameController.text,
-                          "",
-                        ),
-                      ),
+                  onTap: onSaveChanges
+                      // () => context.read<ProfileBloc>().add(
+                      //   UpdateUserProfile(
+                      //     widget.user!.userid,
+                      //     bioController.text,
+                      //     nameController.text,
+                      //     "",
+                      //   ),
+                      // ),
                 ),
               ],
             ),

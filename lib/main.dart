@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snap_loop/core/secrets/secrets.dart';
 import 'package:snap_loop/core/themes/light_theme.dart';
 import 'package:snap_loop/features/auth/data/auth_repository.dart';
 import 'package:snap_loop/features/auth/presentation/bloc/auth_bloc.dart';
@@ -13,9 +14,11 @@ import 'package:snap_loop/features/post/data/firebase_post_repo.dart';
 import 'package:snap_loop/features/post/presentation/bloc/post_bloc.dart';
 import 'package:snap_loop/features/profile/data/firebase_userprofile_repo.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize(url: supaProjectUrl, anonKey: supaProjectApi);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(MyApp());
 }
