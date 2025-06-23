@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/core/components/custom_snackbar.dart';
@@ -21,7 +22,7 @@ class AddPostPage extends StatefulWidget {
 class _AddPostPageState extends State<AddPostPage> {
   File? pickedFile;
   UserProfileEntity? currentUser;
-  String? imageUrl;
+  // String? imageUrl;
 
   TextEditingController captionController = TextEditingController();
 
@@ -29,6 +30,19 @@ class _AddPostPageState extends State<AddPostPage> {
   void initState() {
     super.initState();
     context.read<PostBloc>().add(GetCurrentUserEvent());
+  }
+
+  void pickImage() async {
+    final pickedResult = await FilePicker.platform.pickFiles(
+      type: FileType.media,
+      allowMultiple: false,
+    );
+
+    if (pickedResult != null && pickedResult.files.single.path != null) {
+      setState(() {
+        pickedFile = File(pickedResult.files.single.path!);
+      });
+    }
   }
 
   void uploadPost() {
@@ -71,7 +85,7 @@ class _AddPostPageState extends State<AddPostPage> {
           });
         } else if (state is PostLoadingSuccessState) {
           captionController.clear();
-          imageUrl = null;
+          pickedFile = null;
           customSnackBar(
             context,
             "posted Successfully",
@@ -95,16 +109,25 @@ class _AddPostPageState extends State<AddPostPage> {
                 children: [
                   Column(
                     children: [
-                      Container(
-                        width: double.infinity,
-                        height: 250,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(),
-                        ),
-                        child: Center(
-                          child: Icon(Icons.add_photo_alternate_outlined),
+                      GestureDetector(
+                        onTap: pickImage,
+                        child: Container(
+                          width: double.infinity,
+                          height: 250,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(),
+                            image:
+                                pickedFile == null
+                                    ? null
+                                    : DecorationImage(
+                                      image: FileImage(pickedFile!),
+                                    ),
+                          ),
+                          child: Center(
+                            child: Icon(Icons.add_photo_alternate_outlined),
+                          ),
                         ),
                       ),
                       kh20,

@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/core/components/custom_snackbar.dart';
@@ -71,17 +70,47 @@ class _HomePageState extends State<HomePage> {
           if (state is PostLoadingState || state is PostLoadingSuccessState) {
             return Center(child: CircularProgressIndicator());
           } else if (state is PostLoadedState) {
+            // log(state.post.toString());
+            if (state.post.isEmpty || state.post == []) {
+              return Center(
+                child: Text(
+                  "No post available",
+                  style: TextStyle(color: Colors.black),
+                ),
+              );
+            }
             return ListView.builder(
               itemCount: state.post.length,
               itemBuilder: (context, index) {
-                if (state.post.isEmpty) {
-                  return Center(child: Text("No post available"));
-                }
+                log("image url --> ${state.post[index].imageUrl}");
                 return Container(
-                  decoration: BoxDecoration(border: Border.all()),
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    border: Border.all(),
+                  ),
                   child: Column(
                     children: [
-                      Image.asset(state.post[index].imageUrl),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                  state.post[index].userProfilePic,
+                                ),
+                              ),
+                              Text(state.post[index].userName),
+                            ],
+                          ),
+                          Text("date time "),
+                        ],
+                      ),
+                      SizedBox(
+                        child: Image(
+                          image: NetworkImage(state.post[index].imageUrl),
+                        ),
+                      ),
                       Text(state.post[index].caption),
                     ],
                   ),

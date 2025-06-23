@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:path/path.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseStoragehelper {

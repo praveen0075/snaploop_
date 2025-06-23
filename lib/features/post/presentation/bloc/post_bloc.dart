@@ -39,8 +39,10 @@ class PostBloc extends Bloc<PostEvent, PostState> {
           event.postFile,
           "user-posts",
         );
+        log("file image post uploaded to supabase");
         if (imageUrl != null) {
-          await postRepo.createPost(event.postEntity);
+          final updatedPostEntity = event.postEntity.copyWith(imageUrl: imageUrl);
+          await postRepo.createPost(updatedPostEntity);
           emit(PostLoadingSuccessState());
         } else {
           emit(PostErrorState("Unable to upload the post"));

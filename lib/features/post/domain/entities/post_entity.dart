@@ -21,7 +21,7 @@ class PostEntity {
 
   PostEntity copyWith({String? imageUrl}) {
     return PostEntity(
-      postId: postId,
+      postId: postId, 
       userId: userId,
       userName: userName,
       userProfilePic: userProfilePic,
