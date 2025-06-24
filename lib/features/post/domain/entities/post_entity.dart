@@ -8,6 +8,7 @@ class PostEntity {
   final String caption;
   final String imageUrl;
   final DateTime timeStamp;
+  final List<String> likes;
 
   PostEntity({
     required this.postId,
@@ -17,17 +18,19 @@ class PostEntity {
     required this.caption,
     required this.imageUrl,
     required this.timeStamp,
+    required this.likes,
   });
 
   PostEntity copyWith({String? imageUrl}) {
     return PostEntity(
-      postId: postId, 
+      postId: postId,
       userId: userId,
       userName: userName,
       userProfilePic: userProfilePic,
       caption: caption,
       imageUrl: imageUrl ?? this.imageUrl,
       timeStamp: timeStamp,
+      likes: likes,
     );
   }
 
@@ -36,10 +39,11 @@ class PostEntity {
       "postId": postId,
       "userId": userId,
       "userName": userName,
-      "userProfilePic" : userProfilePic,
+      "userProfilePic": userProfilePic,
       "caption": caption,
       "imageUrl": imageUrl,
       "timeStamp": Timestamp.fromDate(timeStamp),
+      "likes": likes,
     };
   }
 
@@ -52,6 +56,7 @@ class PostEntity {
       caption: json["caption"],
       imageUrl: json["imageUrl"],
       timeStamp: (json["timeStamp"] as Timestamp).toDate(),
+      likes: List<String>.from(json["likes"] ?? []),
     );
   }
 }

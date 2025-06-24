@@ -26,10 +26,11 @@ class PostLoadingState extends PostState {}
 
 class PostLoadedState extends PostState {
   final List<PostEntity> post;
-  PostLoadedState(this.post);
+  final UserEntity? currentUser;
+  PostLoadedState(this.post,this.currentUser);
 
   @override
-  List<Object?> get props => [post];
+  List<Object?> get props => [post,currentUser];
 }
 
 class PostErrorState extends PostState {

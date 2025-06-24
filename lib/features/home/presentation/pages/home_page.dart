@@ -5,6 +5,7 @@ import 'package:snap_loop/core/components/custom_snackbar.dart';
 import 'package:snap_loop/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:snap_loop/features/auth/presentation/bloc/auth_event.dart';
 import 'package:snap_loop/features/auth/presentation/bloc/auth_state.dart';
+import 'package:snap_loop/features/home/presentation/components/all_post_tile.dart';
 import 'package:snap_loop/features/post/presentation/bloc/post_bloc.dart';
 import 'package:snap_loop/features/post/presentation/bloc/post_event.dart';
 import 'package:snap_loop/features/post/presentation/bloc/post_state.dart';
@@ -83,38 +84,7 @@ class _HomePageState extends State<HomePage> {
               itemCount: state.post.length,
               itemBuilder: (context, index) {
                 log("image url --> ${state.post[index].imageUrl}");
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    border: Border.all(),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                  state.post[index].userProfilePic,
-                                ),
-                              ),
-                              Text(state.post[index].userName),
-                            ],
-                          ),
-                          Text("date time "),
-                        ],
-                      ),
-                      SizedBox(
-                        child: Image(
-                          image: NetworkImage(state.post[index].imageUrl),
-                        ),
-                      ),
-                      Text(state.post[index].caption),
-                    ],
-                  ),
-                );
+                return AllPostTile(post: state.post, index: index,currentUser: state.currentUser,);
               },
             );
           } else {

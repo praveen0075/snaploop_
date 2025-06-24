@@ -9,6 +9,7 @@ const kh50 = SizedBox(height: 50,);
 const kh60 = SizedBox(height: 60,);
 
 // constant widths//
+const kw5 = SizedBox(width: 5,);
 const kw10 = SizedBox(width: 10,);
 const kw20 = SizedBox(width: 20,);
 const kw30 = SizedBox(width: 30,);

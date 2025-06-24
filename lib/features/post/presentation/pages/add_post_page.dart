@@ -64,6 +64,7 @@ class _AddPostPageState extends State<AddPostPage> {
         caption: captionController.text,
         imageUrl: pickedFile!.path,
         timeStamp: DateTime.now(),
+        likes: []
       );
       context.read<PostBloc>().add(CreatePostEvent(post, pickedFile!));
     }

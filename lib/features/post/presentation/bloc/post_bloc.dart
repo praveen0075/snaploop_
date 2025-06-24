@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/core/helpers/supabase_storagehelper.dart';
+import 'package:snap_loop/features/auth/domain/entities/user_entity.dart';
 import 'package:snap_loop/features/auth/domain/repositories/auth_repo.dart';
 import 'package:snap_loop/features/post/domain/entities/post_entity.dart';
 import 'package:snap_loop/features/post/domain/repositories/post_repository.dart';
@@ -41,7 +42,9 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         );
         log("file image post uploaded to supabase");
         if (imageUrl != null) {
-          final updatedPostEntity = event.postEntity.copyWith(imageUrl: imageUrl);
+          final updatedPostEntity = event.postEntity.copyWith(
+            imageUrl: imageUrl,
+          );
           await postRepo.createPost(updatedPostEntity);
           emit(PostLoadingSuccessState());
         } else {
@@ -66,9 +69,23 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       emit(PostUpLoadingState());
       try {
         final List<PostEntity> postList = await postRepo.getAllPosts();
-        emit(PostLoadedState(postList));
+        final UserEntity? currentUser = await authRepo.getCurrentUser();
+        if (currentUser != null) {
+          emit(PostLoadedState(postList, currentUser));
+        } else {
+          emit(PostErrorState("User not autherized"));
+        }
+        // log() 
       } catch (e) {
         emit(PostErrorState(e.toString()));
+      }
+    });
+
+    on<LikeAndDislike>((event, emit) async {
+      try {
+        postRepo.likeAndDislike(event.postId, event.userId);
+      } catch (e) {
+        emit(PostErrorState("Unable action : $e"));
       }
     });
   }

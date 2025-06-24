@@ -8,15 +8,15 @@ abstract class PostEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class GetCurrentUserEvent extends PostEvent{}
+class GetCurrentUserEvent extends PostEvent {}
 
 class CreatePostEvent extends PostEvent {
   final PostEntity postEntity;
   final File postFile;
-  CreatePostEvent(this.postEntity,this.postFile);
+  CreatePostEvent(this.postEntity, this.postFile);
 
   @override
-  List<Object?> get props => [postEntity,postFile];
+  List<Object?> get props => [postEntity, postFile];
 }
 
 class DeletePostEvent extends PostEvent {
@@ -28,3 +28,13 @@ class DeletePostEvent extends PostEvent {
 }
 
 class GetAllPostsEvent extends PostEvent {}
+
+class LikeAndDislike extends PostEvent {
+  final String postId;
+  final String userId;
+
+  LikeAndDislike(this.postId, this.userId);
+
+  @override
+  List<Object?> get props => [postId, userId];
+}

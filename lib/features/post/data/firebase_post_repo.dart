@@ -59,4 +59,31 @@ class FirebasePostRepo implements PostRepository {
       throw Exception("Error : $e");
     }
   }
+
+  @override
+  Future<void> likeAndDislike(String postId, String userId) async {
+    try {
+      final docPost = await postCollectionRef.doc(postId).get();
+
+      if (docPost.exists) {
+        final post = PostEntity.fromJson(
+          docPost.data() as Map<String, dynamic>,
+        );
+
+        final liked = post.likes.contains(userId);
+
+        if (liked) {
+          post.likes.remove(userId);
+        } else {
+          post.likes.add(userId);
+        }
+
+        await postCollectionRef.doc(postId).update({"likes": post.likes});
+      } else {
+        throw Exception("Post not found");
+      }
+    } catch (e) {
+      throw Exception("error : -> $e");
+    }
+  }
 }
