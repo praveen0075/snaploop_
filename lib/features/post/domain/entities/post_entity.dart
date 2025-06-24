@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:snap_loop/features/post/domain/entities/comment_entity.dart';
 
 class PostEntity {
   final String postId;
@@ -9,6 +10,7 @@ class PostEntity {
   final String imageUrl;
   final DateTime timeStamp;
   final List<String> likes;
+  final List<CommentEntity> comments;
 
   PostEntity({
     required this.postId,
@@ -19,6 +21,7 @@ class PostEntity {
     required this.imageUrl,
     required this.timeStamp,
     required this.likes,
+    required this.comments,
   });
 
   PostEntity copyWith({String? imageUrl}) {
@@ -31,6 +34,7 @@ class PostEntity {
       imageUrl: imageUrl ?? this.imageUrl,
       timeStamp: timeStamp,
       likes: likes,
+      comments: comments,
     );
   }
 
@@ -44,10 +48,17 @@ class PostEntity {
       "imageUrl": imageUrl,
       "timeStamp": Timestamp.fromDate(timeStamp),
       "likes": likes,
+      "comments": comments.map((comment) => comment.toJons()).toList(),
     };
   }
 
   factory PostEntity.fromJson(Map<String, dynamic> json) {
+    final List<CommentEntity> comments =
+        (json["comments"] as List<dynamic>?)
+            ?.map((commentJson) => CommentEntity.fromJson(commentJson))
+            .toList() ??
+        [];
+
     return PostEntity(
       postId: json["postId"],
       userId: json["userId"],
@@ -57,6 +68,7 @@ class PostEntity {
       imageUrl: json["imageUrl"],
       timeStamp: (json["timeStamp"] as Timestamp).toDate(),
       likes: List<String>.from(json["likes"] ?? []),
+      comments: comments
     );
   }
 }

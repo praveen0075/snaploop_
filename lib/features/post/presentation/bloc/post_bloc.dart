@@ -75,7 +75,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         } else {
           emit(PostErrorState("User not autherized"));
         }
-        // log() 
+        // log()
       } catch (e) {
         emit(PostErrorState(e.toString()));
       }
@@ -83,9 +83,26 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
     on<LikeAndDislike>((event, emit) async {
       try {
-        postRepo.likeAndDislike(event.postId, event.userId);
+        await postRepo.likeAndDislike(event.postId, event.userId);
       } catch (e) {
         emit(PostErrorState("Unable action : $e"));
+      }
+    });
+
+    on<AddCommentEvent>((event, emit) async {
+      try { 
+        await postRepo.addComment(event.postId, event.comment);
+        log("comment added succesfully in post bloc add comment event");
+      } catch (e) {
+        emit(PostErrorState("Error on adding comment"));
+      }
+    });
+
+    on<DeleteComment>((event, emit) async {
+      try {
+        await postRepo.deleteComment(event.postId, event.commentId);
+      } catch (e) {
+        emit(PostErrorState("Failed to delete the comment"));
       }
     });
   }

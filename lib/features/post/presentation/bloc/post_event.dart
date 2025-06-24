@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
+import 'package:snap_loop/features/post/domain/entities/comment_entity.dart';
 import 'package:snap_loop/features/post/domain/entities/post_entity.dart';
 
 abstract class PostEvent extends Equatable {
@@ -37,4 +38,24 @@ class LikeAndDislike extends PostEvent {
 
   @override
   List<Object?> get props => [postId, userId];
+}
+
+class AddCommentEvent extends PostEvent {
+  final String postId;
+  final CommentEntity comment;
+
+  AddCommentEvent(this.postId, this.comment);
+
+  @override
+  List<Object?> get props => [postId, comment];
+}
+
+class DeleteComment extends PostEvent{
+  final String postId;
+  final String commentId;
+
+  DeleteComment(this.postId, this.commentId);
+
+  @override
+  List<Object?> get props => [postId, commentId];
 }

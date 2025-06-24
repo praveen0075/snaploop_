@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:snap_loop/features/post/domain/entities/comment_entity.dart';
 import 'package:snap_loop/features/post/domain/entities/post_entity.dart';
 import 'package:snap_loop/features/post/domain/repositories/post_repository.dart';
 
@@ -84,6 +85,54 @@ class FirebasePostRepo implements PostRepository {
       }
     } catch (e) {
       throw Exception("error : -> $e");
+    }
+  }
+
+  @override
+  Future<void> addComment(String postId, CommentEntity comment) async {
+    try {
+      final postdoc = await postCollectionRef.doc(postId).get();
+
+      if (postdoc.exists) {
+        final post = PostEntity.fromJson(
+          postdoc.data() as Map<String, dynamic>,
+        );
+
+        post.comments.add(comment);
+
+        await postCollectionRef.doc(postId).update({
+          "commentTxt":
+              post.comments.map((comment) => comment.toJons()).toList(),
+        });
+      } else {
+        throw Exception("Unable to find the post");
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  @override
+  Future<void> deleteComment(String postId, String commentId) async {
+    try {
+      final postdoc = await postCollectionRef.doc(postId).get();
+
+      if (postdoc.exists) {
+        final post = PostEntity.fromJson(
+          postdoc.data() as Map<String, dynamic>,
+        );
+
+        post.comments.removeWhere((comment) => comment.commentId == commentId);
+
+        await postCollectionRef.doc(postId).update({
+          "commentTxt":
+              post.comments.map((comment) => comment.toJons()).toList(),
+        });
+      } else {
+        throw Exception("Unable to find the post");
+      }
+    } catch (e) {
+      throw Exception(e.toString());
     }
   }
 }
