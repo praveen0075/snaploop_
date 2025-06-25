@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:snap_loop/features/post/domain/entities/comment_entity.dart';
 import 'package:snap_loop/features/post/domain/entities/post_entity.dart';
@@ -94,15 +96,19 @@ class FirebasePostRepo implements PostRepository {
       final postdoc = await postCollectionRef.doc(postId).get();
 
       if (postdoc.exists) {
+        log("post docs exists");
         final post = PostEntity.fromJson(
           postdoc.data() as Map<String, dynamic>,
         );
 
+        log("before adding comment to commment entity: ${post.comments}");
+
         post.comments.add(comment);
 
+        log("after adding comment to commment entity: ${post.comments}");
+
         await postCollectionRef.doc(postId).update({
-          "commentTxt":
-              post.comments.map((comment) => comment.toJons()).toList(),
+          "comments": post.comments.map((comment) => comment.toJons()).toList(),
         });
       } else {
         throw Exception("Unable to find the post");

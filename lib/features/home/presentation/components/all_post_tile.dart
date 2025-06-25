@@ -16,7 +16,7 @@ class AllPostTile extends StatefulWidget {
     super.key,
     required this.post,
     required this.index,
-    this.currentUser,
+    required this.currentUser,
   });
   final List<PostEntity> post;
   final int index;
@@ -30,8 +30,23 @@ class _AllPostTileState extends State<AllPostTile> {
   final AuthRespositoryFirebase authRepo = AuthRespositoryFirebase();
   UserEntity? userEntity;
 
-
   TextEditingController commentTextController = TextEditingController();
+
+  Widget commentSection() {
+    return BottomSheet(
+      onClosing: () {},
+      builder:
+          (context) => ListView.builder(
+            itemBuilder: (context, index) {
+              return ListTile(
+                leading: CircleAvatar(),
+                title: Text("username"),
+                subtitle: Text("comment"), 
+              );
+            },
+          ),
+    );
+  }
 
   void newCommentBox() {
     showDialog(
@@ -54,7 +69,7 @@ class _AllPostTileState extends State<AllPostTile> {
                 onPressed: () {
                   addNewComment();
                   log("comment added");
-                  
+
                   Navigator.pop(context);
                 },
                 child: Text("Send"),
@@ -65,6 +80,8 @@ class _AllPostTileState extends State<AllPostTile> {
   }
 
   void addNewComment() {
+
+    log("current user before adding the comment--> ${widget.currentUser!.userName}");
     final newComment = CommentEntity(
       commentId: DateTime.now().millisecondsSinceEpoch.toString(),
       postId: widget.post[widget.index].postId,
@@ -75,10 +92,18 @@ class _AllPostTileState extends State<AllPostTile> {
     );
 
     if (commentTextController.text.isNotEmpty) {
+      log("new comment --> ${newComment.commentTxt}");
+      log("new comment owner --> ${newComment.userName}");
       context.read<PostBloc>().add(
         AddCommentEvent(newComment.postId, newComment),
       );
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    commentTextController.dispose();
   }
 
   void likeAndDislike() {
@@ -119,8 +144,6 @@ class _AllPostTileState extends State<AllPostTile> {
       padding: const EdgeInsets.all(8.0),
       child: Container(
         decoration: BoxDecoration(
-          // color: Colors.blue,
-          // border: Border.all(),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,16 +184,7 @@ class _AllPostTileState extends State<AllPostTile> {
                 image: NetworkImage(widget.post[widget.index].imageUrl),
               ),
             ),
-            Row(
-              children: [
-                Text(
-                  widget.post[widget.index].userName,
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
 
-                Text(" ${widget.post[widget.index].caption}"),
-              ],
-            ),
             kh10,
             Row(
               children: [
@@ -186,6 +200,7 @@ class _AllPostTileState extends State<AllPostTile> {
                 Text(widget.post[widget.index].likes.length.toString()),
                 kw10,
                 GestureDetector(
+                  onLongPress: commentSection,
                   onTap: newCommentBox,
                   child: Icon(Icons.comment),
                 ),
@@ -194,6 +209,28 @@ class _AllPostTileState extends State<AllPostTile> {
                 Text(widget.post[widget.index].timeStamp.toString()),
               ],
             ),
+            Row(
+              children: [
+                Text(
+                  widget.post[widget.index].userName,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+
+                Text(" ${widget.post[widget.index].caption}"),
+              ], 
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: widget.post[widget.index].comments.length,
+              itemBuilder: (context, index) {
+                log(widget.post[widget.index].comments[index].userName);
+              return SizedBox(
+                child: Row(children: [
+                  Text(widget.post[widget.index].comments[index].userName),
+                  Text(widget.post[widget.index].comments[index].commentTxt),
+                ],),
+              );
+            },)
           ],
         ),
       ),

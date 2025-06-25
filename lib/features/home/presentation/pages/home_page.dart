@@ -84,6 +84,7 @@ class _HomePageState extends State<HomePage> {
               itemCount: state.post.length,
               itemBuilder: (context, index) {
                 log("image url --> ${state.post[index].imageUrl}");
+                log("current user ---> ${state.currentUser}");
                 return AllPostTile(post: state.post, index: index,currentUser: state.currentUser,);
               },
             );

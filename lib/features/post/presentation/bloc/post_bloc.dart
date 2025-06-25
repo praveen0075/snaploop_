@@ -90,9 +90,12 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     });
 
     on<AddCommentEvent>((event, emit) async {
-      try { 
+      try {
         await postRepo.addComment(event.postId, event.comment);
+        final UserEntity? currentUser = await authRepo.getCurrentUser();
+        List<PostEntity> posts = await postRepo.getAllPosts();
         log("comment added succesfully in post bloc add comment event");
+        emit(PostLoadedState(posts, currentUser));
       } catch (e) {
         emit(PostErrorState("Error on adding comment"));
       }
