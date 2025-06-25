@@ -7,6 +7,7 @@ import 'package:snap_loop/features/post/domain/entities/post_entity.dart';
 import 'package:snap_loop/features/post/domain/repositories/post_repository.dart';
 import 'package:snap_loop/features/post/presentation/bloc/post_event.dart';
 import 'package:snap_loop/features/post/presentation/bloc/post_state.dart';
+import 'package:snap_loop/features/profile/domain/entities/userprofile.dart';
 import 'package:snap_loop/features/profile/domain/repositories/userprofile_repo.dart';
 
 class PostBloc extends Bloc<PostEvent, PostState> {
@@ -71,7 +72,10 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         final List<PostEntity> postList = await postRepo.getAllPosts();
         final UserEntity? currentUser = await authRepo.getCurrentUser();
         if (currentUser != null) {
-          emit(PostLoadedState(postList, currentUser));
+          final UserProfileEntity? user = await userprofileRepo.getuserProfile(
+            currentUser.userid,
+          );
+          emit(PostLoadedState(postList, user));
         } else {
           emit(PostErrorState("User not autherized"));
         }
@@ -93,9 +97,16 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       try {
         await postRepo.addComment(event.postId, event.comment);
         final UserEntity? currentUser = await authRepo.getCurrentUser();
-        List<PostEntity> posts = await postRepo.getAllPosts();
-        log("comment added succesfully in post bloc add comment event");
-        emit(PostLoadedState(posts, currentUser));
+        if (currentUser != null) {
+          final UserProfileEntity? user = await userprofileRepo.getuserProfile(
+            currentUser.userid,
+          );
+          List<PostEntity> posts = await postRepo.getAllPosts();
+          log("comment added succesfully in post bloc add comment event");
+          emit(PostLoadedState(posts, user));
+        } else {
+          emit(PostErrorState("Unautherized user"));
+        }
       } catch (e) {
         emit(PostErrorState("Error on adding comment"));
       }
@@ -103,9 +114,34 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
     on<DeleteComment>((event, emit) async {
       try {
-        await postRepo.deleteComment(event.postId, event.commentId);
+        final UserEntity? currentUser = await authRepo.getCurrentUser();
+        if (currentUser != null) {
+          final UserProfileEntity? user = await userprofileRepo.getuserProfile(
+            currentUser.userid,
+          );
+          await postRepo.deleteComment(event.postId, event.commentId);
+          List<PostEntity> posts = await postRepo.getAllPosts();
+
+          log("comment deleted succesfully in post bloc add comment event");
+          emit(PostLoadedState(posts, user));
+        } else {
+          emit(PostErrorState("Unautherized user"));
+        }
       } catch (e) {
         emit(PostErrorState("Failed to delete the comment"));
+      }
+    });
+
+    on<FetchPostsByUserId>((event, emit) async {
+      try {
+        final posts = await postRepo.getPostsByUserId(event.userId);
+        log("got the posts based on user id --> $posts ");
+        final UserProfileEntity? user = await userprofileRepo.getuserProfile(
+          event.userId,
+        );
+        emit(PostLoadedState(posts, user));
+      } catch (e) {
+        emit(PostErrorState(e.toString()));
       }
     });
   }

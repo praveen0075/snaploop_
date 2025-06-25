@@ -10,6 +10,8 @@ import 'package:snap_loop/features/post/domain/entities/comment_entity.dart';
 import 'package:snap_loop/features/post/domain/entities/post_entity.dart';
 import 'package:snap_loop/features/post/presentation/bloc/post_bloc.dart';
 import 'package:snap_loop/features/post/presentation/bloc/post_event.dart';
+import 'package:snap_loop/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:snap_loop/features/profile/presentation/pages/user_profile_page.dart';
 
 class AllPostTile extends StatefulWidget {
   const AllPostTile({
@@ -41,7 +43,7 @@ class _AllPostTileState extends State<AllPostTile> {
               return ListTile(
                 leading: CircleAvatar(),
                 title: Text("username"),
-                subtitle: Text("comment"), 
+                subtitle: Text("comment"),
               );
             },
           ),
@@ -80,8 +82,9 @@ class _AllPostTileState extends State<AllPostTile> {
   }
 
   void addNewComment() {
-
-    log("current user before adding the comment--> ${widget.currentUser!.userName}");
+    log(
+      "current user before adding the comment--> ${widget.currentUser!.userName}",
+    );
     final newComment = CommentEntity(
       commentId: DateTime.now().millisecondsSinceEpoch.toString(),
       postId: widget.post[widget.index].postId,
@@ -98,6 +101,40 @@ class _AllPostTileState extends State<AllPostTile> {
         AddCommentEvent(newComment.postId, newComment),
       );
     }
+  }
+
+  void deleteAlertBox(String commentId) {
+    showDialog(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            // title: Text("Delete?"),
+            content: Text(
+              "Are you sure about this?",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text("Cancel"),
+              ),
+
+              TextButton(
+                onPressed: () {
+                  deleteComment(commentId);
+                  Navigator.pop(context);
+                },
+                child: Text("Delete", style: TextStyle(color: Colors.red)),
+              ),
+            ],
+          ),
+    );
+  }
+
+  void deleteComment(String commentId) {
+    context.read<PostBloc>().add(
+      DeleteComment(widget.post[widget.index].postId, commentId),
+    );
   }
 
   @override
@@ -143,8 +180,7 @@ class _AllPostTileState extends State<AllPostTile> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        decoration: BoxDecoration(
-        ),
+        decoration: BoxDecoration(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -169,9 +205,36 @@ class _AllPostTileState extends State<AllPostTile> {
                       ),
                     ),
                     kw10,
-                    Text(
-                      widget.post[widget.index].userName,
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    GestureDetector(
+                      onTap:
+                          () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (_) => MultiBlocProvider(
+                                    providers: [
+                                      BlocProvider<ProfileBloc>.value(
+                                        value: BlocProvider.of<ProfileBloc>(
+                                          context,
+                                        ),
+                                      ),
+
+                                      BlocProvider.value(
+                                        value: BlocProvider.of<PostBloc>(
+                                          context,
+                                        ),
+                                      ),
+                                    ],
+                                    child: UserProfilePage(
+                                      userId: widget.post[widget.index].userId,
+                                    ),
+                                  ),
+                            ),
+                          ),
+                      child: Text(
+                        widget.post[widget.index].userName,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ],
                 ),
@@ -217,20 +280,43 @@ class _AllPostTileState extends State<AllPostTile> {
                 ),
 
                 Text(" ${widget.post[widget.index].caption}"),
-              ], 
+              ],
             ),
             ListView.builder(
               shrinkWrap: true,
               itemCount: widget.post[widget.index].comments.length,
               itemBuilder: (context, index) {
                 log(widget.post[widget.index].comments[index].userName);
-              return SizedBox(
-                child: Row(children: [
-                  Text(widget.post[widget.index].comments[index].userName),
-                  Text(widget.post[widget.index].comments[index].commentTxt),
-                ],),
-              );
-            },)
+                return SizedBox(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            "${widget.post[widget.index].comments[index].userName} ",
+                          ),
+                          Text(
+                            widget
+                                .post[widget.index]
+                                .comments[index]
+                                .commentTxt,
+                          ),
+                        ],
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          deleteAlertBox(
+                            widget.post[widget.index].comments[index].commentId,
+                          );
+                        },
+                        child: Icon(Icons.delete_outline),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),

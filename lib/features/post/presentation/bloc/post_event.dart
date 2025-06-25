@@ -50,7 +50,7 @@ class AddCommentEvent extends PostEvent {
   List<Object?> get props => [postId, comment];
 }
 
-class DeleteComment extends PostEvent{
+class DeleteComment extends PostEvent {
   final String postId;
   final String commentId;
 
@@ -58,4 +58,13 @@ class DeleteComment extends PostEvent{
 
   @override
   List<Object?> get props => [postId, commentId];
+}
+
+class FetchPostsByUserId extends PostEvent {
+  final String userId;
+
+  FetchPostsByUserId(this.userId);
+
+  @override
+  List<Object?> get props => [userId];
 }

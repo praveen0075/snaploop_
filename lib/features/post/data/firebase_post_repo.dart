@@ -131,7 +131,7 @@ class FirebasePostRepo implements PostRepository {
         post.comments.removeWhere((comment) => comment.commentId == commentId);
 
         await postCollectionRef.doc(postId).update({
-          "commentTxt":
+          "comments":
               post.comments.map((comment) => comment.toJons()).toList(),
         });
       } else {

@@ -12,9 +12,9 @@ class PostInitialState extends PostState {}
 
 class PostUpLoadingState extends PostState {}
 
-class PostLoadingSuccessState extends PostState{}
+class PostLoadingSuccessState extends PostState {}
 
-class GetCurrentUserSuccessState extends PostState{
+class GetCurrentUserSuccessState extends PostState {
   final UserProfileEntity? userEntity;
   GetCurrentUserSuccessState(this.userEntity);
 
@@ -26,11 +26,11 @@ class PostLoadingState extends PostState {}
 
 class PostLoadedState extends PostState {
   final List<PostEntity> post;
-  final UserEntity? currentUser;
-  PostLoadedState(this.post,this.currentUser);
+  final UserProfileEntity? currentUser;
+  PostLoadedState(this.post, this.currentUser);
 
   @override
-  List<Object?> get props => [post,currentUser];
+  List<Object?> get props => [post, currentUser];
 }
 
 class PostErrorState extends PostState {
@@ -40,3 +40,5 @@ class PostErrorState extends PostState {
   @override
   List<Object?> get props => [errorMsg];
 }
+
+

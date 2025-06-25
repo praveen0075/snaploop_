@@ -15,8 +15,21 @@ class UpdateUserProfile extends ProfileEvents {
   final String userName;
   final File userProfilePicUrl;
 
-  UpdateUserProfile(this.userId, this.userBio,this.userName,this.userProfilePicUrl);
+  UpdateUserProfile(
+    this.userId,
+    this.userBio,
+    this.userName,
+    this.userProfilePicUrl,
+  );
 
   @override
-  List<Object?> get props => [userId, userBio,userName,userProfilePicUrl];
+  List<Object?> get props => [userId, userBio, userName, userProfilePicUrl];
+}
+
+class FetchCurrentUserDetailsEvent extends ProfileEvents {
+  final String userId;
+  FetchCurrentUserDetailsEvent(this.userId);
+
+  @override
+  List<Object?> get props => [userId];
 }

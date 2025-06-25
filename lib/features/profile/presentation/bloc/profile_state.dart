@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:snap_loop/features/post/domain/entities/post_entity.dart';
 import 'package:snap_loop/features/profile/domain/entities/userprofile.dart';
 
 abstract class ProfileState extends Equatable {
@@ -12,10 +13,11 @@ class UserProfileUserDetailsLoadingState extends ProfileState {}
 
 class UserProfileUserDetailsLoadedState extends ProfileState {
   final UserProfileEntity? user;
-  UserProfileUserDetailsLoadedState(this.user);
+  final List<PostEntity>? posts;
+  UserProfileUserDetailsLoadedState(this.user,this.posts);
 
   @override
-  List<Object?> get props => [user];
+  List<Object?> get props => [user,posts];
 }
 
 class UserProfileUserDetailsFailedState extends ProfileState {

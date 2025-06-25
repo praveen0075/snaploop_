@@ -70,6 +70,7 @@ class AuthRespositoryFirebase implements AuthRepo {
     // get the current user
     final currentFireUser = firebaseAuth.currentUser;
 
+
     // if no user is logged in
 
     if (currentFireUser == null) {

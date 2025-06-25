@@ -92,7 +92,7 @@ class _HomePageState extends State<HomePage> {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [CircularProgressIndicator(), Text("Error")],
+                children: [CircularProgressIndicator(), Text("Loading")], 
               ),
             );
           }

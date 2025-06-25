@@ -25,6 +25,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  
   MyApp({super.key});
 
   final authRepository = AuthRespositoryFirebase();
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
                   authRepo: authRepository,
                   userprofileRepo: userRepository,
                   supabaseStoragehelper: supBaseStorage,
+                  postRepo: postRepository
                 ),
           ),
           BlocProvider<PostBloc>(
