@@ -20,7 +20,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
     context.read<ProfileBloc>().add(
       FetchCurrentUserDetailsEvent(widget.userId),
     );
-    // context.read<PostBloc>().add(FetchPostsByUserId(widget.userId));
   }
 
   @override
