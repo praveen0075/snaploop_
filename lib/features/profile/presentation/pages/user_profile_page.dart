@@ -1,13 +1,22 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snap_loop/features/auth/domain/entities/user_entity.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_event.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_state.dart';
+import 'package:snap_loop/features/profile/presentation/components/followbutton.dart';
 import 'package:snap_loop/features/profile/presentation/components/postsgrid_in_userprofile.dart';
 
 class UserProfilePage extends StatefulWidget {
-  const UserProfilePage({super.key, required this.userId});
+  const UserProfilePage({
+    super.key,
+    required this.userId,
+    required this.currentUser,
+  });
   final String userId;
+  final UserEntity? currentUser;
 
   @override
   State<UserProfilePage> createState() => _UserProfilePageState();
@@ -22,6 +31,17 @@ class _UserProfilePageState extends State<UserProfilePage> {
     );
   }
 
+  void followbButtonclicked(List<String> followersList) {
+    context.read<ProfileBloc>().add(
+      FollowUnFollowButtonClickedEvent(
+        widget.currentUser!.userid,
+        widget.userId,
+      ),
+    );
+
+    log("Button clicked and event triggered");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,6 +53,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
           } else if (state is UserProfileUserDetailsFailedState) {
             return Center(child: Text(state.errorMsg));
           } else if (state is UserProfileUserDetailsLoadedState) {
+            log("followers list ${state.user!.followers.toString()}");
             return ListView(
               children: [
                 CircleAvatar(
@@ -51,21 +72,51 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 ),
                 Text(state.user!.userName!),
                 Text(state.user!.userBio!),
-                Container(
-                  width: 200,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    border: Border.all(),
-                    borderRadius: BorderRadius.circular(13),
-                  ),
-                  child: Center(child: Text("Follow")),
-                ),
+                widget.userId == widget.currentUser!.userid
+                    ? SizedBox(height: 1)
+                    : Followbutton(
+                      isFollowing: state.user!.followers.contains(
+                        widget.currentUser!.userid,
+                      ),
+                      onPressed: () {
+                        // followbButtonclicked(state.user!.followers);
+                        context.read<ProfileBloc>().add(
+                          FollowUnFollowButtonClickedEvent(
+                            widget.currentUser!.userid,
+                            widget.userId,
+                          ),
+                        );
+                      },
+                    ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Column(children: [Text("Post"), Text("23")]),
-                    Column(children: [Text("Followers"), Text("2340")]),
-                    Column(children: [Text("Followings"), Text("4352")]),
+                    Column(
+                      children: [
+                        Text("Post"),
+                        Text(state.posts!.length.toString()),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text("Followers"),
+                        Text(
+                          state.user!.followers.isEmpty
+                              ? "0"
+                              : state.user!.followers.length.toString(),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text("Followings"),
+                        Text(
+                          state.user!.followings.isEmpty
+                              ? "0"
+                              : state.user!.followings.length.toString(),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
                 Divider(),
@@ -73,45 +124,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   userId: widget.userId,
                   posts: state.posts,
                 ),
-
-                // BlocBuilder<PostBloc, PostState>(
-                //   builder: (context, state) {
-                //     if (state is PostUpLoadingState) {
-                //       return GridView.builder(
-                //         shrinkWrap: true,
-                //         itemCount: 10,
-                //         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                //           crossAxisCount: 3,
-                //           crossAxisSpacing: 3,
-                //           mainAxisSpacing: 3,
-                //         ),
-                //         itemBuilder: (context, index) {
-                //           return Container(color: Colors.grey);
-                //         },
-                //       );
-                //     } else if (state is PostErrorState) {
-                //       return Center(child: Text(state.errorMsg));
-                //     } else if (state is PostLoadedState) {
-                //       return GridView.builder(
-                //         shrinkWrap: true,
-                //         itemCount: state.post.length,
-                //         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                //           crossAxisCount: 3,
-                //           crossAxisSpacing: 3,
-                //           mainAxisSpacing: 3,
-                //         ),
-                //         itemBuilder: (context, index) {
-                //           return Container(
-                //             color: Colors.grey,
-                //             child: Image.network(state.post[index].imageUrl),
-                //           );
-                //         },
-                //       );
-                //     } else {
-                //       return Center(child: Text("Something went wrong"));
-                //     }
-                //   },
-                // ),
               ],
             );
           } else {

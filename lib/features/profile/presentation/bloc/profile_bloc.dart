@@ -88,5 +88,34 @@ class ProfileBloc extends Bloc<ProfileEvents, ProfileState> {
         return emit(UserProfileUserDetailsFailedState(e.toString()));
       }
     });
+
+    on<FollowUnFollowButtonClickedEvent>((event, emit) async {
+      try {
+        await userprofileRepo.followUnFollowToggle(
+          event.currentUserId,
+          event.toggleUserId,
+        );
+        log("follow unfollow toggle funticon called --> profile bloc");
+
+        final updatedUser = await userprofileRepo.getuserProfile(
+          event.toggleUserId,
+        );
+
+        final updatedPosts = await postRepo.getPostsByUserId(
+          event.toggleUserId,
+        );
+
+        if (updatedUser != null) {
+          log("updated user profile --> $updatedUser");
+          log("updated user followers list (profile bloc) ${updatedUser.followers}");
+          emit(UserProfileUserDetailsLoadedState(updatedUser, updatedPosts));
+          log("updated user data fecthed successfully");
+        } else {
+          emit(UserProfileUserDetailsFailedState("Failed to fecth data"));
+        }
+      } catch (e) {
+        emit(UserProfileUserDetailsFailedState(e.toString()));
+      }
+    });
   }
 }

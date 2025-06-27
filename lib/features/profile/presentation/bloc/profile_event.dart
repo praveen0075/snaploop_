@@ -33,3 +33,13 @@ class FetchCurrentUserDetailsEvent extends ProfileEvents {
   @override
   List<Object?> get props => [userId];
 }
+
+class FollowUnFollowButtonClickedEvent extends ProfileEvents {
+  final String currentUserId;
+  final String toggleUserId;
+
+  FollowUnFollowButtonClickedEvent(this.currentUserId, this.toggleUserId);
+
+  @override
+  List<Object?> get props => [currentUserId, toggleUserId];
+}

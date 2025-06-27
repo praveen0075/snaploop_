@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/features/post/domain/entities/post_entity.dart';
-import 'package:snap_loop/features/post/presentation/bloc/post_bloc.dart';
-import 'package:snap_loop/features/post/presentation/bloc/post_event.dart';
-import 'package:snap_loop/features/post/presentation/bloc/post_state.dart';
 
 class PostsgridInUserprofile extends StatefulWidget {
   const PostsgridInUserprofile({

@@ -227,6 +227,7 @@ class _AllPostTileState extends State<AllPostTile> {
                                     ],
                                     child: UserProfilePage(
                                       userId: widget.post[widget.index].userId,
+                                      currentUser: widget.currentUser,
                                     ),
                                   ),
                             ),
