@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:snap_loop/features/auth/domain/entities/user_entity.dart';
 import 'package:snap_loop/features/search/domain/entities/search_result_entity.dart';
 
 abstract class SearchState extends Equatable {
@@ -12,8 +13,9 @@ class SearchLoadingState extends SearchState {}
 
 class SearchLoadedState extends SearchState {
   final List<SearchResultEntity> searchResults;
+  final UserEntity  userEntity;
 
-  SearchLoadedState(this.searchResults);
+  SearchLoadedState(this.searchResults,this.userEntity);
   @override
   List<Object?> get props => [searchResults];
 }

@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snap_loop/features/post/presentation/bloc/post_bloc.dart';
+import 'package:snap_loop/features/post/presentation/pages/userposts.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_event.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_state.dart';
@@ -50,8 +52,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             : CircleAvatar(
                               radius: 45,
                               backgroundColor: Colors.grey,
-                              backgroundImage: NetworkImage(state.user!.profilePicUrl!),
-                              
+                              backgroundImage: NetworkImage(
+                                state.user!.profilePicUrl!,
+                              ),
                             ),
                   ),
                   Text(name ?? ""),
@@ -89,8 +92,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   Divider(),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
+                    // child: PostsgridInUserprofile(
+                    //   userId: state.user!.userid,
+                    //   posts: state.posts,
+                    // ),
                     child: GridView.builder(
-                      itemCount: 30,
+                      itemCount: state.posts!.length,
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -99,10 +106,30 @@ class _ProfilePageState extends State<ProfilePage> {
                         mainAxisSpacing: 6,
                       ),
                       itemBuilder:
-                          (context, index) => Container(
-                            height: 50,
-                            width: 50,
-                            decoration: BoxDecoration(color: Colors.grey),
+                          (context, index) => GestureDetector(
+                            onTap:
+                                () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (_) => BlocProvider<PostBloc>.value(
+                                          value: BlocProvider.of(context),
+                                          child: Userposts(
+                                            post: state.posts!,
+                                            currentUser: state.user,
+                                          ),
+                                        ),
+                                  ),
+                                ),
+                            child: Container(
+                              height: 50,
+                              width: 50,
+
+                              decoration: BoxDecoration(color: Colors.grey),
+                              child: Image.network(
+                                state.posts![index].imageUrl,
+                              ),
+                            ),
                           ),
                     ),
                   ),

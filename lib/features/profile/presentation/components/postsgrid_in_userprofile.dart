@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snap_loop/features/post/domain/entities/post_entity.dart';
+import 'package:snap_loop/features/post/presentation/pages/userposts.dart';
 
 class PostsgridInUserprofile extends StatefulWidget {
   const PostsgridInUserprofile({
@@ -32,11 +33,14 @@ class _PostsgridInUserprofileState extends State<PostsgridInUserprofile> {
         mainAxisSpacing: 3,
       ),
       itemBuilder: (context, index) {
-        return Container(
-          color: Colors.grey,
-          child: Image.network(
-            widget.posts![index].imageUrl,
-            fit: BoxFit.cover,
+        return GestureDetector(
+          // onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Userposts(post: widget.posts!, currentUser: widget.userId),)),
+          child: Container(
+            color: Colors.grey,
+            child: Image.network(
+              widget.posts![index].imageUrl,
+              fit: BoxFit.cover,
+            ),
           ),
         );
       },

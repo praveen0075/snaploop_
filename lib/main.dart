@@ -68,7 +68,8 @@ class MyApp extends StatelessWidget {
           BlocProvider<SearchBloc>(
             create:
                 (context) => SearchBloc(
-                  searchRepo: searchRepo
+                  searchRepo: searchRepo,
+                  authRepo: authRepository
                 ),
           ),
         ],

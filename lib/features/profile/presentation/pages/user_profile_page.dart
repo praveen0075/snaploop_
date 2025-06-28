@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/features/auth/domain/entities/user_entity.dart';
@@ -8,6 +7,7 @@ import 'package:snap_loop/features/profile/presentation/bloc/profile_event.dart'
 import 'package:snap_loop/features/profile/presentation/bloc/profile_state.dart';
 import 'package:snap_loop/features/profile/presentation/components/followbutton.dart';
 import 'package:snap_loop/features/profile/presentation/components/postsgrid_in_userprofile.dart';
+import 'package:snap_loop/features/profile/presentation/pages/edit_profile_page.dart';
 
 class UserProfilePage extends StatefulWidget {
   const UserProfilePage({
@@ -73,7 +73,27 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 Text(state.user!.userName!),
                 Text(state.user!.userBio!),
                 widget.userId == widget.currentUser!.userid
-                    ? SizedBox(height: 1)
+                    ?   GestureDetector(
+                    onTap:
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (_) => BlocProvider<ProfileBloc>.value(
+                                  value: BlocProvider.of<ProfileBloc>(context),
+                                  child: EditProfilePage(user: state.user),
+                                ),
+                          ),
+                        ),
+                    child: Container(
+                      height: 50,
+                      width: 300,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(),
+                      ),
+                      child: Center(child: Text("Edit Profile")),
+                    ))
                     : Followbutton(
                       isFollowing: state.user!.followers.contains(
                         widget.currentUser!.userid,

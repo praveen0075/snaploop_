@@ -2,6 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snap_loop/features/post/presentation/bloc/post_bloc.dart';
+import 'package:snap_loop/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:snap_loop/features/profile/presentation/pages/user_profile_page.dart';
 import 'package:snap_loop/features/search/presentation/bloc/search_bloc.dart';
 import 'package:snap_loop/features/search/presentation/bloc/search_event.dart';
 import 'package:snap_loop/features/search/presentation/bloc/search_state.dart';
@@ -88,9 +91,42 @@ class _SearchPageState extends State<SearchPage> {
                                       ? null
                                       : NetworkImage(user.userProfilePic),
                             ),
-                            title: Text(
-                              user.userName,
-                              style: TextStyle(color: Colors.black),
+                            title: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (_) => MultiBlocProvider(
+                                          providers: [
+                                            BlocProvider<ProfileBloc>.value(
+                                              value:
+                                                  BlocProvider.of<ProfileBloc>(
+                                                    context,
+                                                  ),
+                                            ),
+
+                                            BlocProvider.value(
+                                              value: BlocProvider.of<PostBloc>(
+                                                context,
+                                              ),
+                                            ),
+                                          ],
+                                          child: UserProfilePage(
+                                            userId:
+                                                state
+                                                    .searchResults[index]
+                                                    .userId,
+                                            currentUser: state.userEntity,
+                                          ),
+                                        ),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                user.userName,
+                                style: TextStyle(color: Colors.black),
+                              ),
                             ),
                           );
                         },

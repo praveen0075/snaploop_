@@ -25,10 +25,11 @@ class SearchFireRepo implements SearchRepo {
             log("user names(Search repo) : ${data["userName"]} ");
             return SearchResultEntity.fromJson({
               "userId": doc.id,
-              "userName ": data["userName"]??"",
+              "userName": data["userName"] ?? "",
               "userprofilePicUrl": data["userprofilePicUrl"] ?? "",
             });
           }).toList();
+      log("Username (search fire repo) --> ${userList[0].userName}");
       log("Users List ---> $userList");
       return userList;
     } catch (e) {
@@ -37,6 +38,3 @@ class SearchFireRepo implements SearchRepo {
     }
   }
 }
-
-
-// [log] userdata in firebaser repo: {followings: [ydjv6lYHScblkecUI3G038ucton2, nIV5wR4lLLeqUeD0OjegB5oDtIf1], userBio: eeee, userEmail: rishal@gmail.com, userprofilePicUrl: https://txqtmxbexozsugflmmjc.supabase.co/storage/v1/object/public/snaploop-user-images/profilePics/1751033979847, userName: Rishal , userId: HTYs6skiYOcbtcCL82U18EKQFcH2}
