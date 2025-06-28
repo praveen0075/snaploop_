@@ -85,14 +85,20 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (context, index) {
                 log("image url --> ${state.post[index].imageUrl}");
                 log("current user ---> ${state.currentUser}");
-                return AllPostTile(post: state.post, index: index,currentUser: state.currentUser,);
+                return AllPostTile(
+                  post: state.post,
+                  index: index,
+                  currentUser: state.currentUser,
+                  isHome: true,
+                  userId: state.currentUser!.userid,
+                );
               },
             );
           } else {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [CircularProgressIndicator(), Text("Loading")], 
+                children: [CircularProgressIndicator(), Text("Loading")],
               ),
             );
           }

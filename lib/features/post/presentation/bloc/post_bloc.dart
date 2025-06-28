@@ -94,6 +94,8 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     });
 
     on<AddCommentEvent>((event, emit) async {
+      List<PostEntity> posts = [];
+      // emit(PostLoadingState());
       try {
         await postRepo.addComment(event.postId, event.comment);
         final UserEntity? currentUser = await authRepo.getCurrentUser();
@@ -101,7 +103,12 @@ class PostBloc extends Bloc<PostEvent, PostState> {
           final UserProfileEntity? user = await userprofileRepo.getuserProfile(
             currentUser.userid,
           );
-          List<PostEntity> posts = await postRepo.getAllPosts();
+          if (event.isHome == true) {
+            posts = await postRepo.getAllPosts();
+          } else {
+            posts = await postRepo.getPostsByUserId(event.userId);
+          }
+
           log("comment added succesfully in post bloc add comment event");
           emit(PostLoadedState(posts, user));
         } else {
@@ -133,6 +140,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     });
 
     on<FetchPostsByUserId>((event, emit) async {
+      emit(PostLoadingState());
       try {
         final posts = await postRepo.getPostsByUserId(event.userId);
         log("got the posts based on user id --> $posts ");

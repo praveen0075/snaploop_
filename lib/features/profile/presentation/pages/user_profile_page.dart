@@ -73,27 +73,30 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 Text(state.user!.userName!),
                 Text(state.user!.userBio!),
                 widget.userId == widget.currentUser!.userid
-                    ?   GestureDetector(
-                    onTap:
-                        () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (_) => BlocProvider<ProfileBloc>.value(
-                                  value: BlocProvider.of<ProfileBloc>(context),
-                                  child: EditProfilePage(user: state.user),
-                                ),
+                    ? GestureDetector(
+                      onTap:
+                          () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (_) => BlocProvider<ProfileBloc>.value(
+                                    value: BlocProvider.of<ProfileBloc>(
+                                      context,
+                                    ),
+                                    child: EditProfilePage(user: state.user),
+                                  ),
+                            ),
                           ),
+                      child: Container(
+                        height: 50,
+                        width: 300,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(),
                         ),
-                    child: Container(
-                      height: 50,
-                      width: 300,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(),
+                        child: Center(child: Text("Edit Profile")),
                       ),
-                      child: Center(child: Text("Edit Profile")),
-                    ))
+                    )
                     : Followbutton(
                       isFollowing: state.user!.followers.contains(
                         widget.currentUser!.userid,
@@ -143,6 +146,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 PostsgridInUserprofile(
                   userId: widget.userId,
                   posts: state.posts,
+                  currentUser: widget.currentUser,
+                  isHome: false,
                 ),
               ],
             );

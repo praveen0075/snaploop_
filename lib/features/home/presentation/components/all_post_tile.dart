@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/core/constants/ksizedboxes.dart';
@@ -19,10 +18,14 @@ class AllPostTile extends StatefulWidget {
     required this.post,
     required this.index,
     required this.currentUser,
+    required this.isHome,
+    required this.userId,
   });
   final List<PostEntity> post;
   final int index;
   final UserEntity? currentUser;
+  final bool isHome;
+  final String userId;
 
   @override
   State<AllPostTile> createState() => _AllPostTileState();
@@ -98,7 +101,12 @@ class _AllPostTileState extends State<AllPostTile> {
       log("new comment --> ${newComment.commentTxt}");
       log("new comment owner --> ${newComment.userName}");
       context.read<PostBloc>().add(
-        AddCommentEvent(newComment.postId, newComment),
+        AddCommentEvent(
+          newComment.postId,
+          newComment,
+          widget.isHome,
+          widget.userId,
+        ),
       );
     }
   }
@@ -133,7 +141,12 @@ class _AllPostTileState extends State<AllPostTile> {
 
   void deleteComment(String commentId) {
     context.read<PostBloc>().add(
-      DeleteComment(widget.post[widget.index].postId, commentId),
+      DeleteComment(
+        widget.post[widget.index].postId,
+        commentId,
+        widget.isHome,
+        widget.userId,
+      ),
     );
   }
 
@@ -176,7 +189,7 @@ class _AllPostTileState extends State<AllPostTile> {
 
   @override
   Widget build(BuildContext context) {
-    log("comments -> ${widget.post[widget.index].comments}");
+    // log("comments -> ${widget.post[widget.index].comments}");
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(

@@ -115,8 +115,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                         (_) => BlocProvider<PostBloc>.value(
                                           value: BlocProvider.of(context),
                                           child: Userposts(
-                                            post: state.posts!,
+                                            // post: state.posts!,
+                                            postUserId: state.user!.userid,
                                             currentUser: state.user,
+                                            isHome: false,
                                           ),
                                         ),
                                   ),

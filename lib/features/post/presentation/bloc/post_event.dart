@@ -43,21 +43,25 @@ class LikeAndDislike extends PostEvent {
 class AddCommentEvent extends PostEvent {
   final String postId;
   final CommentEntity comment;
+  final bool isHome;
+  final String userId;
 
-  AddCommentEvent(this.postId, this.comment);
+  AddCommentEvent(this.postId, this.comment,this.isHome,this.userId);
 
   @override
-  List<Object?> get props => [postId, comment];
+  List<Object?> get props => [postId, comment ,isHome,userId];
 }
 
 class DeleteComment extends PostEvent {
   final String postId;
   final String commentId;
+   final bool isHome;
+  final String userId;
 
-  DeleteComment(this.postId, this.commentId);
+  DeleteComment(this.postId, this.commentId,this.isHome,this.userId);
 
   @override
-  List<Object?> get props => [postId, commentId];
+  List<Object?> get props => [postId, commentId,isHome,userId];
 }
 
 class FetchPostsByUserId extends PostEvent {
