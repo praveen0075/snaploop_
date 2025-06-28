@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:snap_loop/features/auth/domain/entities/user_entity.dart';
 import 'package:snap_loop/features/post/domain/entities/post_entity.dart';
 import 'package:snap_loop/features/profile/domain/entities/userprofile.dart';
 

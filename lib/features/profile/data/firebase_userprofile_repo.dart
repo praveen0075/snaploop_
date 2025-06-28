@@ -10,6 +10,9 @@ class FirebaseUserProfileRepo implements UserprofileRepo {
   Future<UserProfileEntity?> getuserProfile(String id) async {
     final UserProfileEntity? user;
     try {
+      final result =  firebstore.collection("Users");
+      // final finalResult = 
+      log("result of Users doc --> ${result.doc().get()}");
       final userProfileDoc = await firebstore.collection("Users").doc(id).get();
       log(userProfileDoc.toString());
       log("bool ${userProfileDoc.exists}");

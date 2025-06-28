@@ -15,6 +15,8 @@ import 'package:snap_loop/features/post/data/firebase_post_repo.dart';
 import 'package:snap_loop/features/post/presentation/bloc/post_bloc.dart';
 import 'package:snap_loop/features/profile/data/firebase_userprofile_repo.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:snap_loop/features/search/data/search_fire_repo.dart';
+import 'package:snap_loop/features/search/presentation/bloc/search_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
@@ -32,6 +34,7 @@ class MyApp extends StatelessWidget {
   final userRepository = FirebaseUserProfileRepo();
   final postRepository = FirebasePostRepo();
   final supBaseStorage = SupabaseStoragehelper();
+  final searchRepo = SearchFireRepo();
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +63,12 @@ class MyApp extends StatelessWidget {
                   postRepo: postRepository,
                   userprofileRepo: userRepository,
                   supabaseStoragehelper: supBaseStorage,
+                ),
+          ),
+          BlocProvider<SearchBloc>(
+            create:
+                (context) => SearchBloc(
+                  searchRepo: searchRepo
                 ),
           ),
         ],
