@@ -31,8 +31,6 @@ class _LoginPageState extends State<LoginPage> {
       final String email = emailController.text;
       final String password = passwordController.text;
 
-      log("Entered Email id : $email");
-      log("Entered password : $password");
 
       // bloc and sign in event triggered
       context.read<AuthBloc>().add(SignInEvent(email, password));

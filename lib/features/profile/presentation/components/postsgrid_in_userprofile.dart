@@ -26,7 +26,6 @@ class _PostsgridInUserprofileState extends State<PostsgridInUserprofile> {
   @override
   void initState() {
     super.initState();
-    // context.read<PostBloc>().add(FetchPostsByUserId(widget.userId));
   }
 
   @override
@@ -49,7 +48,6 @@ class _PostsgridInUserprofileState extends State<PostsgridInUserprofile> {
                     return BlocProvider<PostBloc>.value(
                       value: BlocProvider.of(context),
                       child: Userposts(
-                        // post: widget.posts!,
                         postUserId: widget.userId,
                         currentUser: widget.currentUser,
                         isHome: widget.isHome,

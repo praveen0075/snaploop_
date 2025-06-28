@@ -39,7 +39,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   void onSaveChanges() {
-    // log(_selectedProfilePic!.path);
     context.read<ProfileBloc>().add(
       UpdateUserProfile(
         widget.user!.userid,
@@ -116,14 +115,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   buttonColor: Colors.deepPurple,
                   buttonTextColor: Colors.white,
                   onTap: onSaveChanges,
-                  // () => context.read<ProfileBloc>().add(
-                  //   UpdateUserProfile(
-                  //     widget.user!.userid,
-                  //     bioController.text,
-                  //     nameController.text,
-                  //     "",
-                  //   ),
-                  // ),
                 ),
               ],
             ),

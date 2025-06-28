@@ -73,7 +73,6 @@ class _AllPostTileState extends State<AllPostTile> {
               TextButton(
                 onPressed: () {
                   addNewComment();
-                  log("comment added");
 
                   Navigator.pop(context);
                 },
@@ -85,9 +84,6 @@ class _AllPostTileState extends State<AllPostTile> {
   }
 
   void addNewComment() {
-    log(
-      "current user before adding the comment--> ${widget.currentUser!.userName}",
-    );
     final newComment = CommentEntity(
       commentId: DateTime.now().millisecondsSinceEpoch.toString(),
       postId: widget.post[widget.index].postId,
@@ -98,8 +94,6 @@ class _AllPostTileState extends State<AllPostTile> {
     );
 
     if (commentTextController.text.isNotEmpty) {
-      log("new comment --> ${newComment.commentTxt}");
-      log("new comment owner --> ${newComment.userName}");
       context.read<PostBloc>().add(
         AddCommentEvent(
           newComment.postId,
@@ -111,7 +105,7 @@ class _AllPostTileState extends State<AllPostTile> {
     }
   }
 
-  void deleteAlertBox(String commentId) {
+  void deleteAlertBox(void Function()? onPressed) {
     showDialog(
       context: context,
       builder:
@@ -128,10 +122,7 @@ class _AllPostTileState extends State<AllPostTile> {
               ),
 
               TextButton(
-                onPressed: () {
-                  deleteComment(commentId);
-                  Navigator.pop(context);
-                },
+                onPressed: onPressed,
                 child: Text("Delete", style: TextStyle(color: Colors.red)),
               ),
             ],
@@ -189,7 +180,6 @@ class _AllPostTileState extends State<AllPostTile> {
 
   @override
   Widget build(BuildContext context) {
-    // log("comments -> ${widget.post[widget.index].comments}");
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -252,7 +242,19 @@ class _AllPostTileState extends State<AllPostTile> {
                     ),
                   ],
                 ),
-                // Text("date time "),
+                widget.post[widget.index].userId == widget.currentUser!.userid
+                    ? GestureDetector(
+                      onTap:
+                          () => deleteAlertBox(() {
+                            context.read<PostBloc>().add(
+                              DeletePostEvent(widget.post[widget.index].postId),
+                            );
+                            Navigator.pop(context);
+                          }),
+
+                      child: Icon(Icons.delete_outline_outlined),
+                    )
+                    : SizedBox(width: 2),
               ],
             ),
             kh10,
@@ -300,7 +302,6 @@ class _AllPostTileState extends State<AllPostTile> {
               shrinkWrap: true,
               itemCount: widget.post[widget.index].comments.length,
               itemBuilder: (context, index) {
-                log(widget.post[widget.index].comments[index].userName);
                 return SizedBox(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -318,14 +319,23 @@ class _AllPostTileState extends State<AllPostTile> {
                           ),
                         ],
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          deleteAlertBox(
-                            widget.post[widget.index].comments[index].commentId,
-                          );
-                        },
-                        child: Icon(Icons.delete_outline),
-                      ),
+                      widget.post[widget.index].comments[index].userId ==
+                              widget.currentUser!.userid
+                          ? GestureDetector(
+                            onTap: () {
+                              deleteAlertBox(() {
+                                deleteComment(
+                                  widget
+                                      .post[widget.index]
+                                      .comments[index]
+                                      .commentId,
+                                );
+                                Navigator.pop(context);
+                              });
+                            },
+                            child: Icon(Icons.delete_outline),
+                          )
+                          : SizedBox(width: 3),
                     ],
                   ),
                 );

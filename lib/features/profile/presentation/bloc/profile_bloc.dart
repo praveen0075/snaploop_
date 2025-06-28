@@ -30,10 +30,8 @@ class ProfileBloc extends Bloc<ProfileEvents, ProfileState> {
             userEntity.userid,
           );
           final posts = await postRepo.getPostsByUserId(userEntity.userid);
-          log("profile bloc getcurrentloggedevent user entity: $user");
           emit(UserProfileUserDetailsLoadedState(user, posts));
         } else {
-          log("null user :::");
           emit(
             UserProfileUserDetailsFailedState("Unable to find user details"),
           );
@@ -65,7 +63,6 @@ class ProfileBloc extends Bloc<ProfileEvents, ProfileState> {
         final userProileUploadedImageUrl = await supabaseStoragehelper
             .upLoadImageToSupaStore(event.userProfilePicUrl, "profilePics");
 
-        log("userprofile pic URL is -> $userProileUploadedImageUrl");
         event.userProfilePicUrl.path == ""
             ? await userprofileRepo.updateUserProfile(
               event.userId,
@@ -79,7 +76,6 @@ class ProfileBloc extends Bloc<ProfileEvents, ProfileState> {
               event.userBio,
               userProileUploadedImageUrl ?? '',
             );
-        log("User event id : ${event.userId}");
         final UserProfileEntity? updatedUser = await userprofileRepo
             .getuserProfile(event.userId);
         final posts = await postRepo.getPostsByUserId(event.userId);
@@ -95,7 +91,6 @@ class ProfileBloc extends Bloc<ProfileEvents, ProfileState> {
           event.currentUserId,
           event.toggleUserId,
         );
-        log("follow unfollow toggle funticon called --> profile bloc");
 
         final updatedUser = await userprofileRepo.getuserProfile(
           event.toggleUserId,
@@ -106,10 +101,8 @@ class ProfileBloc extends Bloc<ProfileEvents, ProfileState> {
         );
 
         if (updatedUser != null) {
-          log("updated user profile --> $updatedUser");
-          log("updated user followers list (profile bloc) ${updatedUser.followers}");
+     
           emit(UserProfileUserDetailsLoadedState(updatedUser, updatedPosts));
-          log("updated user data fecthed successfully");
         } else {
           emit(UserProfileUserDetailsFailedState("Failed to fecth data"));
         }

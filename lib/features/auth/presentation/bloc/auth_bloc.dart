@@ -29,8 +29,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignInEvent>((event, emit) async {
       emit(AuthLoadingState());
       try {
-        log("bloc : entered email : ${event.userEmail}");
-        log("bloc : entered pass : ${event.userPassword}");
         // sign in user
         await authrepository.logInWithUserEmailAndPassword(
           event.userEmail,
@@ -38,10 +36,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
         final user = await authrepository.getCurrentUser();
         if (user != null) {
-          log("logged user's email is not null ${user.userEmail}");
           emit(AuthUserLoggedIn(user));
         } else {
-          log("logged user's email is null");
           emit(AuthFailureState("Something went wrong #"));
         }
       } catch (e) {
@@ -58,10 +54,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await authrepository.registerNewUser(event.user, event.password);
         final user = await authrepository.getCurrentUser();
         if (user != null) {
-          log("logged user's email is not null ${user.userEmail}");
           emit(AuthUserLoggedIn(user));
         } else {
-          log("logged user's email is null");
           emit(AuthFailureState("Something went wrong #"));
         }
       } catch (e) {

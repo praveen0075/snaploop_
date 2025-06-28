@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/features/auth/domain/entities/user_entity.dart';
-import 'package:snap_loop/features/home/presentation/components/all_post_tile.dart';
+import 'package:snap_loop/features/post/presentation/components/all_post_tile.dart';
   import 'package:snap_loop/features/post/presentation/bloc/post_bloc.dart';
 import 'package:snap_loop/features/post/presentation/bloc/post_event.dart';
 import 'package:snap_loop/features/post/presentation/bloc/post_state.dart';

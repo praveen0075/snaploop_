@@ -96,16 +96,12 @@ class FirebasePostRepo implements PostRepository {
       final postdoc = await postCollectionRef.doc(postId).get();
 
       if (postdoc.exists) {
-        log("post docs exists");
         final post = PostEntity.fromJson(
           postdoc.data() as Map<String, dynamic>,
         );
 
-        log("before adding comment to commment entity: ${post.comments}");
-
         post.comments.add(comment);
 
-        log("after adding comment to commment entity: ${post.comments}");
 
         await postCollectionRef.doc(postId).update({
           "comments": post.comments.map((comment) => comment.toJons()).toList(),

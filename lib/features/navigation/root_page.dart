@@ -18,7 +18,6 @@ class RootPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<NavBloc, NavigationState>(
       builder: (context, state) {
-        log(state.selectedIndex.toString());
         return Scaffold(
           body: screens[state.selectedIndex],
           bottomNavigationBar: BottomNavigationBar(

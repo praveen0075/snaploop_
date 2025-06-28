@@ -15,13 +15,10 @@ class AuthRespositoryFirebase implements AuthRepo {
     String password,
   ) async {
     try {
-      log("auth repo : email : $email");
-      log("auth repo : password : $password");
       //login
       UserCredential userCredential = await firebaseAuth
           .signInWithEmailAndPassword(email: email, password: password);
 
-      log("${userCredential.user?.uid}"); 
 
       // user creation
       UserEntity user = UserEntity(

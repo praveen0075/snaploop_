@@ -83,7 +83,6 @@ class _SearchPageState extends State<SearchPage> {
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           final user = state.searchResults[index];
-                          log("username is ${user.userName}");
                           return ListTile(
                             leading: CircleAvatar(
                               backgroundImage:
@@ -113,10 +112,7 @@ class _SearchPageState extends State<SearchPage> {
                                             ),
                                           ],
                                           child: UserProfilePage(
-                                            userId:
-                                                state
-                                                    .searchResults[index]
-                                                    .userId,
+                                            userId: user.userId,
                                             currentUser: state.userEntity,
                                           ),
                                         ),

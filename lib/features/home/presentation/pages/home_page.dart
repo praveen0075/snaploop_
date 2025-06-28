@@ -5,7 +5,7 @@ import 'package:snap_loop/core/components/custom_snackbar.dart';
 import 'package:snap_loop/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:snap_loop/features/auth/presentation/bloc/auth_event.dart';
 import 'package:snap_loop/features/auth/presentation/bloc/auth_state.dart';
-import 'package:snap_loop/features/home/presentation/components/all_post_tile.dart';
+import 'package:snap_loop/features/post/presentation/components/all_post_tile.dart';
 import 'package:snap_loop/features/post/presentation/bloc/post_bloc.dart';
 import 'package:snap_loop/features/post/presentation/bloc/post_event.dart';
 import 'package:snap_loop/features/post/presentation/bloc/post_state.dart';
@@ -71,7 +71,6 @@ class _HomePageState extends State<HomePage> {
           if (state is PostLoadingState || state is PostLoadingSuccessState) {
             return Center(child: CircularProgressIndicator());
           } else if (state is PostLoadedState) {
-            // log(state.post.toString());
             if (state.post.isEmpty || state.post == []) {
               return Center(
                 child: Text(
@@ -83,8 +82,6 @@ class _HomePageState extends State<HomePage> {
             return ListView.builder(
               itemCount: state.post.length,
               itemBuilder: (context, index) {
-                log("image url --> ${state.post[index].imageUrl}");
-                log("current user ---> ${state.currentUser}");
                 return AllPostTile(
                   post: state.post,
                   index: index,

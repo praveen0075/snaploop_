@@ -32,8 +32,6 @@ class _ProfilePageState extends State<ProfilePage> {
         if (state is UserProfileUserDetailsLoadedState) {
           name = state.user?.userName;
           bio = state.user?.userBio;
-          log("user image url = ${state.user!.profilePicUrl}");
-          log(state.user.toString());
           return Scaffold(
             appBar: AppBar(title: Text("Profile")),
             body: SingleChildScrollView(
@@ -84,18 +82,37 @@ class _ProfilePageState extends State<ProfilePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Column(children: [Text("Post"), Text("13")]),
-                      Column(children: [Text("Followers"), Text("1500")]),
-                      Column(children: [Text("Followings"), Text("1300")]),
+                      Column(
+                        children: [
+                          Text("Post"),
+                          Text(state.posts!.length.toString()),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text("Followers"),
+                          Text(
+                            state.user!.followers.isEmpty
+                                ? "0"
+                                : state.user!.followers.length.toString(),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text("Followings"),
+                          Text(
+                            state.user!.followings.isEmpty
+                                ? "0"
+                                : state.user!.followings.length.toString(),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                   Divider(),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    // child: PostsgridInUserprofile(
-                    //   userId: state.user!.userid,
-                    //   posts: state.posts,
-                    // ),
                     child: GridView.builder(
                       itemCount: state.posts!.length,
                       shrinkWrap: true,
@@ -115,7 +132,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                         (_) => BlocProvider<PostBloc>.value(
                                           value: BlocProvider.of(context),
                                           child: Userposts(
-                                            // post: state.posts!,
                                             postUserId: state.user!.userid,
                                             currentUser: state.user,
                                             isHome: false,

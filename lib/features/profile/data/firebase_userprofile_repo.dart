@@ -10,15 +10,10 @@ class FirebaseUserProfileRepo implements UserprofileRepo {
   Future<UserProfileEntity?> getuserProfile(String id) async {
     final UserProfileEntity? user;
     try {
-      final result =  firebstore.collection("Users");
-      // final finalResult = 
-      log("result of Users doc --> ${result.doc().get()}");
+
       final userProfileDoc = await firebstore.collection("Users").doc(id).get();
-      log(userProfileDoc.toString());
-      log("bool ${userProfileDoc.exists}");
       if (userProfileDoc.exists) {
         final userData = userProfileDoc.data();
-        log("userdata in firebaser repo: $userData");
 
         if (userData != null) {
           final followers = List<String>.from(userData["followers"] ?? []);
@@ -36,7 +31,6 @@ class FirebaseUserProfileRepo implements UserprofileRepo {
           return user;
         }
       } else {
-        log("returning null");
         return null;
       }
       return null;
@@ -75,25 +69,18 @@ class FirebaseUserProfileRepo implements UserprofileRepo {
       final toggleUser =
           await firebstore.collection("Users").doc(toggleUserid).get();
 
-      log("current user doc collected --> $currentUser");
-      log("toggle user doc collected --> $toggleUser");
-
       if (currentUser.exists && toggleUser.exists) {
-        log("curren user adn toggle use doc exists ");
 
         final cUserData = currentUser.data();
         final tuserData = toggleUser.data();
 
         if (cUserData != null && tuserData != null) {
-          log("curren user adn toggle use DATA exists  ");
           final List<String> currentFollowing = List<String>.from(
             cUserData["followings"] ?? [],
           );
 
-          log("current user followings --> $currentFollowing");
 
           if (currentFollowing.contains(toggleUserid)) {
-            log("current user followings contains toggle user id");
             firebstore.collection("Users").doc(currentUserId).update({
               "followings": FieldValue.arrayRemove([toggleUserid]),
             });
@@ -102,7 +89,6 @@ class FirebaseUserProfileRepo implements UserprofileRepo {
               "followers": FieldValue.arrayRemove([currentUserId]),
             });
           } else {
-            log("current user followings not contains toggle user id");
             firebstore.collection("Users").doc(currentUserId).update({
               "followings": FieldValue.arrayUnion([toggleUserid]),
             });

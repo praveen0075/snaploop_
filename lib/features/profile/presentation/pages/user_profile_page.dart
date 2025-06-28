@@ -39,7 +39,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
       ),
     );
 
-    log("Button clicked and event triggered");
   }
 
   @override
@@ -53,7 +52,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
           } else if (state is UserProfileUserDetailsFailedState) {
             return Center(child: Text(state.errorMsg));
           } else if (state is UserProfileUserDetailsLoadedState) {
-            log("followers list ${state.user!.followers.toString()}");
             return ListView(
               children: [
                 CircleAvatar(
