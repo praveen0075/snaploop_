@@ -8,6 +8,7 @@ void customSnackBar(
 ) {
   ScaffoldMessenger.of(ctx).showSnackBar(
     SnackBar(
+    behavior: SnackBarBehavior.floating,
       content: Text(
         txtContent,
         style: TextStyle(color: txtColor, fontWeight: FontWeight.bold),

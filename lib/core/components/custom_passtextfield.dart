@@ -5,7 +5,7 @@ class CustomPasstextfield extends StatefulWidget {
     super.key,
     required this.txtController,
     required this.hintText,
-    required this.obscure,
+    // required this.obscure,
     this.prefixIcon,
     this.filledColor,
     this.labetTxt,
@@ -14,7 +14,7 @@ class CustomPasstextfield extends StatefulWidget {
 
   final TextEditingController txtController;
   final String hintText;
-  final bool obscure;
+  // final bool obscure;
   final IconData? prefixIcon;
   final Color? filledColor;
   final String? labetTxt;
@@ -32,6 +32,7 @@ class _CustomPasstextfieldState extends State<CustomPasstextfield> {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       controller: widget.txtController,
       validator: widget.validator,
+      obscureText: _obscureText,
       decoration: InputDecoration(
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),

@@ -101,13 +101,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 CustomeTextformfield(
                   txtController: nameController,
                   hintText: "Name",
-                  // obscure: false,
                 ),
                 kh20,
                 CustomeTextformfield(
                   txtController: bioController,
                   hintText: "Bio",
-                  // obscure: false,
                 ),
                 kh20,
                 CustomButton(

@@ -28,14 +28,14 @@ class CustomeTextformfield extends StatefulWidget {
 }
 
 class _CustomeTextformfieldState extends State<CustomeTextformfield> {
-  bool _obscureText = true;
+  // bool _obscureText = true;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       autovalidateMode: AutovalidateMode.onUserInteraction,
       controller: widget.txtController,
       validator: widget.validator,
-      obscureText: _obscureText,
+      obscureText: false,
       decoration: InputDecoration(
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
@@ -55,18 +55,18 @@ class _CustomeTextformfieldState extends State<CustomeTextformfield> {
           widget.prefixIcon,
           color: Theme.of(context).colorScheme.inversePrimary,
         ),
-        suffixIcon: widget.suffixIcon != null ? IconButton(
-          onPressed: () {
-            setState(() {
-              _obscureText = !_obscureText;
-            });
-          },
-          icon: Icon(
-            _obscureText
-                ? Icons.visibility_off_outlined
-                : Icons.visibility_outlined,
-          ),
-        ) : null
+        // suffixIcon: widget.suffixIcon != null ? IconButton(
+        //   onPressed: () {
+        //     setState(() {
+        //       _obscureText = !_obscureText;
+        //     });
+        //   },
+        //   icon: Icon(
+        //     _obscureText
+        //         ? Icons.visibility_off_outlined
+        //         : Icons.visibility_outlined,
+        //   ),
+        // ) : null
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snap_loop/core/components/custom_passtextfield.dart';
 import 'package:snap_loop/core/components/custom_snackbar.dart';
 import 'package:snap_loop/core/constants/kcolors.dart';
 import 'package:snap_loop/core/constants/ksizedboxes.dart'
@@ -27,7 +28,7 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController passController = TextEditingController();
   TextEditingController conformPassController = TextEditingController();
 
-  GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+ final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
   void register() async {
     final isValidate = _formkey.currentState!.validate();
@@ -66,7 +67,7 @@ class _RegisterPageState extends State<RegisterPage> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: kGradientClrList,
-          ),
+          ), 
         ),
         child: Center(
           child: Padding(
@@ -123,7 +124,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Card registerCard(BuildContext context) {
     return Card(
       color: Colors.white,
-
+      
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -138,7 +139,6 @@ class _RegisterPageState extends State<RegisterPage> {
             CustomeTextformfield(
               txtController: userNameController,
               hintText: "Name",
-              // obscure: false,
               prefixIcon: Icons.person_outline,
               filledColor: Color.fromARGB(81, 206, 216, 255),
               validator: (value) {
@@ -148,13 +148,13 @@ class _RegisterPageState extends State<RegisterPage> {
                   return null;
                 }
               },
+
             ),
             kh20,
             CustomeTextformfield(
               txtController: emailController,
               filledColor: Color.fromARGB(81, 206, 216, 255),
               hintText: "Email",
-              // obscure: false,
               prefixIcon: Icons.email_outlined,
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -165,11 +165,10 @@ class _RegisterPageState extends State<RegisterPage> {
               },
             ),
             kh20,
-            CustomeTextformfield(
+            CustomPasstextfield(
               txtController: passController,
               filledColor: Color.fromARGB(81, 206, 216, 255),
               hintText: "Password",
-              // obscure: false,
               prefixIcon: Icons.lock_outline,
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -178,15 +177,13 @@ class _RegisterPageState extends State<RegisterPage> {
                   return null;
                 }
               },
-              suffixIcon: Icons.visibility,
             ),
             kh20,
-            CustomeTextformfield(
+            CustomPasstextfield(
               txtController: conformPassController,
               filledColor: Color.fromARGB(81, 206, 216, 255),
               hintText: "Confirm Password",
-              // obscure: false,
-              prefixIcon: Icons.lock_person_outlined,
+             prefixIcon: Icons.lock_person_outlined,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return "Enter confirmation password";
@@ -194,7 +191,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   return null;
                 }
               },
-              suffixIcon: Icons.visibility,
+              // suffixIcon: Icons.visibility,
             ),
             kh20,
             CustomButton( 

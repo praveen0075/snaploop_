@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snap_loop/core/constants/ksizedboxes.dart';
 import 'package:snap_loop/features/post/presentation/bloc/post_bloc.dart';
 import 'package:snap_loop/features/post/presentation/pages/userposts.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_bloc.dart';
@@ -32,30 +33,38 @@ class _ProfilePageState extends State<ProfilePage> {
           name = state.user?.userName;
           bio = state.user?.userBio;
           return Scaffold(
-            appBar: AppBar(title: Text("Profile")),
+            appBar: AppBar(backgroundColor: Colors.white),
             body: SingleChildScrollView(
               child: Column(
                 children: [
                   CircleAvatar(
-                    radius: 50,
+                    radius: 53,
                     backgroundColor: Colors.grey,
                     child:
                         state.user!.profilePicUrl == ""
                             ? CircleAvatar(
-                              radius: 45,
-                              backgroundColor: Colors.black,
-                              child: Icon(Icons.person),
+                              radius: 50,
+                              backgroundColor: Colors.grey,
+                              child: Icon(Icons.person, size: 35),
                             )
                             : CircleAvatar(
-                              radius: 45,
+                              radius: 50,
                               backgroundColor: Colors.grey,
                               backgroundImage: NetworkImage(
                                 state.user!.profilePicUrl!,
                               ),
                             ),
                   ),
-                  Text(name ?? ""),
-                  Text(bio ?? ""),
+                  kh10,
+                  Text(
+                    name ?? "",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                  ),
+                  Text(
+                    bio ?? "",
+                    style: TextStyle(fontSize: 18, color: Colors.grey.shade700),
+                    textAlign: TextAlign.center,
+                  ),
                   GestureDetector(
                     onTap:
                         () => Navigator.push(
@@ -68,48 +77,131 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                           ),
                         ),
-                    child: Container(
-                      height: 50,
-                      width: 300,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(),
+                    child: Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          // border: Border.all(
+                          //   color: const Color.fromARGB(77, 104, 58, 183),
+                          // ),
+                          color: const Color.fromARGB(33, 179, 166, 216),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Edit Profile",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17,
+                            ),
+                          ),
+                        ),
                       ),
-                      child: Center(child: Text("Edit Profile")),
                     ),
                   ),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Column(
-                        children: [
-                          Text("Post"),
-                          Text(state.posts!.length.toString()),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Text("Followers"),
-                          Text(
-                            state.user!.followers.isEmpty
-                                ? "0"
-                                : state.user!.followers.length.toString(),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: const Color.fromARGB(148, 104, 58, 183),
                           ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Text("Followings"),
-                          Text(
-                            state.user!.followings.isEmpty
-                                ? "0"
-                                : state.user!.followings.length.toString(),
+                          borderRadius: BorderRadius.circular(11),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 25,
+                            vertical: 10,
                           ),
-                        ],
+                          child: Center(
+                            child: Column(
+                              children: [
+                                Text(
+                                  state.posts!.length.toString(),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                Text(
+                                  "Post",
+                                  style: TextStyle(color: Colors.grey.shade700),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: const Color.fromARGB(148, 104, 58, 183),
+                          ),
+                          borderRadius: BorderRadius.circular(11),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 25,
+                            vertical: 10,
+                          ),
+                          child: Center(
+                            child: Column(
+                              children: [
+                                Text(
+                                  state.user!.followers.isEmpty
+                                      ? "0"
+                                      : state.user!.followers.length.toString(),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                Text(
+                                  "Followers",
+                                  style: TextStyle(color: Colors.grey.shade700),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: const Color.fromARGB(148, 104, 58, 183),
+                          ),
+                          borderRadius: BorderRadius.circular(11),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 25,
+                            vertical: 10,
+                          ),
+                          child: Center(
+                            child: Column(
+                              children: [
+                                Text(
+                                  state.user!.followings.isEmpty
+                                      ? "0"
+                                      : state.user!.followings.length
+                                          .toString(),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                Text("Followings"),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                  Divider(),
+                  // Divider(),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: GridView.builder(

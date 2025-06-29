@@ -23,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   // login button clicked
   void login() {
@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+            end: Alignment.bottomCenter,
             colors: kGradientClrList,
           ),
         ),
@@ -125,7 +125,6 @@ class _LoginPageState extends State<LoginPage> {
             //Textform field for email id
             CustomeTextformfield(
               hintText: "Email",
-              // obscure: false,
               txtController: emailController,
               prefixIcon: Icons.email_outlined,
               filledColor: kTextFieldFilledColor,
@@ -140,9 +139,8 @@ class _LoginPageState extends State<LoginPage> {
             kh20,
 
             //Textform field for password
-            CustomeTextformfield(
+            CustomPasstextfield(
               hintText: "Password",
-              // obscure: false,
               txtController: passwordController,
               prefixIcon: Icons.lock_outlined,
               filledColor: kTextFieldFilledColor,
@@ -153,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                   return null;
                 }
               },
-              suffixIcon: Icons.visibility,
+              // suffixIcon: Icons.visibi//lity,
             ),
             kh40,
 

@@ -10,20 +10,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   // UserEntity? _currentUser;
 
   AuthBloc({required this.authrepository}) : super(AuthInitialState()) {
-    // on<CheckAuthEvent>((event, emit) async {
-    //   emit(AuthLoadingState());
-    //   try {
-    //     final UserEntity? user = await authrepository.getCurrentUser();
-    //     if (user != null) {
-    //       // _currentUser = user;
-    //       emit(AuthUserLoggedIn(user));
-    //     } else {
-    //       emit(AuthUserLoggedOut());
-    //     }
-    //   } catch (e) {
-    //     emit(AuthFailureState(e.toString()));
-    //   }
-    // });
 
     // operations on Sign In event.
     on<SignInEvent>((event, emit) async {
@@ -41,8 +27,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthFailureState("Something went wrong #"));
         }
       } catch (e) {
+        String errorMsg;
         log(e.toString());
-        emit(AuthFailureState(e.toString()));
+        if (e.toString() ==
+                " Exception: Failed to login: [firebase_auth/invalid-credential] The supplied auth credential is incorrect, malformed or has expired." ||
+            e.toString() ==
+                "Exception: Failed to login: [firebase_auth/invalid-email] The email address is badly formatted.") {
+          errorMsg = "Invalid Email or Password";
+        } else {
+          errorMsg = e.toString();
+        }
+        emit(AuthFailureState(errorMsg));
       }
     });
 
@@ -63,14 +58,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthFailureState(e.toString()));
       }
     });
-
-    // // check current user event
-    // on<CheckCurrentUer>((event, emit) async{
-    //   final user = await authrepository.getCurrentUser();
-    //   if(user != null){
-
-    //   }
-    // },);
 
     // Sign out event
     on<SignOutEvent>((event, emit) async {

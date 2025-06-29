@@ -62,7 +62,6 @@ class _AllPostTileState extends State<AllPostTile> {
             content: CustomeTextformfield(
               txtController: commentTextController,
               hintText: "Comment here...",
-              // obscure: false,
             ),
             actions: [
               TextButton(

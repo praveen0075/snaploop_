@@ -4,10 +4,11 @@ const kGradientClrList = [
   Colors.white,
   Color.fromARGB(40, 255, 255, 255),
   Color.fromARGB(142, 104, 58, 183),
-  Colors.deepPurple,
+  Color.fromARGB(238, 104, 58, 183),
+  // kAppBaseClr,
   Color.fromARGB(128, 104, 58, 183),
 ];
-
+ 
 const kAppBaseClr = Colors.deepPurple;
 
 //custom textfield filled color 
