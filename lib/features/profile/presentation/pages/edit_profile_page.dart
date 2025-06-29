@@ -3,8 +3,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/core/constants/ksizedboxes.dart';
-import 'package:snap_loop/features/auth/presentation/components/custom_button.dart';
-import 'package:snap_loop/features/auth/presentation/components/custom_textformfield.dart';
+import 'package:snap_loop/core/components/custom_button.dart';
+import 'package:snap_loop/core/components/custom_textformfield.dart';
 import 'package:snap_loop/features/profile/domain/entities/userprofile.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_event.dart';
@@ -101,13 +101,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 CustomeTextformfield(
                   txtController: nameController,
                   hintText: "Name",
-                  obscure: false,
+                  // obscure: false,
                 ),
                 kh20,
                 CustomeTextformfield(
                   txtController: bioController,
                   hintText: "Bio",
-                  obscure: false,
+                  // obscure: false,
                 ),
                 kh20,
                 CustomButton(

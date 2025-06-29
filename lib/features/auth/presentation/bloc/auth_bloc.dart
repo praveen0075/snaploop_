@@ -56,7 +56,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         if (user != null) {
           emit(AuthUserLoggedIn(user));
         } else {
-          emit(AuthFailureState("Something went wrong #"));
+          emit(AuthFailureState("Unauthorized user!!"));
         }
       } catch (e) {
         log(e.toString());

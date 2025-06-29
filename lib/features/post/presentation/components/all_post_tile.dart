@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/core/constants/ksizedboxes.dart';
 import 'package:snap_loop/features/auth/data/auth_repository.dart';
 import 'package:snap_loop/features/auth/domain/entities/user_entity.dart';
-import 'package:snap_loop/features/auth/presentation/components/custom_textformfield.dart';
+import 'package:snap_loop/core/components/custom_textformfield.dart';
 import 'package:snap_loop/features/post/domain/entities/comment_entity.dart';
 import 'package:snap_loop/features/post/domain/entities/post_entity.dart';
 import 'package:snap_loop/features/post/presentation/bloc/post_bloc.dart';
@@ -62,7 +62,7 @@ class _AllPostTileState extends State<AllPostTile> {
             content: CustomeTextformfield(
               txtController: commentTextController,
               hintText: "Comment here...",
-              obscure: false,
+              // obscure: false,
             ),
             actions: [
               TextButton(

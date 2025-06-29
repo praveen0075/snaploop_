@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/core/components/custom_snackbar.dart';
 import 'package:snap_loop/core/constants/ksizedboxes.dart';
-import 'package:snap_loop/features/auth/presentation/components/custom_button.dart';
+import 'package:snap_loop/core/components/custom_button.dart';
 import 'package:snap_loop/features/post/domain/entities/post_entity.dart';
 import 'package:snap_loop/features/post/presentation/bloc/post_bloc.dart';
 import 'package:snap_loop/features/post/presentation/bloc/post_event.dart';

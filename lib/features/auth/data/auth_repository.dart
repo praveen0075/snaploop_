@@ -40,12 +40,16 @@ class AuthRespositoryFirebase implements AuthRepo {
     String password,
   ) async {
     try {
+
       //create new user (register)
       UserCredential userCredential = await firebaseAuth
           .createUserWithEmailAndPassword(
             email: userEntity.userEmail,
             password: password,
           );
+
+          // await  userCredential.user!.sendEmailVerification();
+
       // user creation
       UserEntity user = UserEntity(
         userid: userCredential.user!.uid,

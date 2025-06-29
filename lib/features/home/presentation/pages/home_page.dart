@@ -38,6 +38,7 @@ class _HomePageState extends State<HomePage> {
           BlocConsumer<AuthBloc, AuthState>(
             listener: (context, state) {
               if (state is AuthFailureState) {
+                
                 customSnackBar(
                   context,
                   "Failed to log out",
