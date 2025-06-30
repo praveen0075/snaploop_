@@ -6,10 +6,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class SupabaseStoragehelper {
   final SupabaseClient _client = Supabase.instance.client;
 
-  Future<String?> upLoadImageToSupaStore(File filePath, String folder) async {
+  Future<String?> upLoadImageToSupaStore(File? filePath, String folder) async {
     
     try {
-      if(filePath.path != ""){
+      if(filePath!.path != ""){
       final filename =
           DateTime.now().millisecondsSinceEpoch.toString();
       final path = "$folder/$filename";

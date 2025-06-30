@@ -10,7 +10,6 @@ class FirebaseUserProfileRepo implements UserprofileRepo {
   Future<UserProfileEntity?> getuserProfile(String id) async {
     final UserProfileEntity? user;
     try {
-
       final userProfileDoc = await firebstore.collection("Users").doc(id).get();
       if (userProfileDoc.exists) {
         final userData = userProfileDoc.data();
@@ -45,14 +44,22 @@ class FirebaseUserProfileRepo implements UserprofileRepo {
     String userId,
     String username,
     String userBio,
-    String userProfilePicUrl,
+    String? newUserProfilePicUrl,
   ) async {
     try {
-      await firebstore.collection("Users").doc(userId).update({
-        "userName": username,
-        "userBio": userBio,
-        "userprofilePicUrl": userProfilePicUrl,
-      });
+      // await firebstore.collection("Users").doc(userId).update({
+      //   "userName": username,
+      //   "userBio": userBio,
+      //   "userprofilePicUrl": userProfilePicUrl,
+      // });
+      final userRef = firebstore.collection("Users").doc(userId);
+      final updateData = {"userName": username, "userBio": userBio};
+
+      if (newUserProfilePicUrl != null) {
+        updateData["userprofilePicUrl"] = newUserProfilePicUrl;
+      }
+
+      await userRef.update(updateData);
     } catch (e) {
       throw Exception(e);
     }
@@ -70,7 +77,6 @@ class FirebaseUserProfileRepo implements UserprofileRepo {
           await firebstore.collection("Users").doc(toggleUserid).get();
 
       if (currentUser.exists && toggleUser.exists) {
-
         final cUserData = currentUser.data();
         final tuserData = toggleUser.data();
 
@@ -78,7 +84,6 @@ class FirebaseUserProfileRepo implements UserprofileRepo {
           final List<String> currentFollowing = List<String>.from(
             cUserData["followings"] ?? [],
           );
-
 
           if (currentFollowing.contains(toggleUserid)) {
             firebstore.collection("Users").doc(currentUserId).update({

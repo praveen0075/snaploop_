@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Padding(
               padding: const EdgeInsets.all(18),
               child: BlocConsumer<AuthBloc, AuthState>(
-                listener: (context, state) {
+                listener: (context, state) { 
                   if (state is AuthUserLoggedIn) {
                     customSnackBar(
                       context,

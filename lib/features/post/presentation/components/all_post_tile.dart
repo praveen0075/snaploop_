@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snap_loop/core/components/custom_delete_showdialog.dart';
 import 'package:snap_loop/core/constants/ksizedboxes.dart';
 import 'package:snap_loop/features/auth/data/auth_repository.dart';
 import 'package:snap_loop/features/auth/domain/entities/user_entity.dart';
@@ -105,29 +106,33 @@ class _AllPostTileState extends State<AllPostTile> {
   }
 
   void deleteAlertBox(void Function()? onPressed) {
-    showDialog(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            // title: Text("Delete?"),
-            content: Text(
-              "Are you sure about this?",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text("Cancel"),
-              ),
-
-              TextButton(
-                onPressed: onPressed,
-                child: Text("Delete", style: TextStyle(color: Colors.red)),
-              ),
-            ],
-          ),
-    );
+    deleteShowDialog(context: context,onPressed: onPressed);
   }
+
+  // Future<dynamic> deleteShowDialog(void Function()? onPressed) {
+  //   return showDialog(
+  //     context: context,
+  //     builder:
+  //         (context) => AlertDialog(
+  //           // title: Text("Delete?"),
+  //           content: Text(
+  //             "Are you sure about this?",
+  //             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+  //           ),
+  //           actions: [
+  //             TextButton(
+  //               onPressed: () => Navigator.pop(context),
+  //               child: Text("Cancel"),
+  //             ),
+
+  //             TextButton(
+  //               onPressed: onPressed,
+  //               child: Text("Delete", style: TextStyle(color: Colors.red)),
+  //             ),
+  //           ],
+  //         ),
+  //   );
+  // }
 
   void deleteComment(String commentId) {
     context.read<PostBloc>().add(
