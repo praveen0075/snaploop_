@@ -1,10 +1,11 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snap_loop/core/constants/ksizedboxes.dart';
 import 'package:snap_loop/features/auth/domain/entities/user_entity.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_event.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_state.dart';
+import 'package:snap_loop/features/profile/presentation/components/current_userstatus.dart';
 import 'package:snap_loop/features/profile/presentation/components/followbutton.dart';
 import 'package:snap_loop/features/profile/presentation/components/postsgrid_in_userprofile.dart';
 import 'package:snap_loop/features/profile/presentation/pages/edit_profile_page.dart';
@@ -38,13 +39,15 @@ class _UserProfilePageState extends State<UserProfilePage> {
         widget.userId,
       ),
     );
-
   }
+
+  String? name;
+  String? bio;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Profile")),
+      appBar: AppBar(title: Text("Profile"), centerTitle: true),
       body: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
           if (state is UserProfileUserDetailsLoadingState) {
@@ -52,102 +55,115 @@ class _UserProfilePageState extends State<UserProfilePage> {
           } else if (state is UserProfileUserDetailsFailedState) {
             return Center(child: Text(state.errorMsg));
           } else if (state is UserProfileUserDetailsLoadedState) {
-            return ListView(
-              children: [
-                CircleAvatar(
-                  radius: 50,
-                  child:
-                      state.user!.profilePicUrl == ""
-                          ? Center(child: Icon(Icons.person))
-                          : Image.network(
-                            state.user!.profilePicUrl!,
-                            fit: BoxFit.cover,
-                          ),
-                  // backgroundImage:
-                  //     state.user!.profilePicUrl == ""
-                  //         ? null
-                  //         : NetworkImage(state.user!.profilePicUrl!),
-                ),
-                Text(state.user!.userName!),
-                Text(state.user!.userBio!),
-                widget.userId == widget.currentUser!.userid
-                    ? GestureDetector(
-                      onTap:
-                          () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder:
-                                  (_) => BlocProvider<ProfileBloc>.value(
-                                    value: BlocProvider.of<ProfileBloc>(
-                                      context,
+            name = state.user?.userName;
+            bio = state.user?.userBio;
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  kh20,
+                  CircleAvatar(
+                    radius: 53,
+                    backgroundColor: Colors.grey,
+                    child:
+                        state.user!.profilePicUrl == ""
+                            ? CircleAvatar(
+                              radius: 50,
+                              backgroundColor: Colors.grey,
+                              child: Icon(Icons.person, size: 35),
+                            )
+                            : CircleAvatar(
+                              radius: 50,
+                              backgroundColor: Colors.grey,
+                              backgroundImage: NetworkImage(
+                                state.user!.profilePicUrl!,
+                              ),
+                            ),
+                  ),
+                  kh10,
+                  Text(
+                    name ?? "",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                  ),
+                  Text(
+                    bio ?? "",
+                    style: TextStyle(fontSize: 18, color: Colors.grey.shade700),
+                    textAlign: TextAlign.center,
+                  ),
+                  widget.userId == widget.currentUser!.userid
+                      ? GestureDetector(
+                        onTap:
+                            () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (_) => BlocProvider<ProfileBloc>.value(
+                                      value: BlocProvider.of<ProfileBloc>(
+                                        context,
+                                      ),
+                                      child: EditProfilePage(user: state.user),
                                     ),
-                                    child: EditProfilePage(user: state.user),
-                                  ),
+                              ),
+                            ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: const Color.fromARGB(33, 179, 166, 216),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Edit Profile",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17,
+                                ),
+                              ),
                             ),
                           ),
-                      child: Container(
-                        height: 50,
-                        width: 300,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(),
                         ),
-                        child: Center(child: Text("Edit Profile")),
+                      )
+                      : Followbutton(
+                        isFollowing: state.user!.followers.contains(
+                          widget.currentUser!.userid,
+                        ),
+                        onPressed: () {
+                          // followbButtonclicked(state.user!.followers);
+                          context.read<ProfileBloc>().add(
+                            FollowUnFollowButtonClickedEvent(
+                              widget.currentUser!.userid,
+                              widget.userId,
+                            ),
+                          );
+                        },
                       ),
-                    )
-                    : Followbutton(
-                      isFollowing: state.user!.followers.contains(
-                        widget.currentUser!.userid,
-                      ),
-                      onPressed: () {
-                        // followbButtonclicked(state.user!.followers);
-                        context.read<ProfileBloc>().add(
-                          FollowUnFollowButtonClickedEvent(
-                            widget.currentUser!.userid,
-                            widget.userId,
-                          ),
-                        );
-                      },
+                  kh10,
+                  CurrentUserStatus(posts: state.posts, user: state.user),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15,
+                      vertical: 10,
                     ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      children: [
-                        Text("Post"),
-                        Text(state.posts!.length.toString()),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Text("Followers"),
-                        Text(
-                          state.user!.followers.isEmpty
-                              ? "0"
-                              : state.user!.followers.length.toString(),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Text("Followings"),
-                        Text(
-                          state.user!.followings.isEmpty
-                              ? "0"
-                              : state.user!.followings.length.toString(),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Divider(),
-                PostsgridInUserprofile(
-                  userId: widget.userId,
-                  posts: state.posts,
-                  currentUser: widget.currentUser,
-                  isHome: false,
-                ),
-              ],
+                    child: Divider(thickness: 0),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child:
+                        state.posts!.isEmpty
+                            ? SizedBox(
+                              height: 300,
+                              child: Center(child: Text("No posts")),
+                            )
+                            : PostsgridInUserprofile(
+                              userId: widget.userId,
+                              posts: state.posts,
+                              currentUser: widget.currentUser,
+                              isHome: false,
+                            ),
+                  ),
+                ],
+              ),
             );
           } else {
             return Center(child: Text("Something went wrong internally"));

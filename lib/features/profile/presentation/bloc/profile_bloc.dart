@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/core/helpers/supabase_storagehelper.dart';
 import 'package:snap_loop/features/auth/domain/entities/user_entity.dart';
@@ -60,15 +61,20 @@ class ProfileBloc extends Bloc<ProfileEvents, ProfileState> {
     on<UpdateUserProfile>((event, emit) async {
       emit(UserProfileUserDetailsLoadingState());
       try {
-        final userProileUploadedImageUrl = await supabaseStoragehelper
-            .upLoadImageToSupaStore(event.userProfilePicUrl, "profilePics");
+        String? userProileUploadedImageUrl;
+        log(event.userProfilePicUrl.toString());
+        if(event.userProfilePicUrl.toString().startsWith("/")){
+             userProileUploadedImageUrl = await supabaseStoragehelper
+            .upLoadImageToSupaStore(File(event.userProfilePicUrl!), "profilePics");
+        }
+      
 
-        event.userProfilePicUrl.path == ""
+        event.userProfilePicUrl == ""
             ? await userprofileRepo.updateUserProfile(
               event.userId,
               event.userName,
               event.userBio,
-              userProileUploadedImageUrl ?? event.userProfilePicUrl.path,
+              userProileUploadedImageUrl ?? event.userProfilePicUrl!,
             )
             : await userprofileRepo.updateUserProfile(
               event.userId,

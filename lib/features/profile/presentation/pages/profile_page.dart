@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/core/constants/ksizedboxes.dart';
-import 'package:snap_loop/features/post/presentation/bloc/post_bloc.dart';
-import 'package:snap_loop/features/post/presentation/pages/userposts.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_event.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_state.dart';
+import 'package:snap_loop/features/profile/presentation/components/current_user_postgrid.dart';
+import 'package:snap_loop/features/profile/presentation/components/current_userstatus.dart';
 import 'package:snap_loop/features/profile/presentation/pages/edit_profile_page.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -33,14 +33,11 @@ class _ProfilePageState extends State<ProfilePage> {
           name = state.user?.userName;
           bio = state.user?.userBio;
           return Scaffold(
-            // appBar: AppBar(title: Text("Profile"),centerTitle: true,),
             body: SafeArea(
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    kh10,
-                    // Text("Profile",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w400),),
-                    kh10,
+                  kh20,
                     CircleAvatar(
                       radius: 53,
                       backgroundColor: Colors.grey,
@@ -62,11 +59,17 @@ class _ProfilePageState extends State<ProfilePage> {
                     kh10,
                     Text(
                       name ?? "",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
+                      ),
                     ),
                     Text(
                       bio ?? "",
-                      style: TextStyle(fontSize: 18, color: Colors.grey.shade700),
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.grey.shade700,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                     GestureDetector(
@@ -76,7 +79,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             MaterialPageRoute(
                               builder:
                                   (_) => BlocProvider<ProfileBloc>.value(
-                                    value: BlocProvider.of<ProfileBloc>(context),
+                                    value: BlocProvider.of<ProfileBloc>(
+                                      context,
+                                    ),
                                     child: EditProfilePage(user: state.user),
                                   ),
                             ),
@@ -87,9 +92,6 @@ class _ProfilePageState extends State<ProfilePage> {
                           height: 50,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            // border: Border.all(
-                            //   color: const Color.fromARGB(77, 104, 58, 183),
-                            // ),
                             color: const Color.fromARGB(33, 179, 166, 216),
                           ),
                           child: Center(
@@ -105,106 +107,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     kh10,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: const Color.fromARGB(148, 104, 58, 183),
-                            ),
-                            borderRadius: BorderRadius.circular(11),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 25,
-                              vertical: 10,
-                            ),
-                            child: Center(
-                              child: Column(
-                                children: [
-                                  Text(
-                                    state.posts!.length.toString(),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Post",
-                                    style: TextStyle(color: Colors.grey.shade700),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: const Color.fromARGB(148, 104, 58, 183),
-                            ),
-                            borderRadius: BorderRadius.circular(11),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 25,
-                              vertical: 10,
-                            ),
-                            child: Center(
-                              child: Column(
-                                children: [
-                                  Text(
-                                    state.user!.followers.isEmpty
-                                        ? "0"
-                                        : state.user!.followers.length.toString(),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Followers",
-                                    style: TextStyle(color: Colors.grey.shade700),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: const Color.fromARGB(148, 104, 58, 183),
-                            ),
-                            borderRadius: BorderRadius.circular(11),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 25,
-                              vertical: 10,
-                            ),
-                            child: Center(
-                              child: Column(
-                                children: [
-                                  Text(
-                                    state.user!.followings.isEmpty
-                                        ? "0"
-                                        : state.user!.followings.length
-                                            .toString(),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                  Text("Followings"),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    CurrentUserStatus(posts: state.posts, user: state.user),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 15,
@@ -214,44 +117,16 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: GridView.builder(
-                        // itemCount: state.posts!.length,
-                        itemCount: 10,
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          crossAxisSpacing: 6,
-                          mainAxisSpacing: 6,
-                        ),
-                        itemBuilder:
-                            (context, index) => GestureDetector(
-                              onTap:
-                                  () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder:
-                                          (_) => BlocProvider<PostBloc>.value(
-                                            value: BlocProvider.of(context),
-                                            child: Userposts(
-                                              postUserId: state.user!.userid,
-                                              currentUser: state.user,
-                                              isHome: false,
-                                            ),
-                                          ),
-                                    ),
-                                  ),
-                              child: Container(
-                                height: 50,
-                                width: 50,
-              
-                                decoration: BoxDecoration(color: Colors.grey),
-                                // child: Image.network(
-                                //   state.posts![index].imageUrl,
-                                // ),
+                      child:
+                          state.posts!.isEmpty
+                              ? SizedBox(
+                                height: 300,
+                                child: Center(child: Text("No posts")),
+                              )
+                              : ProfilePagePostsGridView(
+                                user: state.user,
+                                posts: state.posts,
                               ),
-                            ),
-                      ),
                     ),
                   ],
                 ),

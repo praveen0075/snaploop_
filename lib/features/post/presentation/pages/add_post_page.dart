@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/core/components/custom_snackbar.dart';
+import 'package:snap_loop/core/components/custom_textformfield.dart';
 import 'package:snap_loop/core/constants/ksizedboxes.dart';
 import 'package:snap_loop/core/components/custom_button.dart';
 import 'package:snap_loop/features/post/domain/entities/post_entity.dart';
@@ -110,6 +111,7 @@ class _AddPostPageState extends State<AddPostPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       GestureDetector(
                         onTap: pickImage,
@@ -119,7 +121,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           decoration: BoxDecoration(
                             color: Colors.grey.shade200,
                             borderRadius: BorderRadius.circular(12),
-                            border: Border.all(),
+                            border: Border.all( ),
                             image:
                                 pickedFile == null
                                     ? null
@@ -133,13 +135,12 @@ class _AddPostPageState extends State<AddPostPage> {
                         ),
                       ),
                       kh20,
-                      TextField(
-                        controller: captionController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: "Caption",
-                          hintStyle: TextStyle(color: Colors.black45),
-                        ),
+                      CustomeTextformfield(
+                        filledColor: Colors.white,
+                        txtController: captionController,
+                        hintText: "Caption",
+                        minLine: 3,
+                        maxLine: 5,
                       ),
                     ],
                   ),

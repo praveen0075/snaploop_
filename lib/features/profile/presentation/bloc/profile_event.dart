@@ -13,7 +13,7 @@ class UpdateUserProfile extends ProfileEvents {
   final String userId;
   final String userBio;
   final String userName;
-  final File userProfilePicUrl;
+  final String? userProfilePicUrl;
 
   UpdateUserProfile(
     this.userId,

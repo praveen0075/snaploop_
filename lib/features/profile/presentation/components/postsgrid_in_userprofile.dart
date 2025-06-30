@@ -31,6 +31,7 @@ class _PostsgridInUserprofileState extends State<PostsgridInUserprofile> {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
+      physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: widget.posts!.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -57,10 +58,17 @@ class _PostsgridInUserprofileState extends State<PostsgridInUserprofile> {
                 ),
               ),
           child: Container(
-            color: Colors.grey,
-            child: Image.network(
-              widget.posts![index].imageUrl,
-              fit: BoxFit.cover,
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(10),
+            ),
+
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.network(
+                widget.posts![index].imageUrl,
+                fit: BoxFit.fill,
+              ),
             ),
           ),
         );

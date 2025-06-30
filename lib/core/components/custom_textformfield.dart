@@ -5,7 +5,6 @@ class CustomeTextformfield extends StatefulWidget {
     super.key,
     required this.txtController,
     required this.hintText,
-    // required this.obscure,
     this.prefixIcon,
     this.filledColor,
     this.labetTxt,
@@ -17,7 +16,6 @@ class CustomeTextformfield extends StatefulWidget {
 
   final TextEditingController txtController;
   final String hintText;
-  // final bool obscure;
   final IconData? prefixIcon;
   final Color? filledColor;
   final String? labetTxt;
@@ -31,7 +29,6 @@ class CustomeTextformfield extends StatefulWidget {
 }
 
 class _CustomeTextformfieldState extends State<CustomeTextformfield> {
-  // bool _obscureText = true;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -48,7 +45,7 @@ class _CustomeTextformfieldState extends State<CustomeTextformfield> {
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
-          borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary),
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary,),
         ),
         hintText: widget.hintText,
         hintStyle: TextStyle(
@@ -63,18 +60,6 @@ class _CustomeTextformfieldState extends State<CustomeTextformfield> {
                   color: Theme.of(context).colorScheme.inversePrimary,
                 )
                 : null,
-        // suffixIcon: widget.suffixIcon != null ? IconButton(
-        //   onPressed: () {
-        //     setState(() {
-        //       _obscureText = !_obscureText;
-        //     });
-        //   },
-        //   icon: Icon(
-        //     _obscureText
-        //         ? Icons.visibility_off_outlined
-        //         : Icons.visibility_outlined,
-        //   ),
-        // ) : null
       ),
     );
   }

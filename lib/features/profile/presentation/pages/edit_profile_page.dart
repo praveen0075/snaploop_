@@ -26,6 +26,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final TextEditingController bioController = TextEditingController();
 
   File? _selectedProfilePic;
+  String? _userdp;
 
   Future<void> pickTheImage() async {
     final pickResult = await FilePicker.platform.pickFiles(
@@ -42,12 +43,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   void onSaveChanges() {
     log("button clicked");
+    if (_selectedProfilePic == null) {
+      _userdp = widget.user!.profilePicUrl;
+    } else {
+      _userdp = _selectedProfilePic!.path;
+    }
     context.read<ProfileBloc>().add(
       UpdateUserProfile(
         widget.user!.userid,
         bioController.text,
         nameController.text,
-        _selectedProfilePic!
+        _userdp,
       ),
     );
   }
@@ -83,6 +89,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       ],
                     ),
                   ),
+
                   Divider(thickness: 2, color: Colors.grey),
                   if (widget.user!.profilePicUrl != null &&
                       widget.user!.profilePicUrl != "" &&
@@ -93,7 +100,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           context: context,
                           onPressed: () {
                             setState(() {
-                              _selectedProfilePic = null;
+                              _selectedProfilePic = File("");
                             });
 
                             // widget.user?.profilePicUrl = "";
