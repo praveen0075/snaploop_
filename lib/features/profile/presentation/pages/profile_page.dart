@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snap_loop/core/constants/kcolors.dart';
 import 'package:snap_loop/core/constants/ksizedboxes.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_event.dart';
@@ -88,9 +89,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                       child: Padding(
                         padding: const EdgeInsets.all(15),
-                        child: Container(
+                        child: Container( 
                           height: 50,
                           decoration: BoxDecoration(
+                            border: Border.all(width: 0.3,color: Color.fromARGB(148, 104, 58, 183)),
                             borderRadius: BorderRadius.circular(20),
                             color: const Color.fromARGB(33, 179, 166, 216),
                           ),

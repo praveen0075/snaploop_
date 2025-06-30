@@ -47,7 +47,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Profile"), centerTitle: true),
+      appBar: AppBar(title: Text("Profile"), centerTitle: true,backgroundColor: Colors.white,),
       body: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
           if (state is UserProfileUserDetailsLoadingState) {

@@ -27,15 +27,19 @@ class SearchResultList extends StatelessWidget {
       // itemCount: 50,
       itemBuilder: (context, index) {
         final user = searchResults[index];
-        return ListTile(
+        return ListTile( 
           leading: CircleAvatar(
-            radius: 23,
+            radius: 24,
             backgroundColor: Colors.grey,
-            backgroundImage:
-                user.userProfilePic == ""
-                    ? null
-                    : NetworkImage(user.userProfilePic),
-            child: user.userProfilePic == "" ? Icon(Icons.person) : null,
+            child: CircleAvatar(
+              radius: 22,
+              backgroundColor: Colors.grey,
+              backgroundImage:
+                  user.userProfilePic == ""
+                      ? null
+                      : NetworkImage(user.userProfilePic),
+              child: user.userProfilePic == "" ? Icon(Icons.person) : null,
+            ),
           ),
           title: GestureDetector(
             onTap: () {

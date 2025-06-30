@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/core/components/custom_snackbar.dart';
+import 'package:snap_loop/core/constants/kcolors.dart';
 import 'package:snap_loop/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:snap_loop/features/auth/presentation/bloc/auth_event.dart';
 import 'package:snap_loop/features/auth/presentation/bloc/auth_state.dart';
@@ -33,7 +34,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(35, 104, 58, 183),
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(4, 104, 58, 183),
+        title: Text("SnapLoop"),
         actions: [
           BlocConsumer<AuthBloc, AuthState>(
             listener: (context, state) {

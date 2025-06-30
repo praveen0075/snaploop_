@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/core/constants/ksizedboxes.dart';
+import 'package:snap_loop/features/post/presentation/bloc/post_bloc.dart';
+import 'package:snap_loop/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:snap_loop/features/profile/presentation/pages/user_profile_page.dart';
 import 'package:snap_loop/features/search/presentation/bloc/search_bloc.dart';
 import 'package:snap_loop/features/search/presentation/bloc/search_event.dart';
 import 'package:snap_loop/features/search/presentation/bloc/search_state.dart';
-import 'package:snap_loop/features/search/presentation/components/searchresult_list.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -114,10 +116,63 @@ class _SearchPageState extends State<SearchPage> {
                     if (state is SearchLoadingState) {
                       return Center(child: CircularProgressIndicator());
                     } else if (state is SearchLoadedState) {
-                      return SearchResultList(
-                        scrollController: _scrollController,
-                        userEntity: state.userEntity,
-                        searchResults: state.searchResults,
+                      return ListView.builder(
+                        controller: _scrollController,
+                        itemCount: state.searchResults.length,
+                        itemBuilder: (context, index) {
+                          final user = state.searchResults[index];
+                          return ListTile(
+                            leading: CircleAvatar(
+                              radius: 24,
+                              backgroundColor: Colors.grey,
+                              child: CircleAvatar(
+                                radius: 22,
+                                backgroundColor: Colors.grey,
+                                backgroundImage:
+                                    user.userProfilePic == ""
+                                        ? null
+                                        : NetworkImage(user.userProfilePic),
+                                child:
+                                    user.userProfilePic == ""
+                                        ? Icon(Icons.person)
+                                        : null,
+                              ),
+                            ),
+                            title: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (_) => MultiBlocProvider(
+                                          providers: [
+                                            BlocProvider<ProfileBloc>.value(
+                                              value:
+                                                  BlocProvider.of<ProfileBloc>(
+                                                    context,
+                                                  ),
+                                            ),
+                                            BlocProvider<PostBloc>.value(
+                                              value: BlocProvider.of<PostBloc>(
+                                                context,
+                                              ),
+                                            ),
+                                          ],
+                                          child: UserProfilePage(
+                                            userId: user.userId,
+                                            currentUser: state.userEntity,
+                                          ),
+                                        ),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                user.userName,
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ),
+                          );
+                        },
                       );
                     } else if (state is SearchNoResults) {
                       return Center(
