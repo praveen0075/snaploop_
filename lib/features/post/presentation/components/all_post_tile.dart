@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/core/components/custom_delete_showdialog.dart';
@@ -6,7 +5,6 @@ import 'package:snap_loop/core/constants/kcolors.dart';
 import 'package:snap_loop/core/constants/ksizedboxes.dart';
 import 'package:snap_loop/features/auth/data/auth_repository.dart';
 import 'package:snap_loop/features/auth/domain/entities/user_entity.dart';
-import 'package:snap_loop/core/components/custom_textformfield.dart';
 import 'package:snap_loop/features/post/domain/entities/comment_entity.dart';
 import 'package:snap_loop/features/post/domain/entities/post_entity.dart';
 import 'package:snap_loop/features/post/presentation/bloc/post_bloc.dart';
@@ -39,51 +37,110 @@ class _AllPostTileState extends State<AllPostTile> {
 
   TextEditingController commentTextController = TextEditingController();
 
-  Widget commentSection() {
-    return BottomSheet(
-      onClosing: () {},
-      builder:
-          (context) => ListView.builder(
-            itemBuilder: (context, index) {
-              return ListTile(
-                leading: CircleAvatar(),
-                title: Text("username"),
-                subtitle: Text("comment"),
+  // comment section bottom sheet //
+  void showCommentsBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        final comments = widget.post[widget.index].comments;
+        return Padding(
+          padding: MediaQuery.of(context).viewInsets,
+          child: DraggableScrollableSheet(
+            initialChildSize: 0.7,
+            minChildSize: 0.4,
+            maxChildSize: 0.95,
+            expand: false,
+            builder: (context, scrollController) {
+              return Column(
+                children: [
+                  kh10,
+                  Text(
+                    "All Comments",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Expanded(
+                    child:
+                        comments.isEmpty
+                            ? Center(child: Text("No comments yet!"))
+                            : ListView.builder(
+                              controller: scrollController,
+                              itemCount: comments.length,
+                              itemBuilder: (context, index) {
+                                final sortedComments = List<CommentEntity>.from(
+                                  widget.post[widget.index].comments,
+                                )..sort(
+                                  (a, b) => b.timeStamp.compareTo(a.timeStamp),
+                                );
+                                final comment = sortedComments[index];
+                                return InkWell(
+                                  onLongPress: () {
+                                    comment.userId == widget.currentUser!.userid
+                                        ? deleteAlertBox(
+                                          () =>
+                                              deleteComment(comment.commentId),
+                                        )
+                                        : null;
+                                  },
+                                  child: ListTile(
+                                    title: Text(
+                                      comment.userName,
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        color: Colors.grey.shade800,
+                                      ),
+                                    ),
+                                    subtitle: Text(
+                                      comment.commentTxt,
+                                      style: TextStyle(fontSize: 15),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 10,
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: commentTextController,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: kTextFieldFilledColor,
+                              hintText: "Add a comment...",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              suffixIcon: IconButton(
+                                icon: Icon(Icons.send),
+                                onPressed: addNewComment,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               );
             },
           ),
+        );
+      },
     );
   }
 
-  void newCommentBox() {
-    showDialog(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            title: Text("Add new comment"),
-            content: CustomeTextformfield(
-              txtController: commentTextController,
-              hintText: "Comment here...",
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text("Cancel"),
-              ),
+  // --------  Helper functions -------- //
 
-              TextButton(
-                onPressed: () {
-                  addNewComment();
-
-                  Navigator.pop(context);
-                },
-                child: Text("Send"),
-              ),
-            ],
-          ),
-    );
-  }
-
+  // add new comment//
   void addNewComment() {
     final newComment = CommentEntity(
       commentId: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -103,14 +160,19 @@ class _AllPostTileState extends State<AllPostTile> {
           widget.userId,
         ),
       );
+      setState(() {
+        widget.post[widget.index].comments.add(newComment);
+        commentTextController.clear();
+      });
     }
   }
 
+  // delete alert box showing function//
   void deleteAlertBox(void Function()? onPressed) {
-    deleteShowDialog(context: context,onPressed: onPressed);
+    deleteShowDialog(context: context, onPressed: onPressed);
   }
 
-
+  // delete the commetn function//
   void deleteComment(String commentId) {
     context.read<PostBloc>().add(
       DeleteComment(
@@ -120,6 +182,13 @@ class _AllPostTileState extends State<AllPostTile> {
         widget.userId,
       ),
     );
+    setState(() {
+      widget.post[widget.index].comments.removeWhere(
+        (element) => element.commentId == commentId,
+      );
+    });
+    Navigator.pop(context);
+    Navigator.pop(context);
   }
 
   @override
@@ -128,6 +197,7 @@ class _AllPostTileState extends State<AllPostTile> {
     commentTextController.dispose();
   }
 
+  // like and unlike//
   void likeAndDislike() {
     final liked = widget.post[widget.index].likes.contains(
       widget.currentUser!.userid,
@@ -159,6 +229,7 @@ class _AllPostTileState extends State<AllPostTile> {
     }
   }
 
+  // ----- Builder ----//
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -208,7 +279,7 @@ class _AllPostTileState extends State<AllPostTile> {
                                               context,
                                             ),
                                           ),
-          
+
                                           BlocProvider.value(
                                             value: BlocProvider.of<PostBloc>(
                                               context,
@@ -216,7 +287,8 @@ class _AllPostTileState extends State<AllPostTile> {
                                           ),
                                         ],
                                         child: UserProfilePage(
-                                          userId: widget.post[widget.index].userId,
+                                          userId:
+                                              widget.post[widget.index].userId,
                                           currentUser: widget.currentUser,
                                         ),
                                       ),
@@ -229,30 +301,35 @@ class _AllPostTileState extends State<AllPostTile> {
                         ),
                       ],
                     ),
-                    widget.post[widget.index].userId == widget.currentUser!.userid
+                    widget.post[widget.index].userId ==
+                            widget.currentUser!.userid
                         ? GestureDetector(
                           onTap:
                               () => deleteAlertBox(() {
                                 context.read<PostBloc>().add(
-                                  DeletePostEvent(widget.post[widget.index].postId),
+                                  DeletePostEvent(
+                                    widget.post[widget.index].postId,
+                                  ),
                                 );
                                 Navigator.pop(context);
                               }),
-          
-                          child: Icon(Icons.delete_outline_outlined),
+
+                          child: Icon(
+                            Icons.delete_outline_outlined,
+                            color: Colors.grey,
+                          ),
                         )
                         : SizedBox(width: 2),
                   ],
                 ),
                 kh10,
-                // Text(" ${widget.post[widget.index].caption}"),
                 kh10,
                 SizedBox(
                   child: Image(
                     image: NetworkImage(widget.post[widget.index].imageUrl),
                   ),
                 ),
-          
+
                 kh10,
                 Row(
                   children: [
@@ -268,13 +345,12 @@ class _AllPostTileState extends State<AllPostTile> {
                     Text(widget.post[widget.index].likes.length.toString()),
                     kw10,
                     GestureDetector(
-                      onLongPress: commentSection,
-                      onTap: newCommentBox,
+                      // onLongPress: commentSection,
+                      onTap: showCommentsBottomSheet,
                       child: Icon(Icons.comment),
                     ),
                     Text(widget.post[widget.index].comments.length.toString()),
                     const Spacer(),
-                    // Text(widget.post[widget.index].timeStamp.toString()),
                   ],
                 ),
                 Padding(
@@ -285,53 +361,10 @@ class _AllPostTileState extends State<AllPostTile> {
                         widget.post[widget.index].userName,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                            
+
                       Text(" ${widget.post[widget.index].caption}"),
                     ],
                   ),
-                ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: widget.post[widget.index].comments.length,
-                  itemBuilder: (context, index) {
-                    return SizedBox(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                "${widget.post[widget.index].comments[index].userName} ",
-                              ),
-                              Text(
-                                widget
-                                    .post[widget.index]
-                                    .comments[index]
-                                    .commentTxt,
-                              ),
-                            ],
-                          ),
-                          widget.post[widget.index].comments[index].userId ==
-                                  widget.currentUser!.userid
-                              ? GestureDetector(
-                                onTap: () {
-                                  deleteAlertBox(() {
-                                    deleteComment(
-                                      widget
-                                          .post[widget.index]
-                                          .comments[index]
-                                          .commentId,
-                                    );
-                                    Navigator.pop(context);
-                                  });
-                                },
-                                child: Icon(Icons.delete_outline),
-                              )
-                              : SizedBox(width: 3),
-                        ],
-                      ),
-                    );
-                  },
                 ),
               ],
             ),

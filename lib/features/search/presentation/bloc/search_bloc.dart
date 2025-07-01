@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/features/auth/domain/entities/user_entity.dart';
 import 'package:snap_loop/features/auth/domain/repositories/auth_repo.dart';
@@ -48,7 +47,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     on<SearchUserByName>((event, emit) async {
       final results =
           allUsers.where((user) {
-            return user.userName.toLowerCase().contains(
+            return user.userName.toLowerCase().startsWith(
               event.query.toLowerCase(),
             );
           }).toList();
@@ -58,7 +57,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       } else {
         final UserEntity? userEntity = await authRepo.getCurrentUser();
         if (userEntity != null) {
-          emit(SearchLoadedState(allUsers, userEntity));
+          emit(SearchLoadedState(results, userEntity));
         } else {
           emit(SearchErrorState("Unautherized user"));
         }

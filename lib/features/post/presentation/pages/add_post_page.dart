@@ -130,7 +130,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     ),
                           ),
                           child: Center(
-                            child: Icon(Icons.add_photo_alternate_outlined),
+                            child:  Icon(Icons.add_photo_alternate_outlined),
                           ),
                         ),
                       ),

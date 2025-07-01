@@ -25,6 +25,7 @@ class CommentEntity {
       "userName": userName,
       "commentTxt": commentTxt,
       "timeStamp": Timestamp.fromDate(timeStamp),
+      
     };
   }
 

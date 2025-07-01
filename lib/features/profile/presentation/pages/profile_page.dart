@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snap_loop/core/constants/kcolors.dart';
 import 'package:snap_loop/core/constants/ksizedboxes.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_event.dart';
@@ -8,6 +7,8 @@ import 'package:snap_loop/features/profile/presentation/bloc/profile_state.dart'
 import 'package:snap_loop/features/profile/presentation/components/current_user_postgrid.dart';
 import 'package:snap_loop/features/profile/presentation/components/current_userstatus.dart';
 import 'package:snap_loop/features/profile/presentation/pages/edit_profile_page.dart';
+
+// -------- Current app user profile page ---------//
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -34,11 +35,23 @@ class _ProfilePageState extends State<ProfilePage> {
           name = state.user?.userName;
           bio = state.user?.userBio;
           return Scaffold(
+            appBar: AppBar(
+              title: Text("Profile"),
+              centerTitle: true,
+              actions: [
+                GestureDetector(
+                  onTap: (){
+                    
+                  },
+                  child: Icon(Icons.settings_outlined, color: Colors.grey.shade700)),
+                kw10,
+              ],
+            ),
             body: SafeArea(
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                  kh20,
+                    kh20,
                     CircleAvatar(
                       radius: 53,
                       backgroundColor: Colors.grey,
@@ -89,10 +102,13 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                       child: Padding(
                         padding: const EdgeInsets.all(15),
-                        child: Container( 
+                        child: Container(
                           height: 50,
                           decoration: BoxDecoration(
-                            border: Border.all(width: 0.3,color: Color.fromARGB(148, 104, 58, 183)),
+                            border: Border.all(
+                              width: 0.3,
+                              color: Color.fromARGB(148, 104, 58, 183),
+                            ),
                             borderRadius: BorderRadius.circular(20),
                             color: const Color.fromARGB(33, 179, 166, 216),
                           ),
