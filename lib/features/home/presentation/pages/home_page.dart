@@ -34,6 +34,7 @@ class _HomePageState extends State<HomePage> {
         headerSliverBuilder:
             (context, innerBoxIsScrolled) => [
               SliverAppBar(
+                
                 floating: true,
                 snap: true,
                 elevation: 0,

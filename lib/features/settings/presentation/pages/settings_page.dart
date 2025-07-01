@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/core/components/custom_alertbox.dart';
 import 'package:snap_loop/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:snap_loop/features/auth/presentation/bloc/auth_event.dart';
+import 'package:snap_loop/features/settings/presentation/pages/about_page.dart';
+import 'package:snap_loop/features/settings/presentation/pages/term_and_condtions_page.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -15,28 +17,65 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
     return Scaffold(
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        title: Text("Settings",style: TextStyle(fontWeight: FontWeight.bold),),
+        title: Text(
+          "Settings",
+          style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: colorScheme.surface,
+        iconTheme: IconThemeData(color: colorScheme.inversePrimary),
       ),
       body: Column(
         children: [
           ListTile(
-            leading: Icon(Icons.info_outline),
-            title: Text("About"),
-            trailing: Icon(Icons.keyboard_arrow_right),
+            onTap:
+                () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AboutPage()),
+                ),
+            leading: Icon(
+              Icons.info_outline,
+              color: colorScheme.inversePrimary,
+            ),
+            title: Text("About", style: textTheme.bodyLarge),
+            trailing: Icon(
+              Icons.keyboard_arrow_right,
+              color: colorScheme.inversePrimary,
+            ),
           ),
           ListTile(
-            leading: Icon(Icons.check_box_outlined),
-            title: Text("Terms & Conditions"),
-            trailing: Icon(Icons.keyboard_arrow_right),
+            onTap:
+                () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TermAndCondtionsPage(),
+                  ),
+                ),
+            leading: Icon(
+              Icons.check_box_outlined,
+              color: colorScheme.inversePrimary,
+            ),
+            title: Text("Terms & Conditions", style: textTheme.bodyLarge),
+            trailing: Icon(
+              Icons.keyboard_arrow_right,
+              color: colorScheme.outline,
+            ),
           ),
           ListTile(
-            leading: Icon(Icons.share_outlined),
-            title: Text("Share the application"),
-            trailing: Icon(Icons.keyboard_arrow_right),
+            leading: Icon(
+              Icons.share_outlined,
+              color: colorScheme.inversePrimary,
+            ),
+            title: Text("Share the application", style: textTheme.bodyLarge),
+            trailing: Icon(
+              Icons.keyboard_arrow_right,
+              color: colorScheme.outline,
+            ),
           ),
           ListTile(
             onTap: () {

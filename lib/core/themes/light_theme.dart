@@ -7,8 +7,8 @@ ThemeData lightTheme = ThemeData(
     surface: Colors.white,
     primary: Color.fromARGB(238, 104, 58, 183),    
     secondary: Colors.grey,  
-    tertiary: Color.fromARGB(33, 179, 166, 216),    
-    inversePrimary: Colors.grey.shade700,            
+    tertiary: Color.fromARGB(33, 179, 166, 216),     
+    inversePrimary: Colors.grey.shade800,            
   ),
   scaffoldBackgroundColor: Colors.white,
   appBarTheme: AppBarTheme(

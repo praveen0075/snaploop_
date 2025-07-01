@@ -140,7 +140,7 @@ class _SearchPageState extends State<SearchPage> {
                           final user = state.searchResults[index];
                           return ListTile(
                             leading: CircleAvatar(
-                              radius: 24, 
+                              radius: 24,
                               backgroundColor: colorScheme.secondary,
                               child: CircleAvatar(
                                 radius: 22,

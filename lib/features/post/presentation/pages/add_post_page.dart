@@ -77,87 +77,110 @@ class _AddPostPageState extends State<AddPostPage> {
     super.dispose();
     captionController.dispose();
   }
+@override
+Widget build(BuildContext context) {
+  final colorScheme = Theme.of(context).colorScheme;
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<PostBloc, PostState>(
-      listener: (context, state) {
-        if (state is GetCurrentUserSuccessState) {
-          setState(() {
-            currentUser = state.userEntity;
-          });
-        } else if (state is PostLoadingSuccessState) {
-          captionController.clear();
-          pickedFile = null;
-          customSnackBar(
-            context,
-            "posted Successfully",
-            Colors.white,
-            Colors.green,
-          );
-        } else if (state is PostErrorState) {
-          customSnackBar(context, state.errorMsg, Colors.white, Colors.red);
-        }
-      },
-      builder: (context, state) {
-        if (state is PostLoadingState) {
-          return Center(child: CircularProgressIndicator());
-        } else if (currentUser != null || state is PostLoadingSuccessState) {
-          return Scaffold(
-            appBar: AppBar(title: Text("Add Post"), centerTitle: true),
-            body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      GestureDetector(
-                        onTap: pickImage,
-                        child: Container(
-                          width: double.infinity,
-                          height: 250,
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade200,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(),
-                            image:
-                                pickedFile == null
-                                    ? null
-                                    : DecorationImage(
-                                      image: FileImage(pickedFile!),
-                                    ),
-                          ),
-                          child: Center(
-                            child: Icon(Icons.add_photo_alternate_outlined),
-                          ),
-                        ),
-                      ),
-                      kh20,
-                      CustomeTextformfield(
-                        filledColor: Colors.white,
-                        txtController: captionController,
-                        hintText: "Caption",
-                        minLine: 3,
-                        maxLine: 5,
-                      ),
-                    ],
-                  ),
-                  CustomButton(
-                    buttonText: "Submit",
-                    buttonColor: Colors.deepPurple,
-                    buttonTextColor: Colors.white,
-                    onTap: uploadPost,
-                  ),
-                ],
-              ),
+  return BlocConsumer<PostBloc, PostState>(
+    listener: (context, state) {
+      if (state is GetCurrentUserSuccessState) {
+        setState(() {
+          currentUser = state.userEntity;
+        });
+      } else if (state is PostLoadingSuccessState) {
+        captionController.clear();
+        pickedFile = null;
+        customSnackBar(
+          context,
+          "Posted successfully",
+          Colors.white,
+          Colors.green,
+        );
+      } else if (state is PostErrorState) {
+        customSnackBar(context, state.errorMsg, Colors.white, Colors.red);
+      }
+    },
+    builder: (context, state) {
+      if (state is PostLoadingState) {
+        return Center(child: CircularProgressIndicator());
+      } else if (currentUser != null || state is PostLoadingSuccessState) {
+        return Scaffold(
+          backgroundColor: colorScheme.surface,
+          appBar: AppBar(
+            title: Text(
+              "Add Post",
+              style: TextStyle(color: colorScheme.inversePrimary),
             ),
-          );
-        } else {
-          return Center(child: Text("Loading user info..."));
-        }
-      },
-    );
-  }
+            backgroundColor: colorScheme.surface,
+            elevation: 0,
+            centerTitle: true,
+            iconTheme: IconThemeData(color: colorScheme.inversePrimary),
+          ),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: pickImage,
+                      child: Container(
+                        width: double.infinity,
+                        height: 250,
+                        decoration: BoxDecoration(
+                          color: colorScheme.tertiary,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: colorScheme.primary),
+                          image: pickedFile == null
+                              ? null
+                              : DecorationImage(
+                                  image: FileImage(pickedFile!),
+                                  fit: BoxFit.cover,
+                                ),
+                        ),
+                        child: pickedFile == null
+                            ? Center(
+                                child: Icon(
+                                  Icons.add_photo_alternate_outlined,
+                                  color: colorScheme.inversePrimary,
+                                  size: 40,
+                                ),
+                              )
+                            : null,
+                      ),
+                    ),
+                    kh20,
+                    CustomeTextformfield(
+                      filledColor: colorScheme.surface,
+                      txtController: captionController,
+                      hintText: "Caption",
+                      minLine: 3,
+                      maxLine: 5,
+             
+                    ),
+                  ],
+                ),
+                CustomButton(
+                  buttonText: "Submit",
+                  buttonColor: colorScheme.primary,
+                  buttonTextColor: Colors.white,
+                  onTap: uploadPost,
+                ),
+              ],
+            ),
+          ),
+        );
+      } else {
+        return Center(
+          child: Text(
+            "Loading user info...",
+            style: TextStyle(color: colorScheme.inversePrimary),
+          ),
+        );
+      }
+    },
+  );
+}
 }

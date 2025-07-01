@@ -31,15 +31,19 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return BlocConsumer<ProfileBloc, ProfileState>(
       builder: (context, state) {
         if (state is UserProfileUserDetailsLoadedState) {
           name = state.user?.userName;
           bio = state.user?.userBio;
+
           return Scaffold(
+            backgroundColor: colorScheme.surface,
             appBar: AppBar(
-              title: Text("Profile"),
-              backgroundColor: Colors.white,
+              title: const Text("Profile"),
+              backgroundColor: colorScheme.surface,
               centerTitle: true,
               actions: [
                 GestureDetector(
@@ -47,20 +51,17 @@ class _ProfilePageState extends State<ProfilePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder:
-                            (_) =>
-                            // SettingsPage()
-                            BlocProvider.value(
-                              value: BlocProvider.of<AuthBloc>(context),
-                              child: SettingsPage(),
-                            ),
+                        builder: (_) => BlocProvider.value(
+                          value: BlocProvider.of<AuthBloc>(context),
+                          child: const SettingsPage(),
+                        ),
                       ),
                     );
                   },
                   child: Icon(
                     Icons.settings_outlined,
-                    color: Colors.grey.shade700,
-                  ),
+                    color: colorScheme.inversePrimary.withValues(alpha: 0.9),
+                  ),    
                 ),
                 kw10,
               ],
@@ -72,21 +73,25 @@ class _ProfilePageState extends State<ProfilePage> {
                     kh20,
                     CircleAvatar(
                       radius: 53,
-                      backgroundColor: Colors.grey,
-                      child:
-                          state.user!.profilePicUrl == ""
-                              ? CircleAvatar(
-                                radius: 50,
-                                backgroundColor: Colors.grey,
-                                child: Icon(Icons.person, size: 35),
-                              )
-                              : CircleAvatar(
-                                radius: 50,
-                                backgroundColor: Colors.grey,
-                                backgroundImage: NetworkImage(
-                                  state.user!.profilePicUrl!,
-                                ),
+                      backgroundColor:
+                          colorScheme.primary.withValues(alpha: 0.4),
+                      child: state.user!.profilePicUrl == ""
+                          ? CircleAvatar(
+                              radius: 50,
+                              backgroundColor:
+                                  colorScheme.secondary.withValues(alpha: 0.3),
+                              child: Icon(
+                                Icons.person,
+                                size: 35,
+                                color: colorScheme.inversePrimary,
                               ),
+                            )
+                          : CircleAvatar(
+                              radius: 50,
+                              backgroundColor: Colors.transparent,
+                              backgroundImage:
+                                  NetworkImage(state.user!.profilePicUrl!),
+                            ),
                     ),
                     kh10,
                     Text(
@@ -94,41 +99,38 @@ class _ProfilePageState extends State<ProfilePage> {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 22,
+                        color: colorScheme.inversePrimary,
                       ),
                     ),
                     Text(
                       bio ?? "",
                       style: TextStyle(
                         fontSize: 18,
-                        color: Colors.grey.shade700,
+                        color: colorScheme.inversePrimary.withValues(alpha: 0.7),
                       ),
                       textAlign: TextAlign.center,
                     ),
                     GestureDetector(
-                      onTap:
-                          () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder:
-                                  (_) => BlocProvider<ProfileBloc>.value(
-                                    value: BlocProvider.of<ProfileBloc>(
-                                      context,
-                                    ),
-                                    child: EditProfilePage(user: state.user),
-                                  ),
-                            ),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => BlocProvider<ProfileBloc>.value(
+                            value: BlocProvider.of<ProfileBloc>(context),
+                            child: EditProfilePage(user: state.user),
                           ),
+                        ),
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.all(15),
                         child: Container(
                           height: 50,
                           decoration: BoxDecoration(
                             border: Border.all(
-                              width: 0.3,
-                              color: Color.fromARGB(148, 104, 58, 183),
+                              width: 0.8,
+                              color: colorScheme.primary,
                             ),
                             borderRadius: BorderRadius.circular(20),
-                            color: const Color.fromARGB(33, 179, 166, 216),
+                            color: colorScheme.primary.withValues(alpha: 0.1),
                           ),
                           child: Center(
                             child: Text(
@@ -136,6 +138,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17,
+                                color: colorScheme.primary,
                               ),
                             ),
                           ),
@@ -143,26 +146,26 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     kh10,
-                    CurrentUserStatus(posts: state.posts, user: state.user),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 15,
-                        vertical: 10,
-                      ),
-                      child: Divider(thickness: 0),
+                    CurrentUserStatus(
+                      posts: state.posts,
+                      user: state.user,
+                    ),
+                    const Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                      child: Divider(thickness: 0.5),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child:
-                          state.posts!.isEmpty
-                              ? SizedBox(
-                                height: 300,
-                                child: Center(child: Text("No posts")),
-                              )
-                              : ProfilePagePostsGridView(
-                                user: state.user,
-                                posts: state.posts,
-                              ),
+                      child: state.posts!.isEmpty
+                          ? const SizedBox(
+                              height: 300,
+                              child: Center(child: Text("No posts")),
+                            )
+                          : ProfilePagePostsGridView(
+                              user: state.user,
+                              posts: state.posts,
+                            ),
                     ),
                   ],
                 ),
@@ -170,7 +173,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           );
         } else {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
       },
       listener: (context, state) {},

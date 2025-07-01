@@ -22,7 +22,6 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   final TextEditingController nameController = TextEditingController();
-
   final TextEditingController bioController = TextEditingController();
 
   File? _selectedProfilePic;
@@ -48,17 +47,20 @@ class _EditProfilePageState extends State<EditProfilePage> {
     } else {
       _userdp = _selectedProfilePic!.path;
     }
+
     context.read<ProfileBloc>().add(
-      UpdateUserProfile(
-        widget.user!.userid,
-        bioController.text,
-        nameController.text,
-        _userdp,
-      ),
-    );
+          UpdateUserProfile(
+            widget.user!.userid,
+            bioController.text,
+            nameController.text,
+            _userdp,
+          ),
+        );
   }
 
   void openBottomSheetForProfilePic() {
+    final colorScheme = Theme.of(context).colorScheme;
+
     showModalBottomSheet(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -66,6 +68,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           topRight: Radius.circular(10.0),
         ),
       ),
+      backgroundColor: colorScheme.surface.withValues(alpha: 0.97),
       context: context,
       builder: (context) {
         return SizedBox(
@@ -84,15 +87,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     child: Row(
                       children: [
                         kw10,
-                        Icon(Icons.image),
-                        Text("New profile picture"),
+                        Icon(Icons.image, color: colorScheme.inversePrimary),
+                        Text("New profile picture",
+                            style: TextStyle(color: colorScheme.inversePrimary)),
                       ],
                     ),
                   ),
-
-                  Divider(thickness: 2, color: Colors.grey),
+                  Divider(thickness: 0, color: colorScheme.outlineVariant),
                   if (widget.user!.profilePicUrl != null &&
-                      widget.user!.profilePicUrl != "" &&
                       widget.user!.profilePicUrl!.isNotEmpty)
                     GestureDetector(
                       onTap: () {
@@ -103,8 +105,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             setState(() {
                               _selectedProfilePic = File("");
                             });
-
-                            // widget.user?.profilePicUrl = "";
                             Navigator.pop(context);
                           },
                         );
@@ -112,11 +112,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       child: Row(
                         children: [
                           kw10,
-                          Icon(Icons.delete, color: Colors.red),
-                          Text(
-                            "Remove Profile picture",
-                            style: TextStyle(color: Colors.red),
-                          ),
+                          Icon(Icons.delete, color: colorScheme.error),
+                          Text("Remove Profile picture",
+                              style: TextStyle(color: colorScheme.error)),
                         ],
                       ),
                     ),
@@ -131,10 +129,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     nameController.text = widget.user!.userName ?? "";
     bioController.text = widget.user!.userBio ?? "";
+
     return Scaffold(
-      appBar: AppBar(title: Text("Edit Profile"), centerTitle: true),
+      appBar: AppBar(
+        title: const Text("Edit Profile"),
+        centerTitle: true,
+        backgroundColor: colorScheme.background,
+      ),
       body: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {
           if (state is UserProfileUserDetailsLoadedState) {
@@ -143,7 +147,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         },
         builder: (context, state) {
           if (state is UserProfileUserDetailsLoadingState) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           return Padding(
             padding: const EdgeInsets.all(15),
@@ -155,31 +159,30 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
-                        onTap: () => openBottomSheetForProfilePic(),
+                        onTap: openBottomSheetForProfilePic,
                         child: CircleAvatar(
                           radius: 53,
-                          backgroundColor: Colors.grey,
-                          child:
-                              _selectedProfilePic == null
-                                  ? CircleAvatar(
-                                    radius: 50,
-                                    backgroundColor: Colors.grey,
-                                    backgroundImage:
-                                        widget.user!.profilePicUrl == ""
-                                            ? null
-                                            : NetworkImage(
+                          backgroundColor:
+                              colorScheme.primary.withValues(alpha: 0.4),
+                          child: _selectedProfilePic == null 
+                              ? CircleAvatar(
+                                  radius: 50,
+                                  backgroundColor: colorScheme.secondary.withValues(alpha: 0.3),
+                                  backgroundImage:
+                                      widget.user!.profilePicUrl == ""
+                                          ? null
+                                          : NetworkImage(
                                               widget.user!.profilePicUrl!,
                                             ),
-                                    child: Center(child: Icon(Icons.person)),
-                                  )
-                                  : CircleAvatar(
-                                    radius: 50,
-                                    backgroundColor: Colors.grey,
-                                    backgroundImage: FileImage(
-                                      _selectedProfilePic!,
-                                    ),
-                                    child: Center(child: Icon(Icons.person)),
-                                  ),
+                                  child: const Icon(Icons.person),
+                                )
+                              : CircleAvatar(
+                                  radius: 50,
+                                  backgroundColor: Colors.transparent,
+                                  backgroundImage:
+                                      FileImage(_selectedProfilePic!), 
+                                  child:  Icon(Icons.person,color: colorScheme.inversePrimary,),
+                                ),
                         ),
                       ),
                     ],
@@ -187,7 +190,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   kh20,
                   Text(
                     "Username",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.inversePrimary,
+                    ),
                   ),
                   kh10,
                   CustomeTextformfield(
@@ -205,7 +211,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   kh20,
                   Text(
                     "Userbio",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.inversePrimary,
+                    ),
                   ),
                   kh10,
                   CustomeTextformfield(
@@ -215,10 +224,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     maxLine: 10,
                   ),
                   kh30,
-                  // Spacer(),
                   CustomButton(
                     buttonText: "Save Changes",
-                    buttonColor: Colors.deepPurple,
+                    buttonColor: colorScheme.primary,
                     buttonTextColor: Colors.white,
                     onTap: onSaveChanges,
                   ),
