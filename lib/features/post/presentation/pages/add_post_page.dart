@@ -104,7 +104,7 @@ class _AddPostPageState extends State<AddPostPage> {
           return Center(child: CircularProgressIndicator());
         } else if (currentUser != null || state is PostLoadingSuccessState) {
           return Scaffold(
-            appBar: AppBar(title: Text("Add Post")),
+            appBar: AppBar(title: Text("Add Post"), centerTitle: true),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               child: Column(
@@ -121,7 +121,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           decoration: BoxDecoration(
                             color: Colors.grey.shade200,
                             borderRadius: BorderRadius.circular(12),
-                            border: Border.all( ),
+                            border: Border.all(),
                             image:
                                 pickedFile == null
                                     ? null
@@ -130,7 +130,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     ),
                           ),
                           child: Center(
-                            child:  Icon(Icons.add_photo_alternate_outlined),
+                            child: Icon(Icons.add_photo_alternate_outlined),
                           ),
                         ),
                       ),

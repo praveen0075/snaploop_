@@ -4,11 +4,21 @@ import 'package:google_fonts/google_fonts.dart';
 ThemeData lightTheme = ThemeData(
   textTheme: GoogleFonts.poppinsTextTheme(),
   colorScheme: ColorScheme.light(
-    surface: Colors.grey.shade200,
-    primary: Colors.deepPurple,
-    secondary: Colors.grey.shade700,
-    tertiary: Colors.grey.shade100,
-    inversePrimary: Colors.grey.shade900,
+    surface: Colors.white,
+    primary: Color.fromARGB(238, 104, 58, 183),    
+    secondary: Color.fromARGB(255, 104, 58, 183),  
+    tertiary: Color.fromARGB(33, 179, 166, 216),    
+    inversePrimary: Colors.grey.shade900,           
   ),
   scaffoldBackgroundColor: Colors.white,
-);  
+  appBarTheme: AppBarTheme(
+    backgroundColor: Colors.white,
+    iconTheme: IconThemeData(color: Colors.black),
+    titleTextStyle: GoogleFonts.poppins(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+    ),
+  ),
+  cardColor: Colors.white,
+);

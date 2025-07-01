@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/core/constants/ksizedboxes.dart';
+import 'package:snap_loop/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_event.dart';
 import 'package:snap_loop/features/profile/presentation/bloc/profile_state.dart';
 import 'package:snap_loop/features/profile/presentation/components/current_user_postgrid.dart';
 import 'package:snap_loop/features/profile/presentation/components/current_userstatus.dart';
 import 'package:snap_loop/features/profile/presentation/pages/edit_profile_page.dart';
+import 'package:snap_loop/features/settings/presentation/pages/settings_page.dart';
 
 // -------- Current app user profile page ---------//
 
@@ -37,13 +39,29 @@ class _ProfilePageState extends State<ProfilePage> {
           return Scaffold(
             appBar: AppBar(
               title: Text("Profile"),
+              backgroundColor: Colors.white,
               centerTitle: true,
               actions: [
                 GestureDetector(
-                  onTap: (){
-                    
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (_) =>
+                            // SettingsPage()
+                            BlocProvider.value(
+                              value: BlocProvider.of<AuthBloc>(context),
+                              child: SettingsPage(),
+                            ),
+                      ),
+                    );
                   },
-                  child: Icon(Icons.settings_outlined, color: Colors.grey.shade700)),
+                  child: Icon(
+                    Icons.settings_outlined,
+                    color: Colors.grey.shade700,
+                  ),
+                ),
                 kw10,
               ],
             ),

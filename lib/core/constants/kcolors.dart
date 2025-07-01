@@ -8,8 +8,8 @@ const kGradientClrList = [
   // kAppBaseClr,
   Color.fromARGB(128, 104, 58, 183),
 ];
- 
+
 const kAppBaseClr = Colors.deepPurple;
 
-//custom textfield filled color 
+//custom textfield filled color
 const kTextFieldFilledColor = Color.fromARGB(81, 206, 216, 255);

@@ -20,32 +20,38 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  // login button clicked
+  // Login logic
   void login() {
     final isLoginValidate = _formKey.currentState!.validate();
     if (isLoginValidate) {
       final String email = emailController.text;
       final String password = passwordController.text;
 
-      // bloc and sign in event triggered
       context.read<AuthBloc>().add(SignInEvent(email, password));
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
-            end: Alignment.bottomCenter,
-            colors: kGradientClrList,
+            end: Alignment.bottomCenter, 
+            colors: [
+              colorScheme.surface,
+              colorScheme.surface.withAlpha(128), 
+              colorScheme.primary.withAlpha(51), 
+              colorScheme.primary,
+              colorScheme.primary.withAlpha(128),
+            ],
           ),
         ),
         child: Center(
@@ -53,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Padding(
               padding: const EdgeInsets.all(18),
               child: BlocConsumer<AuthBloc, AuthState>(
-                listener: (context, state) { 
+                listener: (context, state) {
                   if (state is AuthUserLoggedIn) {
                     customSnackBar(
                       context,
@@ -72,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                 },
                 builder: (context, state) {
                   return state is AuthLoadingState
-                      ? Center(child: CircularProgressIndicator())
+                      ? const Center(child: CircularProgressIndicator())
                       : Form(
                         key: _formKey,
                         child: Column(
@@ -80,11 +86,10 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             Text(
                               "Welcome Back !",
-
                               style: TextStyle(
                                 fontSize: 30,
                                 fontWeight: FontWeight.bold,
-                                color: Theme.of(context).primaryColor,
+                                color: colorScheme.primary,
                               ),
                             ),
                             Text(
@@ -92,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
-                                color: Theme.of(context).colorScheme.secondary,
+                                color: colorScheme.secondary,
                               ),
                             ),
                             kh60,
@@ -110,8 +115,12 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Card loginCard(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Card(
-      color: Colors.white,
+      color: colorScheme.surface,
+      elevation: 5,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -119,11 +128,17 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             Text(
               "Sign In",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                color: colorScheme.primary,
+              ),
             ),
             kh10,
-            //Textform field for email id
+
+            // Email
             CustomeTextformfield(
+              maxLine: 1,
               hintText: "Email",
               txtController: emailController,
               prefixIcon: Icons.email_outlined,
@@ -131,14 +146,13 @@ class _LoginPageState extends State<LoginPage> {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return "Enter your Email Id";
-                } else {
-                  return null;
                 }
+                return null;
               },
             ),
             kh20,
 
-            //Textform field for password
+            // Password
             CustomPasstextfield(
               hintText: "Password",
               txtController: passwordController,
@@ -147,40 +161,35 @@ class _LoginPageState extends State<LoginPage> {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return "Enter the password";
-                } else {
-                  return null;
                 }
+                return null;
               },
-              // suffixIcon: Icons.visibi//lity,
             ),
             kh40,
 
-            // login details submit button
+            // Login Button
             CustomButton(
               buttonText: "Login",
               onTap: login,
-              buttonColor: Colors.deepPurple,
+              buttonColor: colorScheme.primary,
               buttonTextColor: Colors.white,
             ),
             kh30,
 
+            // Register Option
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   "Don't have an account? ",
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.inversePrimary,
-                  ),
+                  style: TextStyle(color: colorScheme.inversePrimary),
                 ),
-
-                // user don't have an account so go to the register page
                 GestureDetector(
                   onTap: widget.ontap,
                   child: Text(
                     "Register",
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
+                      color: colorScheme.primary,
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
                     ),

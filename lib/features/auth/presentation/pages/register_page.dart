@@ -28,7 +28,7 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController passController = TextEditingController();
   TextEditingController conformPassController = TextEditingController();
 
- final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
   void register() async {
     final isValidate = _formkey.currentState!.validate();
@@ -60,14 +60,22 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: kGradientClrList,
-          ), 
+            colors: [
+              colorScheme.surface,
+              colorScheme.surface.withAlpha(128),
+              colorScheme.primary.withAlpha(51),
+              colorScheme.primary,
+              colorScheme.primary.withAlpha(128),
+            ],
+          ),
         ),
         child: Center(
           child: Padding(
@@ -76,7 +84,7 @@ class _RegisterPageState extends State<RegisterPage> {
               child: BlocConsumer<AuthBloc, AuthState>(
                 builder: (context, state) {
                   return state is AuthLoadingState
-                      ? Center(child: CircularProgressIndicator())
+                      ? const Center(child: CircularProgressIndicator())
                       : Form(
                         key: _formkey,
                         child: Column(
@@ -86,19 +94,18 @@ class _RegisterPageState extends State<RegisterPage> {
                               style: TextStyle(
                                 fontSize: 30,
                                 fontWeight: FontWeight.bold,
-                                color: Theme.of(context).primaryColor,
+                                color: colorScheme.primary,
                               ),
                             ),
                             Text(
                               "Welcome to SnapLoop",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.grey.shade700,
+                                color: colorScheme.secondary,
                               ),
                             ),
-
                             kh20,
-                            registerCard(context),
+                            registerCard(context, colorScheme),
                           ],
                         ),
                       );
@@ -121,10 +128,9 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Card registerCard(BuildContext context) {
+  Card registerCard(BuildContext context, ColorScheme colorScheme) {
     return Card(
-      color: Colors.white,
-      
+      color: colorScheme.surface,
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -132,15 +138,20 @@ class _RegisterPageState extends State<RegisterPage> {
           children: [
             Text(
               "Sign Up!",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                color: colorScheme.inversePrimary,
+              ),
             ),
-            // kh20,
             kh10,
             CustomeTextformfield(
+              minLine: 1,
+              maxLine: 1,
               txtController: userNameController,
               hintText: "Name",
               prefixIcon: Icons.person_outline,
-              filledColor: Color.fromARGB(81, 206, 216, 255),
+              filledColor: kTextFieldFilledColor,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return "Enter your name";
@@ -148,12 +159,13 @@ class _RegisterPageState extends State<RegisterPage> {
                   return null;
                 }
               },
-
             ),
             kh20,
             CustomeTextformfield(
+              minLine: 1,
+              maxLine: 1,
               txtController: emailController,
-              filledColor: Color.fromARGB(81, 206, 216, 255),
+              filledColor: kTextFieldFilledColor,
               hintText: "Email",
               prefixIcon: Icons.email_outlined,
               validator: (value) {
@@ -167,7 +179,7 @@ class _RegisterPageState extends State<RegisterPage> {
             kh20,
             CustomPasstextfield(
               txtController: passController,
-              filledColor: Color.fromARGB(81, 206, 216, 255),
+              filledColor: kTextFieldFilledColor,
               hintText: "Password",
               prefixIcon: Icons.lock_outline,
               validator: (value) {
@@ -181,9 +193,9 @@ class _RegisterPageState extends State<RegisterPage> {
             kh20,
             CustomPasstextfield(
               txtController: conformPassController,
-              filledColor: Color.fromARGB(81, 206, 216, 255),
+              filledColor: kTextFieldFilledColor,
               hintText: "Confirm Password",
-             prefixIcon: Icons.lock_person_outlined,
+              prefixIcon: Icons.lock_person_outlined,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return "Enter confirmation password";
@@ -191,27 +203,28 @@ class _RegisterPageState extends State<RegisterPage> {
                   return null;
                 }
               },
-              // suffixIcon: Icons.visibility,
             ),
             kh20,
-            CustomButton( 
+            CustomButton(
               buttonText: "Sign up",
-              buttonColor: Theme.of(context).colorScheme.primary,
+              buttonColor: colorScheme.primary,
               buttonTextColor: Colors.white,
               onTap: register,
             ),
             kh30,
-
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Already have an account? "),
+                Text(
+                  "Already have an account? ",
+                  style: TextStyle(color: colorScheme.inversePrimary),
+                ),
                 GestureDetector(
                   onTap: widget.ontap,
                   child: Text(
                     "Log in",
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
+                      color: colorScheme.primary,
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),

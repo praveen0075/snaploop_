@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snap_loop/core/components/custom_delete_showdialog.dart';
+import 'package:snap_loop/core/components/custom_alertbox.dart';
 import 'package:snap_loop/core/constants/kcolors.dart';
 import 'package:snap_loop/core/constants/ksizedboxes.dart';
 import 'package:snap_loop/features/auth/data/auth_repository.dart';
@@ -39,6 +39,8 @@ class _AllPostTileState extends State<AllPostTile> {
 
   // comment section bottom sheet //
   void showCommentsBottomSheet() {
+    final colorScheme = Theme.of(context).colorScheme;
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -47,6 +49,7 @@ class _AllPostTileState extends State<AllPostTile> {
       ),
       builder: (context) {
         final comments = widget.post[widget.index].comments;
+
         return Padding(
           padding: MediaQuery.of(context).viewInsets,
           child: DraggableScrollableSheet(
@@ -55,81 +58,111 @@ class _AllPostTileState extends State<AllPostTile> {
             maxChildSize: 0.95,
             expand: false,
             builder: (context, scrollController) {
-              return Column(
-                children: [
-                  kh10,
-                  Text(
-                    "All Comments",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Expanded(
-                    child:
-                        comments.isEmpty
-                            ? Center(child: Text("No comments yet!"))
-                            : ListView.builder(
-                              controller: scrollController,
-                              itemCount: comments.length,
-                              itemBuilder: (context, index) {
-                                final sortedComments = List<CommentEntity>.from(
-                                  widget.post[widget.index].comments,
-                                )..sort(
-                                  (a, b) => b.timeStamp.compareTo(a.timeStamp),
-                                );
-                                final comment = sortedComments[index];
-                                return InkWell(
-                                  onLongPress: () {
-                                    comment.userId == widget.currentUser!.userid
-                                        ? deleteAlertBox(
+              return Container(
+                color: colorScheme.surface,
+                child: Column(
+                  children: [
+                    kh10,
+                    Text(
+                      "All Comments",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: colorScheme.inversePrimary,
+                      ),
+                    ),
+                    Expanded(
+                      child:
+                          comments.isEmpty
+                              ? Center(
+                                child: Text(
+                                  "No comments yet!",
+                                  style: TextStyle(
+                                    color: colorScheme.inversePrimary,
+                                  ),
+                                ),
+                              )
+                              : ListView.builder(
+                                controller: scrollController,
+                                itemCount: comments.length,
+                                itemBuilder: (context, index) {
+                                  final sortedComments =
+                                      List<CommentEntity>.from(comments)..sort(
+                                        (a, b) =>
+                                            b.timeStamp.compareTo(a.timeStamp),
+                                      );
+                                  final comment = sortedComments[index];
+                                  return InkWell(
+                                    onLongPress: () {
+                                      if (comment.userId ==
+                                          widget.currentUser!.userid) {
+                                        deleteAlertBox(
                                           () =>
                                               deleteComment(comment.commentId),
-                                        )
-                                        : null;
-                                  },
-                                  child: ListTile(
-                                    title: Text(
-                                      comment.userName,
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                        color: Colors.grey.shade800,
+                                        );
+                                      }
+                                    },
+                                    child: ListTile(
+                                      title: Text(
+                                        comment.userName,
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          color: colorScheme.secondary,
+                                        ),
+                                      ),
+                                      subtitle: Text(
+                                        comment.commentTxt,
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          color: colorScheme.inversePrimary,
+                                        ),
                                       ),
                                     ),
-                                    subtitle: Text(
-                                      comment.commentTxt,
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0,
-                      vertical: 10,
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: commentTextController,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: kTextFieldFilledColor,
-                              hintText: "Add a comment...",
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                  );
+                                },
                               ),
-                              suffixIcon: IconButton(
-                                icon: Icon(Icons.send),
-                                onPressed: addNewComment,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 10,
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              controller: commentTextController,
+                              style: TextStyle(
+                                color: colorScheme.inversePrimary,
+                              ),
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: colorScheme.secondary.withAlpha(40),
+                                hintText: "Add a comment...",
+                                hintStyle: TextStyle(
+                                  color: colorScheme.inversePrimary,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(
+                                    color: colorScheme.primary,
+                                  ),
+                                ),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    Icons.send,
+                                    color: colorScheme.primary,
+                                  ),
+                                  onPressed: addNewComment,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               );
             },
           ),
@@ -169,7 +202,11 @@ class _AllPostTileState extends State<AllPostTile> {
 
   // delete alert box showing function//
   void deleteAlertBox(void Function()? onPressed) {
-    deleteShowDialog(context: context, onPressed: onPressed);
+    customAlertBox(
+      context: context,
+      onPressed: onPressed,
+      actionButtonText: "Delete",
+    );
   }
 
   // delete the commetn function//
@@ -232,142 +269,156 @@ class _AllPostTileState extends State<AllPostTile> {
   // ----- Builder ----//
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
-        color: Colors.white,
+        color: colorScheme.surface,
         elevation: 10,
-        shadowColor: kAppBaseClr,
+        shadowColor: colorScheme.primary.withAlpha(100),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Container(
-            decoration: BoxDecoration(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.grey,
-                          backgroundImage:
-                              widget.post[widget.index].userProfilePic == ""
-                                  ? null
-                                  : NetworkImage(
-                                    widget.post[widget.index].userProfilePic,
-                                  ),
-                          child: Center(
-                            child:
-                                widget.post[widget.index].userProfilePic == ""
-                                    ? Center(child: Icon(Icons.person))
-                                    : null,
-                          ),
-                        ),
-                        kw10,
-                        GestureDetector(
-                          onTap:
-                              () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder:
-                                      (_) => MultiBlocProvider(
-                                        providers: [
-                                          BlocProvider<ProfileBloc>.value(
-                                            value: BlocProvider.of<ProfileBloc>(
-                                              context,
-                                            ),
-                                          ),
-
-                                          BlocProvider.value(
-                                            value: BlocProvider.of<PostBloc>(
-                                              context,
-                                            ),
-                                          ),
-                                        ],
-                                        child: UserProfilePage(
-                                          userId:
-                                              widget.post[widget.index].userId,
-                                          currentUser: widget.currentUser,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // User info and delete icon
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Colors.grey,
+                        backgroundImage:
+                            widget.post[widget.index].userProfilePic == ""
+                                ? null
+                                : NetworkImage(
+                                  widget.post[widget.index].userProfilePic,
+                                ),
+                        child:
+                            widget.post[widget.index].userProfilePic == ""
+                                ? Icon(
+                                  Icons.person,
+                                  color: Colors.grey.shade800,
+                                )
+                                : null,
+                      ),
+                      kw10,
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (_) => MultiBlocProvider(
+                                    providers: [
+                                      BlocProvider<ProfileBloc>.value(
+                                        value: BlocProvider.of<ProfileBloc>(
+                                          context,
                                         ),
                                       ),
-                                ),
-                              ),
-                          child: Text(
-                            widget.post[widget.index].userName,
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                                      BlocProvider<PostBloc>.value(
+                                        value: BlocProvider.of<PostBloc>(
+                                          context,
+                                        ),
+                                      ),
+                                    ],
+                                    child: UserProfilePage(
+                                      userId: widget.post[widget.index].userId,
+                                      currentUser: widget.currentUser,
+                                    ),
+                                  ),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          widget.post[widget.index].userName,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: colorScheme.inversePrimary,
                           ),
                         ),
-                      ],
-                    ),
-                    widget.post[widget.index].userId ==
-                            widget.currentUser!.userid
-                        ? GestureDetector(
-                          onTap:
-                              () => deleteAlertBox(() {
-                                context.read<PostBloc>().add(
-                                  DeletePostEvent(
-                                    widget.post[widget.index].postId,
-                                  ),
-                                );
-                                Navigator.pop(context);
-                              }),
-
-                          child: Icon(
-                            Icons.delete_outline_outlined,
-                            color: Colors.grey,
-                          ),
-                        )
-                        : SizedBox(width: 2),
-                  ],
-                ),
-                kh10,
-                kh10,
-                SizedBox(
-                  child: Image(
-                    image: NetworkImage(widget.post[widget.index].imageUrl),
-                  ),
-                ),
-
-                kh10,
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: likeAndDislike,
-                      child:
-                          widget.post[widget.index].likes.contains(
-                                widget.currentUser!.userid,
-                              )
-                              ? Icon(Icons.favorite, color: Colors.red)
-                              : Icon(Icons.favorite_border),
-                    ),
-                    Text(widget.post[widget.index].likes.length.toString()),
-                    kw10,
-                    GestureDetector(
-                      // onLongPress: commentSection,
-                      onTap: showCommentsBottomSheet,
-                      child: Icon(Icons.comment),
-                    ),
-                    Text(widget.post[widget.index].comments.length.toString()),
-                    const Spacer(),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(6),
-                  child: Row(
-                    children: [
-                      Text(
-                        widget.post[widget.index].userName,
-                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-
-                      Text(" ${widget.post[widget.index].caption}"),
                     ],
                   ),
+                  if (widget.post[widget.index].userId ==
+                      widget.currentUser!.userid)
+                    GestureDetector(
+                      onTap:
+                          () => deleteAlertBox(() {
+                            context.read<PostBloc>().add(
+                              DeletePostEvent(widget.post[widget.index].postId),
+                            );
+                            Navigator.pop(context);
+                          }),
+                      child: Icon(
+                        Icons.delete_outline_outlined,
+                        color: colorScheme.secondary,
+                      ),
+                    ),
+                ],
+              ),
+              kh10,
+              // Post image
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(widget.post[widget.index].imageUrl),
+              ),
+              kh10,
+              // Like and comment section
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: likeAndDislike,
+                    child:
+                        widget.post[widget.index].likes.contains(
+                              widget.currentUser!.userid,
+                            )
+                            ? Icon(Icons.favorite, color: Colors.red)
+                            : Icon(
+                              Icons.favorite_border,
+                              color: colorScheme.inversePrimary,
+                            ),
+                  ),
+                  Text(
+                    widget.post[widget.index].likes.length.toString(),
+                    style: TextStyle(color: colorScheme.inversePrimary),
+                  ),
+                  kw10,
+                  GestureDetector(
+                    onTap: showCommentsBottomSheet,
+                    child: Icon(
+                      Icons.comment,
+                      color: colorScheme.inversePrimary,
+                    ),
+                  ),
+                  Text(
+                    widget.post[widget.index].comments.length.toString(),
+                    style: TextStyle(color: colorScheme.inversePrimary),
+                  ),
+                  Spacer(),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(6),
+                child: Row(
+                  children: [
+                    Text(
+                      widget.post[widget.index].userName,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: colorScheme.inversePrimary,
+                      ),
+                    ),
+                    Text(
+                      " ${widget.post[widget.index].caption}",
+                      style: TextStyle(color: colorScheme.inversePrimary),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

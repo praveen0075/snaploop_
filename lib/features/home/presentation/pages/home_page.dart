@@ -24,12 +24,12 @@ class _HomePageState extends State<HomePage> {
     context.read<PostBloc>().add(GetAllPostsEvent());
   }
 
-  void deletePost() {}
-
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: colorScheme.tertiary,
       body: NestedScrollView(
         headerSliverBuilder:
             (context, innerBoxIsScrolled) => [
@@ -37,13 +37,13 @@ class _HomePageState extends State<HomePage> {
                 floating: true,
                 snap: true,
                 elevation: 0,
-                backgroundColor: Colors.grey.shade100,
+                backgroundColor: colorScheme.tertiary,
                 title: Text(
                   "SnapLoop",
                   style: GoogleFonts.michroma(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.deepPurple,
+                    color: colorScheme.primary,
                   ),
                 ),
                 centerTitle: true,
@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
                 return Center(
                   child: Text(
                     "No post available",
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: colorScheme.inversePrimary),
                   ),
                 );
               }
@@ -81,7 +81,13 @@ class _HomePageState extends State<HomePage> {
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [CircularProgressIndicator(), Text("Loading")],
+                  children: [
+                    CircularProgressIndicator(),
+                    Text(
+                      "Loading",
+                      style: TextStyle(color: colorScheme.inversePrimary),
+                    ),
+                  ],
                 ),
               );
             }

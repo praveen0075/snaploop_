@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snap_loop/core/components/custom_delete_showdialog.dart';
+import 'package:snap_loop/core/components/custom_alertbox.dart';
 import 'package:snap_loop/core/constants/ksizedboxes.dart';
 import 'package:snap_loop/core/components/custom_button.dart';
 import 'package:snap_loop/core/components/custom_textformfield.dart';
@@ -96,7 +96,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       widget.user!.profilePicUrl!.isNotEmpty)
                     GestureDetector(
                       onTap: () {
-                        deleteShowDialog(
+                        customAlertBox(
+                          actionButtonText: "Delete",
                           context: context,
                           onPressed: () {
                             setState(() {

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/core/helpers/supabase_storagehelper.dart';
 import 'package:snap_loop/core/secrets/secrets.dart';
+import 'package:snap_loop/core/themes/dark_theme.dart';
 import 'package:snap_loop/core/themes/light_theme.dart';
 import 'package:snap_loop/features/auth/data/auth_repository.dart';
 import 'package:snap_loop/features/auth/presentation/bloc/auth_bloc.dart';
@@ -40,7 +41,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
-      
+      darkTheme: darkTheme,
+      themeMode: ThemeMode.system,
       home: MultiBlocProvider(
         providers: [
           BlocProvider<AuthBloc>(
