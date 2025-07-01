@@ -284,12 +284,12 @@ class _AllPostTileState extends State<AllPostTile> {
             children: [
               // User info and delete icon
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween, 
                 children: [
                   Row(
                     children: [
                       CircleAvatar(
-                        backgroundColor: Colors.grey,
+                        backgroundColor: colorScheme.secondary,
                         backgroundImage:
                             widget.post[widget.index].userProfilePic == ""
                                 ? null
@@ -300,7 +300,7 @@ class _AllPostTileState extends State<AllPostTile> {
                             widget.post[widget.index].userProfilePic == ""
                                 ? Icon(
                                   Icons.person,
-                                  color: Colors.grey.shade800,
+                                  color: colorScheme.inversePrimary,
                                 )
                                 : null,
                       ),

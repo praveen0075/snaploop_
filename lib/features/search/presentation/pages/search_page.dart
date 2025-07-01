@@ -63,7 +63,10 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -82,25 +85,35 @@ class _SearchPageState extends State<SearchPage> {
                     child: Container(
                       height: 50,
                       decoration: BoxDecoration(
-                        color: const Color.fromARGB(37, 104, 58, 183),
+                        color: colorScheme.primary.withAlpha(30),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Center(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
                           child: TextField(
                             controller: searchController,
+                            style: TextStyle(color: colorScheme.inversePrimary),
                             decoration: InputDecoration(
                               border: InputBorder.none,
+                              hintText: "Search",
+                              hintStyle: TextStyle(
+                                color: colorScheme.inversePrimary,
+                              ),
                               suffixIcon:
                                   searchController.text.isNotEmpty
                                       ? IconButton(
-                                        icon: Icon(Icons.clear),
+                                        icon: Icon(
+                                          Icons.clear,
+                                          color: colorScheme.inversePrimary,
+                                        ),
                                         onPressed:
                                             () => searchController.clear(),
                                       )
-                                      : Icon(Icons.search),
-                              hintText: "Search",
+                                      : Icon(
+                                        Icons.search,
+                                        color: colorScheme.inversePrimary,
+                                      ),
                             ),
                           ),
                         ),
@@ -114,7 +127,11 @@ class _SearchPageState extends State<SearchPage> {
                 child: BlocBuilder<SearchBloc, SearchState>(
                   builder: (context, state) {
                     if (state is SearchLoadingState) {
-                      return Center(child: CircularProgressIndicator());
+                      return Center(
+                        child: CircularProgressIndicator(
+                          color: colorScheme.primary,
+                        ),
+                      );
                     } else if (state is SearchLoadedState) {
                       return ListView.builder(
                         controller: _scrollController,
@@ -123,18 +140,21 @@ class _SearchPageState extends State<SearchPage> {
                           final user = state.searchResults[index];
                           return ListTile(
                             leading: CircleAvatar(
-                              radius: 24,
-                              backgroundColor: Colors.grey,
+                              radius: 24, 
+                              backgroundColor: colorScheme.secondary,
                               child: CircleAvatar(
                                 radius: 22,
-                                backgroundColor: Colors.grey,
+                                backgroundColor: colorScheme.tertiary,
                                 backgroundImage:
                                     user.userProfilePic == ""
                                         ? null
                                         : NetworkImage(user.userProfilePic),
                                 child:
                                     user.userProfilePic == ""
-                                        ? Icon(Icons.person)
+                                        ? Icon(
+                                          Icons.person,
+                                          color: colorScheme.inversePrimary,
+                                        )
                                         : null,
                               ),
                             ),
@@ -168,7 +188,10 @@ class _SearchPageState extends State<SearchPage> {
                               },
                               child: Text(
                                 user.userName,
-                                style: TextStyle(color: Colors.black),
+                                style: TextStyle(
+                                  color: colorScheme.inversePrimary,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
                           );
@@ -176,12 +199,25 @@ class _SearchPageState extends State<SearchPage> {
                       );
                     } else if (state is SearchNoResults) {
                       return Center(
-                        child: Text("No result for ${state.query}"),
+                        child: Text(
+                          "No result for '${state.query}'",
+                          style: TextStyle(color: colorScheme.inversePrimary),
+                        ),
                       );
                     } else if (state is SearchErrorState) {
-                      return Center(child: Text(state.errormsg));
+                      return Center(
+                        child: Text(
+                          state.errormsg,
+                          style: TextStyle(color: Colors.redAccent),
+                        ),
+                      );
                     } else {
-                      return Center(child: Text("Something went wrong"));
+                      return Center(
+                        child: Text(
+                          "Something went wrong",
+                          style: TextStyle(color: colorScheme.inversePrimary),
+                        ),
+                      );
                     }
                   },
                 ),
