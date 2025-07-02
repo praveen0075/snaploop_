@@ -307,6 +307,10 @@ class _AllPostTileState extends State<AllPostTile> {
                       kw10,
                       GestureDetector(
                         onTap: () {
+                          final profileBloc = BlocProvider.of<ProfileBloc>(
+                            context,
+                          );
+                          final postBloc = BlocProvider.of<PostBloc>(context);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -314,14 +318,10 @@ class _AllPostTileState extends State<AllPostTile> {
                                   (_) => MultiBlocProvider(
                                     providers: [
                                       BlocProvider<ProfileBloc>.value(
-                                        value: BlocProvider.of<ProfileBloc>(
-                                          context,
-                                        ),
+                                        value: profileBloc,
                                       ),
                                       BlocProvider<PostBloc>.value(
-                                        value: BlocProvider.of<PostBloc>(
-                                          context,
-                                        ),
+                                        value: postBloc,
                                       ),
                                     ],
                                     child: UserProfilePage(

@@ -42,7 +42,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        title: const Text("Profile"),
+        title:  Text("Profile",style: TextStyle(color:colorScheme.inversePrimary),),
         centerTitle: true,
         backgroundColor: colorScheme.surface,
         elevation: 0,
@@ -64,7 +64,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   CircleAvatar(
                     radius: 53,
                     backgroundColor: colorScheme.primary.withValues(alpha: 0.4),
-                    child: state.user!.profilePicUrl == ""
+                    child: state.user!.profilePicUrl == ""  
                         ? CircleAvatar(
                             radius: 50,
                             backgroundColor: colorScheme.secondary.withValues(alpha: 0.3),

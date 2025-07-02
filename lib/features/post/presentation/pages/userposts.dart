@@ -30,7 +30,9 @@ class _UserpostsState extends State<Userposts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+      title: Text("Posts"),
+      ),
       body: BlocBuilder<PostBloc, PostState>(
         builder: (context, state) {
           if (state is PostLoadingState) {

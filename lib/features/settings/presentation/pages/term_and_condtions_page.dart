@@ -5,6 +5,9 @@ class TermAndCondtionsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(title: Text("Terms & Conditions")),
+      body: Text(";asjdljlasjdfl;jjl"),
+    );
   }
 }

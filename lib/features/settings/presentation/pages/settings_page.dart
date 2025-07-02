@@ -15,6 +15,19 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  void alertBoxForShareApp() {
+    showDialog(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: Text("Unavailable !"),
+            content: Text(
+              "Share is not available now, we will update it soon..",
+            ),
+          ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -67,6 +80,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
           ListTile(
+            onTap: () => alertBoxForShareApp(),
             leading: Icon(
               Icons.share_outlined,
               color: colorScheme.inversePrimary,

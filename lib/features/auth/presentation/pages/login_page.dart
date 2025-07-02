@@ -169,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
 
             // Login Button
             CustomButton(
-              buttonText: "Login",
+              buttonText: "Sign In",
               onTap: login,
               buttonColor: colorScheme.primary,
               buttonTextColor: Colors.white,
