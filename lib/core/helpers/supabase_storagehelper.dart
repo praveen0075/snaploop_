@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -26,7 +25,6 @@ class SupabaseStoragehelper {
         return null;
       }
     } catch (e) {
-      log("Error in supabase storage :-> ${e.toString()}");
       // throw Exception(e);
       return null;
     }

@@ -47,12 +47,16 @@ class ProfilePagePostsGridView extends StatelessWidget {
             height: 50,
             width: 50,
             decoration: BoxDecoration(
-              color: Colors.grey,
+              // color: Colors.grey,
               borderRadius: BorderRadius.circular(12),
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(12), 
-              child: Image.network(posts![index].imageUrl, fit: BoxFit.fill),
+              borderRadius: BorderRadius.circular(12),
+              child: Image.network(
+                posts![index].imageUrl,
+                fit: BoxFit.fill,
+                errorBuilder: (context, error, stackTrace) => Container(),
+              ),
             ),
           ),
         );

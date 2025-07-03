@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,7 +28,6 @@ class AuthRespositoryFirebase implements AuthRepo {
       return user;
     } catch (e) {
       // if any error
-      log("Error: $e");
       throw Exception("Failed to login: $e");
     }
   }

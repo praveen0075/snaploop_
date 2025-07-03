@@ -1,0 +1,1 @@
+const kNoInternetErrorString = "Please check your connection";

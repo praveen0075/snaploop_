@@ -28,8 +28,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
   void initState() {
     super.initState();
     context.read<ProfileBloc>().add(
-          FetchCurrentUserDetailsEvent(widget.userId),
-        );
+      FetchCurrentUserDetailsEvent(widget.userId),
+    );
   }
 
   String? name;
@@ -42,7 +42,10 @@ class _UserProfilePageState extends State<UserProfilePage> {
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        title:  Text("Profile",style: TextStyle(color:colorScheme.inversePrimary),),
+        title: Text(
+          "Profile",
+          style: TextStyle(color: colorScheme.inversePrimary),
+        ),
         centerTitle: true,
         backgroundColor: colorScheme.surface,
         elevation: 0,
@@ -64,18 +67,22 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   CircleAvatar(
                     radius: 53,
                     backgroundColor: colorScheme.primary.withValues(alpha: 0.4),
-                    child: state.user!.profilePicUrl == ""  
-                        ? CircleAvatar(
-                            radius: 50,
-                            backgroundColor: colorScheme.secondary.withValues(alpha: 0.3),
-                            child: const Icon(Icons.person, size: 35),
-                          )
-                        : CircleAvatar(
-                            radius: 50,
-                            backgroundColor: Colors.transparent,
-                            backgroundImage:
-                                NetworkImage(state.user!.profilePicUrl!),
-                          ),
+                    child:
+                        state.user!.profilePicUrl == ""
+                            ? CircleAvatar(
+                              radius: 50,
+                              backgroundColor: colorScheme.secondary.withValues(
+                                alpha: 0.3,
+                              ),
+                              child: const Icon(Icons.person, size: 35),
+                            )
+                            : CircleAvatar(
+                              radius: 50,
+                              backgroundColor: Colors.transparent,
+                              backgroundImage: NetworkImage(
+                                state.user!.profilePicUrl!,
+                              ),
+                            ),
                   ),
                   kh10,
                   Text(
@@ -96,79 +103,81 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   ),
                   widget.userId == widget.currentUser!.userid
                       ? GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => BlocProvider<ProfileBloc>.value(
-                                  value: BlocProvider.of<ProfileBloc>(context),
-                                  child: EditProfilePage(user: state.user),
-                                ),
-                              ),
-                            );
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color:
-                                    colorScheme.primary.withValues(alpha: 30),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "Edit Profile",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 17,
-                                    color: colorScheme.primary,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (_) => BlocProvider<ProfileBloc>.value(
+                                    value: BlocProvider.of<ProfileBloc>(
+                                      context,
+                                    ),
+                                    child: EditProfilePage(user: state.user),
                                   ),
+                            ),
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: colorScheme.primary.withValues(alpha: 30),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Edit Profile",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17,
+                                  color: colorScheme.primary,
                                 ),
                               ),
                             ),
                           ),
-                        )
-                      : Followbutton(
-                          isFollowing: state.user!.followers.contains(
-                            widget.currentUser!.userid,
-                          ),
-                          onPressed: () {
-                            context.read<ProfileBloc>().add(
-                                  FollowUnFollowButtonClickedEvent(
-                                    widget.currentUser!.userid,
-                                    widget.userId,
-                                  ),
-                                );
-                          },
                         ),
+                      )
+                      : Followbutton(
+                        isFollowing: state.user!.followers.contains(
+                          widget.currentUser!.userid,
+                        ),
+                        onPressed: () {
+                          context.read<ProfileBloc>().add(
+                            FollowUnFollowButtonClickedEvent(
+                              widget.currentUser!.userid,
+                              widget.userId,
+                            ),
+                          );
+                        },
+                      ),
                   kh10,
                   CurrentUserStatus(posts: state.posts, user: state.user),
                   const Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                     child: Divider(thickness: 0.5),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: state.posts!.isEmpty
-                        ? SizedBox(
-                            height: 300,
-                            child: Center(
-                              child: Text(
-                                "No posts",
-                                style: TextStyle(
-                                  color: colorScheme.onSurfaceVariant,
+                    child:
+                        state.posts!.isEmpty
+                            ? SizedBox(
+                              height: 300,
+                              child: Center(
+                                child: Text(
+                                  "No posts",
+                                  style: TextStyle(
+                                    color: colorScheme.onSurfaceVariant,
+                                  ),
                                 ),
                               ),
+                            )
+                            : PostsgridInUserprofile(
+                              userId: widget.userId,
+                              posts: state.posts,
+                              currentUser: widget.currentUser,
+                              isHome: false,
                             ),
-                          )
-                        : PostsgridInUserprofile(
-                            userId: widget.userId,
-                            posts: state.posts,
-                            currentUser: widget.currentUser,
-                            isHome: false,
-                          ),
                   ),
                 ],
               ),

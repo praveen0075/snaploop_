@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:snap_loop/features/search/domain/entities/search_result_entity.dart';
@@ -27,7 +26,6 @@ class SearchFireRepo implements SearchRepo {
           }).toList();
       return userList;
     } catch (e) {
-      log("exception in getAllUserForSearch firestorerepo: $e");
       throw Exception(e);
     }
   }

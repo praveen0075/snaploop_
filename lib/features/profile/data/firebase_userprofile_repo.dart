@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:snap_loop/features/profile/domain/entities/userprofile.dart';
@@ -34,7 +33,6 @@ class FirebaseUserProfileRepo implements UserprofileRepo {
       }
       return null;
     } catch (e) {
-      log(e.toString());
       return null;
     }
   }

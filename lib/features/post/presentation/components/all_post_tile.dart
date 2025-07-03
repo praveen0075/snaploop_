@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/core/components/custom_alertbox.dart';
-import 'package:snap_loop/core/constants/kcolors.dart';
 import 'package:snap_loop/core/constants/ksizedboxes.dart';
 import 'package:snap_loop/features/auth/data/auth_repository.dart';
 import 'package:snap_loop/features/auth/domain/entities/user_entity.dart';
@@ -290,19 +289,26 @@ class _AllPostTileState extends State<AllPostTile> {
                     children: [
                       CircleAvatar(
                         backgroundColor: colorScheme.secondary,
-                        backgroundImage:
-                            widget.post[widget.index].userProfilePic == ""
-                                ? null
-                                : NetworkImage(
-                                  widget.post[widget.index].userProfilePic,
-                                ),
                         child:
                             widget.post[widget.index].userProfilePic == ""
                                 ? Icon(
                                   Icons.person,
                                   color: colorScheme.inversePrimary,
                                 )
-                                : null,
+                                : ClipOval(
+                                  child: Image.network(
+                                    widget.post[widget.index].userProfilePic,
+                                    width: 40,
+                                    height: 40,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Icon(
+                                        Icons.person,
+                                        color: colorScheme.inversePrimary,
+                                      );
+                                    },
+                                  ),
+                                ),
                       ),
                       kw10,
                       GestureDetector(
@@ -363,7 +369,12 @@ class _AllPostTileState extends State<AllPostTile> {
               // Post image
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Image.network(widget.post[widget.index].imageUrl),
+                child: Image.network(
+                  widget.post[widget.index].imageUrl,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container();
+                  },
+                ),
               ),
               kh10,
               // Like and comment section

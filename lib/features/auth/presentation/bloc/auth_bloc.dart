@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snap_loop/core/constants/kstrings.dart';
 import 'package:snap_loop/features/auth/domain/repositories/auth_repo.dart';
 import 'package:snap_loop/features/auth/presentation/bloc/auth_event.dart';
 import 'package:snap_loop/features/auth/presentation/bloc/auth_state.dart';
@@ -10,7 +11,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   // UserEntity? _currentUser;
 
   AuthBloc({required this.authrepository}) : super(AuthInitialState()) {
-
     // operations on Sign In event.
     on<SignInEvent>((event, emit) async {
       emit(AuthLoadingState());
@@ -27,13 +27,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthFailureState("Something went wrong #"));
         }
       } catch (e) {
-        String errorMsg;
         log(e.toString());
+        String errorMsg;
         if (e.toString() ==
                 " Exception: Failed to login: [firebase_auth/invalid-credential] The supplied auth credential is incorrect, malformed or has expired." ||
             e.toString() ==
                 "Exception: Failed to login: [firebase_auth/invalid-email] The email address is badly formatted.") {
           errorMsg = "Invalid Email or Password";
+        } else if (e.toString() ==
+            "Exception: Failed to login: [firebase_auth/network-request-failed] A network error (such as timeout, interrupted connection or unreachable host) has occurred.") {
+          errorMsg = kNoInternetErrorString;
         } else {
           errorMsg = e.toString();
         }
@@ -43,6 +46,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     // operations on register event.
     on<RegisterEvent>((event, emit) async {
+      
       emit(AuthLoadingState());
       try {
         // register new user
@@ -52,10 +56,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthUserLoggedIn(user));
         } else {
           emit(AuthFailureState("Unauthorized user!!"));
-        }
+        } 
       } catch (e) {
-        log(e.toString());
-        emit(AuthFailureState(e.toString()));
+        String errormsg;
+        if(e.toString() ==
+            "Exception: Failed to login: [firebase_auth/network-request-failed] A network error (such as timeout, interrupted connection or unreachable host) has occurred."){
+             errormsg = kNoInternetErrorString; 
+            }else{
+              errormsg = e.toString();
+            }
+        emit(AuthFailureState(errormsg.toString() ));
       }
     });
 

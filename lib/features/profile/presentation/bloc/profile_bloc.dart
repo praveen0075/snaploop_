@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/core/helpers/supabase_storagehelper.dart';
@@ -38,7 +37,6 @@ class ProfileBloc extends Bloc<ProfileEvents, ProfileState> {
           );
         }
       } catch (e) {
-        log("exception profile bloc :-> ${e.toString()}");
         emit(UserProfileUserDetailsFailedState(e.toString()));
       }
     });
@@ -62,7 +60,6 @@ class ProfileBloc extends Bloc<ProfileEvents, ProfileState> {
       emit(UserProfileUserDetailsLoadingState());
       try {
         String? userProileUploadedImageUrl;
-        log(event.userProfilePicUrl.toString());
         if(event.userProfilePicUrl.toString().startsWith("/")){
              userProileUploadedImageUrl = await supabaseStoragehelper
             .upLoadImageToSupaStore(File(event.userProfilePicUrl!), "profilePics");

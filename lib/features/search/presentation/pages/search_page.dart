@@ -140,23 +140,31 @@ class _SearchPageState extends State<SearchPage> {
                           final user = state.searchResults[index];
                           return ListTile(
                             leading: CircleAvatar(
-                              radius: 24,
                               backgroundColor: colorScheme.secondary,
-                              child: CircleAvatar(
-                                radius: 22,
-                                backgroundColor: colorScheme.tertiary,
-                                backgroundImage:
-                                    user.userProfilePic == ""
-                                        ? null
-                                        : NetworkImage(user.userProfilePic),
-                                child:
-                                    user.userProfilePic == ""
-                                        ? Icon(
-                                          Icons.person,
-                                          color: colorScheme.inversePrimary,
-                                        )
-                                        : null,
-                              ),
+                              child:
+                                  user.userProfilePic == ""
+                                      ? Icon(
+                                        Icons.person,
+                                        color: colorScheme.inversePrimary,
+                                      )
+                                      : ClipOval(
+                                        child: Image.network(
+                                          user.userProfilePic,
+                                          width: 40,
+                                          height: 40,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (
+                                            context,
+                                            error,
+                                            stackTrace,
+                                          ) {
+                                            return Icon(
+                                              Icons.person,
+                                              color: colorScheme.inversePrimary,
+                                            );
+                                          },
+                                        ),
+                                      ),
                             ),
                             title: GestureDetector(
                               onTap: () {

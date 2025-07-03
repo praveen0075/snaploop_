@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,7 +43,6 @@ class _RegisterPageState extends State<RegisterPage> {
             RegisterEvent(user, conformPassController.text),
           );
         } catch (e) {
-          log("error : ${e.toString()}");
           customSnackBar(context, e.toString(), Colors.white, Colors.red);
         }
       } else {

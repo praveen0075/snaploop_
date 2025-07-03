@@ -1,9 +1,9 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/core/components/custom_alertbox.dart';
+import 'package:snap_loop/core/components/custom_snackbar.dart';
 import 'package:snap_loop/core/constants/ksizedboxes.dart';
 import 'package:snap_loop/core/components/custom_button.dart';
 import 'package:snap_loop/core/components/custom_textformfield.dart';
@@ -28,20 +28,31 @@ class _EditProfilePageState extends State<EditProfilePage> {
   String? _userdp;
 
   Future<void> pickTheImage() async {
-    final pickResult = await FilePicker.platform.pickFiles(
-      type: FileType.media,
-      allowMultiple: false,
-    );
+    try {
+      final pickResult = await FilePicker.platform.pickFiles(
+        type: FileType.media,
+        allowMultiple: false,
+      );
 
-    if (pickResult != null && pickResult.files.single.path != null) {
-      setState(() {
-        _selectedProfilePic = File(pickResult.files.single.path!);
-      });
+      if (pickResult != null && pickResult.files.single.path != null) {
+        setState(() {
+          _selectedProfilePic = File(pickResult.files.single.path!);
+        });
+      } 
+    } catch (e) {
+      if (mounted) {
+        customSnackBar(
+          context,
+          "Something went wrong while picking the file",
+          Colors.white,
+          Colors.red,
+        );
+      }
     }
   }
 
   void onSaveChanges() {
-    log("button clicked");
+
     if (_selectedProfilePic == null) {
       _userdp = widget.user!.profilePicUrl;
     } else {
@@ -49,13 +60,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
 
     context.read<ProfileBloc>().add(
-          UpdateUserProfile(
-            widget.user!.userid,
-            bioController.text,
-            nameController.text,
-            _userdp,
-          ),
-        );
+      UpdateUserProfile(
+        widget.user!.userid,
+        bioController.text,
+        nameController.text,
+        _userdp,
+      ),
+    );
   }
 
   void openBottomSheetForProfilePic() {
@@ -88,8 +99,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       children: [
                         kw10,
                         Icon(Icons.image, color: colorScheme.inversePrimary),
-                        Text("New profile picture",
-                            style: TextStyle(color: colorScheme.inversePrimary)),
+                        Text(
+                          "New profile picture",
+                          style: TextStyle(color: colorScheme.inversePrimary),
+                        ),
                       ],
                     ),
                   ),
@@ -113,8 +126,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         children: [
                           kw10,
                           Icon(Icons.delete, color: colorScheme.error),
-                          Text("Remove Profile picture",
-                              style: TextStyle(color: colorScheme.error)),
+                          Text(
+                            "Remove Profile picture",
+                            style: TextStyle(color: colorScheme.error),
+                          ),
                         ],
                       ),
                     ),
@@ -137,7 +152,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       appBar: AppBar(
         title: const Text("Edit Profile"),
         centerTitle: true,
-        backgroundColor: colorScheme.background,
       ),
       body: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {
@@ -162,27 +176,34 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         onTap: openBottomSheetForProfilePic,
                         child: CircleAvatar(
                           radius: 53,
-                          backgroundColor:
-                              colorScheme.primary.withValues(alpha: 0.4),
-                          child: _selectedProfilePic == null 
-                              ? CircleAvatar(
-                                  radius: 50,
-                                  backgroundColor: colorScheme.secondary.withValues(alpha: 0.3),
-                                  backgroundImage:
-                                      widget.user!.profilePicUrl == ""
-                                          ? null
-                                          : NetworkImage(
+                          backgroundColor: colorScheme.primary.withValues(
+                            alpha: 0.4,
+                          ),
+                          child:
+                              _selectedProfilePic == null
+                                  ? CircleAvatar(
+                                    radius: 50,
+                                    backgroundColor: colorScheme.secondary
+                                        .withValues(alpha: 0.3),
+                                    backgroundImage:
+                                        widget.user!.profilePicUrl == ""
+                                            ? null
+                                            : NetworkImage(
                                               widget.user!.profilePicUrl!,
                                             ),
-                                  child: const Icon(Icons.person),
-                                )
-                              : CircleAvatar(
-                                  radius: 50,
-                                  backgroundColor: Colors.transparent,
-                                  backgroundImage:
-                                      FileImage(_selectedProfilePic!), 
-                                  child:  Icon(Icons.person,color: colorScheme.inversePrimary,),
-                                ),
+                                    child: const Icon(Icons.person),
+                                  )
+                                  : CircleAvatar(
+                                    radius: 50,
+                                    backgroundColor: Colors.transparent,
+                                    backgroundImage: FileImage(
+                                      _selectedProfilePic!,
+                                    ),
+                                    child: Icon(
+                                      Icons.person,
+                                      color: colorScheme.inversePrimary,
+                                    ),
+                                  ),
                         ),
                       ),
                     ],

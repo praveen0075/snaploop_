@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/core/components/custom_alertbox.dart';
@@ -66,7 +65,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => TermAndCondtionsPage(),
+                    builder: (context) => TermsAndConditionsPage(),
                   ),
                 ),
             leading: Icon(
@@ -104,7 +103,6 @@ class _SettingsPageState extends State<SettingsPage> {
                   },
                 );
               } catch (e) {
-                log("$e");
               }
             },
             leading: Icon(Icons.logout, color: Colors.red),

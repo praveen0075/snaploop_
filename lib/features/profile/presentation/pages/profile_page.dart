@@ -51,17 +51,18 @@ class _ProfilePageState extends State<ProfilePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => BlocProvider.value(
-                          value: BlocProvider.of<AuthBloc>(context),
-                          child: const SettingsPage(),
-                        ),
+                        builder:
+                            (_) => BlocProvider.value(
+                              value: BlocProvider.of<AuthBloc>(context),
+                              child: const SettingsPage(),
+                            ),
                       ),
                     );
                   },
                   child: Icon(
                     Icons.settings_outlined,
                     color: colorScheme.inversePrimary.withValues(alpha: 0.9),
-                  ),    
+                  ),
                 ),
                 kw10,
               ],
@@ -73,25 +74,41 @@ class _ProfilePageState extends State<ProfilePage> {
                     kh20,
                     CircleAvatar(
                       radius: 53,
-                      backgroundColor:
-                          colorScheme.primary.withValues(alpha: 0.4),
-                      child: state.user!.profilePicUrl == ""
-                          ? CircleAvatar(
-                              radius: 50,
-                              backgroundColor:
-                                  colorScheme.secondary.withValues(alpha: 0.3),
-                              child: Icon(
-                                Icons.person,
-                                size: 35,
-                                color: colorScheme.inversePrimary,
+                      backgroundColor: colorScheme.primary.withAlpha(100),
+                      child:
+                          state.user!.profilePicUrl == ""
+                              ? CircleAvatar(
+                                radius: 50,
+                                backgroundColor: colorScheme.secondary
+                                    .withAlpha(77),
+                                child: Icon(
+                                  Icons.person,
+                                  size: 35,
+                                  color: colorScheme.inversePrimary,
+                                ),
+                              )
+                              : ClipOval(
+                                child: SizedBox(
+                                  width: 100,
+                                  height: 100,
+                                  child: Image.network(
+                                    state.user!.profilePicUrl!,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return CircleAvatar(
+                                        radius: 50,
+                                        backgroundColor: colorScheme.secondary
+                                            .withAlpha(77),
+                                        child: Icon(
+                                          Icons.person,
+                                          size: 35,
+                                          color: colorScheme.inversePrimary,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
                               ),
-                            )
-                          : CircleAvatar(
-                              radius: 50,
-                              backgroundColor: Colors.transparent,
-                              backgroundImage:
-                                  NetworkImage(state.user!.profilePicUrl!),
-                            ),
                     ),
                     kh10,
                     Text(
@@ -106,20 +123,26 @@ class _ProfilePageState extends State<ProfilePage> {
                       bio ?? "",
                       style: TextStyle(
                         fontSize: 18,
-                        color: colorScheme.inversePrimary.withValues(alpha: 0.7),
+                        color: colorScheme.inversePrimary.withValues(
+                          alpha: 0.7,
+                        ),
                       ),
                       textAlign: TextAlign.center,
                     ),
                     GestureDetector(
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => BlocProvider<ProfileBloc>.value(
-                            value: BlocProvider.of<ProfileBloc>(context),
-                            child: EditProfilePage(user: state.user),
+                      onTap:
+                          () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (_) => BlocProvider<ProfileBloc>.value(
+                                    value: BlocProvider.of<ProfileBloc>(
+                                      context,
+                                    ),
+                                    child: EditProfilePage(user: state.user),
+                                  ),
+                            ),
                           ),
-                        ),
-                      ),
                       child: Padding(
                         padding: const EdgeInsets.all(15),
                         child: Container(
@@ -146,26 +169,26 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     kh10,
-                    CurrentUserStatus(
-                      posts: state.posts,
-                      user: state.user,
-                    ),
+                    CurrentUserStatus(posts: state.posts, user: state.user),
                     const Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 15,
+                        vertical: 10,
+                      ),
                       child: Divider(thickness: 0.5),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: state.posts!.isEmpty
-                          ? const SizedBox(
-                              height: 300,
-                              child: Center(child: Text("No posts")),
-                            )
-                          : ProfilePagePostsGridView(
-                              user: state.user,
-                              posts: state.posts,
-                            ),
+                      child:
+                          state.posts!.isEmpty
+                              ? const SizedBox(
+                                height: 300,
+                                child: Center(child: Text("No posts")),
+                              )
+                              : ProfilePagePostsGridView(
+                                user: state.user,
+                                posts: state.posts,
+                              ),
                     ),
                   ],
                 ),

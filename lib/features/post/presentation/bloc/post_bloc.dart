@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_loop/core/helpers/supabase_storagehelper.dart';
 import 'package:snap_loop/features/auth/domain/entities/user_entity.dart';

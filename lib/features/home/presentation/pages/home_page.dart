@@ -34,7 +34,6 @@ class _HomePageState extends State<HomePage> {
         headerSliverBuilder:
             (context, innerBoxIsScrolled) => [
               SliverAppBar(
-                
                 floating: true,
                 snap: true,
                 elevation: 0,
@@ -55,7 +54,10 @@ class _HomePageState extends State<HomePage> {
           builder: (context, state) {
             if (state is PostLoadingState || state is PostLoadingSuccessState) {
               return Center(child: CircularProgressIndicator());
-            } else if (state is PostLoadedState) {
+            } else if (state is PostErrorState) {
+              return Center(child: Text(state.errorMsg));
+            } 
+            else if (state is PostLoadedState) {
               if (state.post.isEmpty || state.post == []) {
                 return Center(
                   child: Text(
