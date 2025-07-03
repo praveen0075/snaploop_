@@ -5,7 +5,6 @@ class CustomPasstextfield extends StatefulWidget {
     super.key,
     required this.txtController,
     required this.hintText,
-    // required this.obscure,
     this.prefixIcon,
     this.filledColor,
     this.labetTxt,
@@ -14,7 +13,6 @@ class CustomPasstextfield extends StatefulWidget {
 
   final TextEditingController txtController;
   final String hintText;
-  // final bool obscure;
   final IconData? prefixIcon;
   final Color? filledColor;
   final String? labetTxt;

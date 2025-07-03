@@ -9,7 +9,6 @@ Future<dynamic> customAlertBox({
     context: context,
     builder:
         (context) => AlertDialog(
-          // title: Text("Delete?"),
           content: Text( 
             "Are you sure about this?",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),

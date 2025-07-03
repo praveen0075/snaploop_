@@ -9,13 +9,6 @@ class SearchResultEntity {
     required this.userProfilePic,
   });
 
-  // Map<String, dynamic> toJson() {
-  //   return {
-  //     "userId": userId,
-  //     "userName": userName,
-  //     "userProfilePic": userProfilePic,
-  //   };
-  // }
 
   factory SearchResultEntity.fromJson(Map<String, dynamic> json) {
     return SearchResultEntity(

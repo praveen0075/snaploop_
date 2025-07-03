@@ -5,7 +5,6 @@ const kGradientClrList = [
   Color.fromARGB(40, 255, 255, 255),
   Color.fromARGB(142, 104, 58, 183),
   Color.fromARGB(238, 104, 58, 183),
-  // kAppBaseClr,
   Color.fromARGB(128, 104, 58, 183),
 ];
 

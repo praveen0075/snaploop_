@@ -14,7 +14,6 @@ class ProfileBloc extends Bloc<ProfileEvents, ProfileState> {
   final UserprofileRepo userprofileRepo;
   final SupabaseStoragehelper supabaseStoragehelper;
   final PostRepository postRepo;
-  //  UserEntity? currentUser;
   ProfileBloc({
     required this.authRepo,
     required this.userprofileRepo,

@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _listenToConnectivity(); // Start listening to internet changes
+    _listenToConnectivity(); 
 
     return MaterialApp(
       scaffoldMessengerKey: _scaffoldMessengerKey,
@@ -93,7 +93,6 @@ class MyApp extends StatelessWidget {
           builder: (context, snapshot) {
             final isConnected = snapshot.data ?? true;
 
-            // Show snackbar if not connected
             if (!isConnected) {
               Future.delayed(Duration(seconds: 1), () {
                 _scaffoldMessengerKey.currentState?.showSnackBar(

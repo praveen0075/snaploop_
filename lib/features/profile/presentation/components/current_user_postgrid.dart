@@ -47,7 +47,6 @@ class ProfilePagePostsGridView extends StatelessWidget {
             height: 50,
             width: 50,
             decoration: BoxDecoration(
-              // color: Colors.grey,
               borderRadius: BorderRadius.circular(12),
             ),
             child: ClipRRect(

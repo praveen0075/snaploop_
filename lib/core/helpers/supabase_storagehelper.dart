@@ -25,7 +25,6 @@ class SupabaseStoragehelper {
         return null;
       }
     } catch (e) {
-      // throw Exception(e);
       return null;
     }
   }
