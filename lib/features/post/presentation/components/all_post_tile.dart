@@ -414,17 +414,25 @@ class _AllPostTileState extends State<AllPostTile> {
               Padding(
                 padding: const EdgeInsets.all(6),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      widget.post[widget.index].userName,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: colorScheme.inversePrimary,
+                    Flexible(
+                      child: RichText(
+                        text: TextSpan(
+                          style: TextStyle(color: colorScheme.inversePrimary),
+                          children: [
+                            TextSpan(
+                              text: widget.post[widget.index].userName,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            TextSpan(
+                              text: " ${widget.post[widget.index].caption}",
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    Text(
-                      " ${widget.post[widget.index].caption}",
-                      style: TextStyle(color: colorScheme.inversePrimary),
                     ),
                   ],
                 ),

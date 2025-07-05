@@ -30,7 +30,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         log(e.toString());
         String errorMsg;
         if (e.toString() ==
-                " Exception: Failed to login: [firebase_auth/invalid-credential] The supplied auth credential is incorrect, malformed or has expired." ||
+                "Exception: Failed to login: [firebase_auth/invalid-credential] The supplied auth credential is incorrect, malformed or has expired." ||
             e.toString() ==
                 "Exception: Failed to login: [firebase_auth/invalid-email] The email address is badly formatted.") {
           errorMsg = "Invalid Email or Password";

@@ -122,8 +122,9 @@ class _UserProfilePageState extends State<UserProfilePage> {
                           child: Container(
                             height: 50,
                             decoration: BoxDecoration(
+                            border: Border.all(color: colorScheme.primary,),
                               borderRadius: BorderRadius.circular(20),
-                              color: colorScheme.primary.withValues(alpha: 30),
+                              color: colorScheme.primary.withValues(alpha: 0.1),
                             ),
                             child: Center(
                               child: Text(

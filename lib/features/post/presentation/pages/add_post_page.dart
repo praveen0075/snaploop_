@@ -130,58 +130,61 @@ class _AddPostPageState extends State<AddPostPage> {
             ),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      GestureDetector(
-                        onTap: pickImage,
-                        child: Container(
-                          width: double.infinity,
-                          height: 250,
-                          decoration: BoxDecoration(
-                            color: colorScheme.tertiary,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: colorScheme.primary),
-                            image:
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: pickImage,
+                          child: Container(
+                            width: double.infinity,
+                            height: 250,
+                            decoration: BoxDecoration(
+                              color: colorScheme.tertiary,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: colorScheme.primary),
+                              image:
+                                  pickedFile == null
+                                      ? null
+                                      : DecorationImage(
+                                        image: FileImage(pickedFile!),
+                                        fit: BoxFit.cover,
+                                      ),
+                            ),
+                            child:
                                 pickedFile == null
-                                    ? null
-                                    : DecorationImage(
-                                      image: FileImage(pickedFile!),
-                                      fit: BoxFit.cover,
-                                    ),
+                                    ? Center(
+                                      child: Icon(
+                                        Icons.add_photo_alternate_outlined,
+                                        color: colorScheme.inversePrimary,
+                                        size: 40,
+                                      ),
+                                    )
+                                    : null,
                           ),
-                          child:
-                              pickedFile == null
-                                  ? Center(
-                                    child: Icon(
-                                      Icons.add_photo_alternate_outlined,
-                                      color: colorScheme.inversePrimary,
-                                      size: 40,
-                                    ),
-                                  )
-                                  : null,
                         ),
-                      ),
-                      kh20,
-                      CustomeTextformfield(
-                        filledColor: colorScheme.surface,
-                        txtController: captionController,
-                        hintText: "Caption",
-                        minLine: 3,
-                        maxLine: 5,
-                      ),
-                    ],
-                  ),
-                  CustomButton(
-                    buttonText: "Submit",
-                    buttonColor: colorScheme.primary,
-                    buttonTextColor: Colors.white,
-                    onTap: uploadPost,
-                  ),
-                ],
+                        kh20,
+                        CustomeTextformfield(
+                          filledColor: colorScheme.surface,
+                          txtController: captionController,
+                          hintText: "Caption",
+                          minLine: 3,
+                          maxLine: 5,
+                        ),
+                      ],
+                    ),
+                    kh20,
+                    CustomButton(
+                      buttonText: "Submit",
+                      buttonColor: colorScheme.primary,
+                      buttonTextColor: Colors.white,
+                      onTap: uploadPost,
+                    ),
+                  ],
+                ),
               ),
             ),
           );
