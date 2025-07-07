@@ -1,29 +1,91 @@
 # SnapLoop
 
-> A Flutter + Firebase social media app built with Clean Architecture and BLoC.
+> A full-featured social media app built using **Flutter**, **Firebase**, **Supabase Storage**, and **BLoC**, following **Clean Architecture** principles.
 
-## Features
+---
 
-- 🔒 Firebase Authentication
-- 🖼️ Image uploads via Supabase Storage
-- ❤️ Like & 💬 Comment on posts
-- 👤 User profiles & follow/unfollow
-- 🌗 Light & Dark theme support via `ThemeMode.system`
+## ✨ Features
 
-## Getting Started
+- 🔐 **Firebase Authentication**
+- 📷 **Post image uploads** via Supabase Storage
+- ❤️ **Like**, 💬 **Comment** on posts
+- 👥 **Follow/Unfollow** other users
+- 👤 View user **profiles** with post counts & stats
+- 🌙 **Light/Dark mode** support (`ThemeMode.system`)
+- 🧱 Built with **Clean Architecture** & **BLoC** for scalable state management
 
-SnapLoop is a feature-rich social media application built using Flutter, Firebase, and Clean Architecture principles. Users can create posts, like, comment, view other users' profiles, and connect with each other in a clean and intuitive interface.
-The app uses BLoC (Business Logic Component) for efficient and scalable state management, ensuring a clear separation between UI and logic. This enhances maintainability and makes it easier to add new features.
-SnapLoop also supports persistent authentication, and seamless light/dark theme switching — delivering a modern user experience.
+---
 
-## Install App
+## 🚀 Getting Started
 
-- 1.Go the releases section of the repository or click this link -> https://github.com/praveen0075/snaploop_/releases/tag/v1.0.
-- 2.Download the apk file and install it.
+**SnapLoop** is a modern, social media mobile app that lets users connect by sharing images, liking, commenting, and following others. It uses:
 
-## Screen shots
+- 🧠 **BLoC** for reactive and scalable state management  
+- 🔧 **Clean Architecture** for clean separation of layers  
+- ☁️ **Firebase** (Auth + Firestore) for backend services  
+- 🗃️ **Supabase Storage** for image uploads  
+- 🎨 **Dynamic themes** for user preference  
 
-Check out the images of the application from the linked post -> https://www.linkedin.com/posts/praveen-c-b2665b2a1_flutter-flutterdev-firebase-activity-7347224777708773376-8W6M?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEjjvY4Bwf4-N8LgYo6_94Y_oMmJUzr4pwY
+The project is ideal as a reference or learning resource for Flutter developers interested in production-grade architecture.
+
+---
+
+## 📲 Install the App
+
+You can try SnapLoop directly on your Android device:
+
+1. Go to the [Releases Page](https://github.com/praveen0075/snaploop_/releases/tag/v1.0)
+2. Download the **APK** file from the latest release.
+3. Install the APK on your device (you may need to allow installation from unknown sources).
+
+---
+
+## 🖼️ Screenshots
+
+You can check out screenshots of SnapLoop in action here:
+
+🔗 [View on LinkedIn →](https://www.linkedin.com/posts/praveen-c-b2665b2a1_flutter-flutterdev-firebase-activity-7347224777708773376-8W6M?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEjjvY4Bwf4-N8LgYo6_94Y_oMmJUzr4pwY)
+
+---
+
+## 📦 Project Structure
+
+lib/
+├── core/ # Common components, themes, helpers
+├── features/ # Feature-based folder structure
+│ ├── auth/ # Authentication (Login/Signup)
+│ ├── post/ # Post creation, feed, likes/comments
+│ ├── profile/ # Profile view, edit, follow system
+│ ├── search/ # User search
+│ └── navigation/ # Bottom navigation & root routing
+├── config/ # Firebase/Supabase config
+main.dart # Entry point
+
+
+---
+
+## 🔧 Tech Stack
+
+- **Flutter** (UI Framework)
+- **Firebase Auth** & **Firestore**
+- **Supabase Storage**
+- **BLoC** (State Management)
+- **Clean Architecture** (Layered + scalable)
+- **Dart** (Language)
+
+---
+
+## 👨‍💻 Author
+
+Made by [Praveen C](https://www.linkedin.com/in/praveen-c-b2665b2a1/)
+
+---
+
+## 📥 Download Now
+
+🎉 Try it today → [SnapLoop v1.0 APK](https://github.com/praveen0075/snaploop_/releases/tag/v1.0)
+
+---
 
 
 
