@@ -16,8 +16,9 @@ SnapLoop is a feature-rich social media application built using Flutter, Firebas
 The app uses BLoC (Business Logic Component) for efficient and scalable state management, ensuring a clear separation between UI and logic. This enhances maintainability and makes it easier to add new features.
 SnapLoop also supports persistent authentication, and seamless light/dark theme switching — delivering a modern user experience.
 
-## Released APK
+## Install App
 
-Download and install -- 
+1.Go the release of the repository or click this link -> https://github.com/praveen0075/snaploop_/releases/tag/v1.0.
+2.Download the apk file and install it.
 
 
