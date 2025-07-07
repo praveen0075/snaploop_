@@ -1,6 +1,6 @@
 # SnapLoop
 
-> A full-featured social media app built using **Flutter**, **Firebase**, **Supabase Storage**, and **BLoC**, following **Clean Architecture** principles.
+> A social media app built using **Flutter**, **Firebase**, **Supabase Storage**, and **BLoC**, following **Clean Architecture** principles.
 
 ---
 
