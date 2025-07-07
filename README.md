@@ -21,7 +21,7 @@ SnapLoop also supports persistent authentication, and seamless light/dark theme 
 1.Go the releases section of the repository or click this link -> https://github.com/praveen0075/snaploop_/releases/tag/v1.0.
 2.Download the apk file and install it.
 
-## App Screen Images
+## Screen shots
 
 Check out the images of the application from the linked post -> https://www.linkedin.com/posts/praveen-c-b2665b2a1_flutter-flutterdev-firebase-activity-7347224777708773376-8W6M?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEjjvY4Bwf4-N8LgYo6_94Y_oMmJUzr4pwY
 
