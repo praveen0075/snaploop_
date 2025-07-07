@@ -48,22 +48,6 @@ You can check out screenshots of SnapLoop in action here:
 
 ---
 
-## 📦 Project Structure
-
-lib/
-├── core/ # Common components, themes, helpers
-├── features/ # Feature-based folder structure
-│ ├── auth/ # Authentication (Login/Signup)
-│ ├── post/ # Post creation, feed, likes/comments
-│ ├── profile/ # Profile view, edit, follow system
-│ ├── search/ # User search
-│ └── navigation/ # Bottom navigation & root routing
-├── config/ # Firebase/Supabase config
-main.dart # Entry point
-
-
----
-
 ## 🔧 Tech Stack
 
 - **Flutter** (UI Framework)
