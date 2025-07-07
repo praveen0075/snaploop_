@@ -18,8 +18,8 @@ SnapLoop also supports persistent authentication, and seamless light/dark theme 
 
 ## Install App
 
-1.Go the releases section of the repository or click this link -> https://github.com/praveen0075/snaploop_/releases/tag/v1.0.
-2.Download the apk file and install it.
+- 1.Go the releases section of the repository or click this link -> https://github.com/praveen0075/snaploop_/releases/tag/v1.0.
+- 2.Download the apk file and install it.
 
 ## Screen shots
 
